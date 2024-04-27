@@ -2,6 +2,7 @@
 # To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html.
 # Run `pod lib lint ve_sdk_flutter.podspec` to validate before publishing.
 #
+
 Pod::Spec.new do |s|
   s.name             = 've_sdk_flutter'
   s.version          = '0.0.1'
@@ -9,13 +10,34 @@ Pod::Spec.new do |s|
   s.description      = <<-DESC
 A new Flutter project.
                        DESC
-  s.homepage         = 'http://example.com'
+  s.homepage         = 'https://www.banuba.com/'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Your Company' => 'email@example.com' }
+  s.author           = { 'Banuba' => 'support@banuba.com' }
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
-  s.platform = :ios, '9.0'
+  s.platform = :ios, '15.0'
+
+  sdk_version = '1.35.0'
+
+  s.dependency 'BanubaARCloudSDK', sdk_version #optional
+  s.dependency 'BanubaVideoEditorSDK', sdk_version
+  s.dependency 'BanubaAudioBrowserSDK', sdk_version #optional
+  s.dependency 'BanubaSDK', sdk_version #optional
+  s.dependency 'BanubaSDKSimple', sdk_version
+  s.dependency 'BanubaSDKServicing', sdk_version
+  s.dependency 'VideoEditor', sdk_version
+  s.dependency 'BanubaUtilities', sdk_version
+  s.dependency 'BanubaVideoEditorGallerySDK', sdk_version #optional
+  s.dependency 'BanubaLicenseServicingSDK', sdk_version
+
+  s.dependency 'BNBLicenseUtils', sdk_version
+
+  s.dependency 'VEExportSDK', sdk_version
+  s.dependency 'VEEffectsSDK', sdk_version
+  s.dependency 'VEPlaybackSDK', sdk_version
+
+  s.resources = "bnb-resources"
 
   # Flutter.framework does not contain a i386 slice.
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
