@@ -1,1 +1,3 @@
-# ve-sdk-flutter
+# Video Editor Flutter Plugin
+
+In progress ...
