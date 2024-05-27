@@ -1,6 +1,6 @@
-# ve_sdk_flutter_example
+# Banuba Video Editor Flutter plugin
 
-Demonstrates how to use the ve_sdk_flutter plugin.
+Demonstrates how to use the Video Editor Flutter plugin.
 
 ## Getting Started
 

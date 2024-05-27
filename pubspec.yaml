@@ -1,7 +1,7 @@
 name: ve_sdk_flutter
 description: A new Flutter project.
 version: 0.0.1
-homepage:
+homepage: https://github.com/Banuba/ve-sdk-flutter
 
 environment:
   sdk: '>=2.17.6 <4.0.0'
