@@ -3,11 +3,26 @@
 ## Add AR effects
 [Banuba Face AR SDK](https://www.banuba.com/facear-sdk/face-filters) product is used on camera and editor screens for applying various AR effects while making video content.
 
-:exclamation: IMPORTANT
+:exclamation: IMPORTANT  
 Please add beautification effect to your project. 
 
 1. Android - copy [Beauty](example/android/app/src/main/assets/bnb-resources/effects/Beauty) effect and paste it to ```assets/bnb-resources/effects``` in your project.
 1. iOS - add effects to resource folder ```bundleEffects```
+
+## Add Color filters
+Color filter previews are images, ```.png``` files used to represent texture.
+
+:exclamation: IMPORTANT  
+Previews files are not part of plugin by default since these resources add extra MBs to your app.
+
+### Android
+Preview files are in [drawable-xhdpi](example/android/app/src/main/res/drawable-xhdpi),
+[drawable-xxhdpi](example/android/app/src/main/res/drawable-xxhdpi), [drawable-xxxhdpi](example/android/app/src/main/res/drawable-xxxhdpi) folders.  
+Keep in mind that ```drawable-xxxhdpi``` contains files with the highest resolution. Additionally, you can copy paste just one set of previews if it meets your requirements.
+
+
+### iOS
+
 
 ## Limit processor architectures on Android
 Banuba Video Editor on Android supports the following processor architectures - ```arm64-v8a```, ```armeabi-v7a```, ```x86-64```.
