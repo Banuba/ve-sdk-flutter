@@ -7,7 +7,7 @@
 Please add beautification effect to your project. 
 
 1. Android - copy [Beauty](example/android/app/src/main/assets/bnb-resources/effects/Beauty) effect and paste it to ```assets/bnb-resources/effects``` in your project.
-1. iOS - add effects to resource folder ```bundleEffects```
+1. iOS - add effects to resource folder ```bundleEffects```. You can drag and drop the [bundleEffects](example/ios/bundleEffects) folder from example project to your project's sidebar in Xcode. Make sure to select the "Copy items if needed" and "Create folder references" checkboxes. When done correctly, the ```bundleEffects``` folder's icon will be blue and the folder itself will be present in Copy bundle resources build phase. Remove the two other masks called ```Background``` and ```AsaiLines``` present in example's ```bundleEffects``` folder if you don't need them.
 
 ## Add Color filters
 Color filter previews are images, ```.png``` files used to represent texture.
@@ -22,7 +22,7 @@ Keep in mind that ```drawable-xxxhdpi``` contains files with the highest resolut
 
 
 ### iOS
-
+Copy the ```ColorEffectsPreview``` folder from [example's asset catalog](example/ios/Runner/Assets.xcassets) to your app's asset catalog.
 
 ## Limit processor architectures on Android
 Banuba Video Editor on Android supports the following processor architectures - ```arm64-v8a```, ```armeabi-v7a```, ```x86-64```.

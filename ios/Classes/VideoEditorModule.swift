@@ -36,12 +36,14 @@ class VideoEditorModule: VideoEditor {
             return true
         }
         
-        let config = VideoEditorConfig()
-        
+        var config = VideoEditorConfig()
+        let lutsPath = Bundle(for: VideoEditorModule.self).bundleURL.appendingPathComponent("luts", isDirectory: true)
+        config.filterConfiguration.colorEffectsURL = lutsPath
+
         // Make customization here
         
         videoEditorSDK = BanubaVideoEditor(
-            token: token ?? "",
+            token: token,
             configuration: config,
             externalViewControllerFactory: provideCustomViewFactory()
         )
@@ -206,15 +208,25 @@ extension VideoEditorModule {
                     if let error, error as NSError == exportCancelledError {
                         return
                     }
-                    // TODO 1. pass corect meta url
-                    // TODO 2. simplify method
-                    self?.completeExport(videoUrls: [firstFileURL], metaUrl: nil, previewUrl: previewURL, error: error, previewImage: coverImage?.coverImage)
+                    var metadataUrl: URL?
+                    if let analytics = self?.videoEditorSDK?.metadata?.analyticsMetadataJSON {
+                        let url = FileManager.default.temporaryDirectory.appendingPathComponent("\(UUID().uuidString)_metadata.json")
+                        do {
+                            try analytics.write(to: url, atomically: true, encoding: .utf8)
+                            metadataUrl = url
+                        } catch {
+                            print("Error during metadata saving: \(error)")
+                        }
+                    }
+                    
+                    // TODO 1. simplify method
+                    self?.completeExport(videoUrls: [firstFileURL], metaUrl: metadataUrl, previewUrl: previewURL, error: error, previewImage: coverImage?.coverImage)
                 }
             }
         }
     }
     
-    private func completeExport(videoUrls: Array<URL>, metaUrl: URL?, previewUrl: URL, error: Error?, previewImage: UIImage?) {
+    private func completeExport(videoUrls: [URL], metaUrl: URL?, previewUrl: URL, error: Error?, previewImage: UIImage?) {
         videoEditorSDK?.dismissVideoEditor(animated: true) {
             let success = error == nil
             if success {

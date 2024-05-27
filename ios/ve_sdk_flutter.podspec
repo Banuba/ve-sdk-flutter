@@ -15,10 +15,11 @@ A new Flutter project.
   s.author           = { 'Banuba' => 'support@banuba.com' }
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
+  s.resources = 'Assets/*'
   s.dependency 'Flutter'
   s.platform = :ios, '15.0'
 
-  sdk_version = '1.35.0'
+  sdk_version = '1.35.6'
 
   s.dependency 'BanubaARCloudSDK', sdk_version #optional
   s.dependency 'BanubaVideoEditorSDK', sdk_version
@@ -36,8 +37,6 @@ A new Flutter project.
   s.dependency 'VEExportSDK', sdk_version
   s.dependency 'VEEffectsSDK', sdk_version
   s.dependency 'VEPlaybackSDK', sdk_version
-
-  s.resources = "bnb-resources"
 
   # Flutter.framework does not contain a i386 slice.
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
