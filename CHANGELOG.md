@@ -6,3 +6,6 @@ Initial version of Banuba Video Editor SDK Flutter plugin
   - image preview file
   - meta file
 - [Face AR](https://www.banuba.com/facear-sdk/face-filters) is enabled by default. Beautification mask is added.
+
+## 0.0.2
+Update doc

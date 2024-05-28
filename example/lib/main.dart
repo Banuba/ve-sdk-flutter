@@ -3,10 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:ve_sdk_flutter/export_result.dart';
-import 'package:ve_sdk_flutter/ve_sdk_flutter.dart';
 
-const _licenseToken =
+
+const _licenseToken = SET UP YOUR LICENSE TOKEN;
 
 void main() {
   runApp(const MyApp());
