@@ -11,7 +11,7 @@ class MethodChannelVeSdkFlutter extends VeSdkFlutterPlatform {
 
   // Screens
   static const String _screenCamera = 'camera';
-  static const String _screenPip = 'picture-in-picture';
+  static const String _screenPip = 'pip';
   static const String _screenTrimmer = 'trimmer';
 
   // Input params

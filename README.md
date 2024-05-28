@@ -23,8 +23,7 @@ Run ```flutter run``` in terminal to launch the app on a device or use IDE i.e. 
 3. Run ```flutter run``` in terminal to launch the app on a device or launch the app in IDE i.e. XCode, Intellij, VC, etc.
 
 ## Integration guide
-Please follow our [Guide](guide.md) to complete integration.
-
+Please follow our [Integration Guide](guide.md) to complete full integration.
 
 ## Dependencies
 |       | Version | 

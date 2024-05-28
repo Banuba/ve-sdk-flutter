@@ -126,7 +126,7 @@ class VideoEditorModule: VideoEditor {
     
     func checkLicenseAndStartVideoEditor(with config: VideoEditorLaunchConfig, flutterResult: @escaping FlutterResult) {
         if videoEditorSDK == nil {
-            flutterResult(FlutterError(code: VeSdkFlutterPlugin.errSdkNotInitialized, message: "", details: nil))
+            flutterResult(FlutterError(code: VeSdkFlutterPlugin.errSdkNotInitialized, message: VeSdkFlutterPlugin.errMessageSdkNotInitialized, details: nil))
             return
         }
         
@@ -148,7 +148,7 @@ class VideoEditorModule: VideoEditor {
                 }
                 self.videoEditorSDK = nil
                 print("❌ Use of SDK is restricted: the license is revoked or expired")
-                flutterResult(FlutterError(code: VeSdkFlutterPlugin.errLicenseRevoked, message: "", details: nil))
+                flutterResult(FlutterError(code: VeSdkFlutterPlugin.errLicenseRevoked, message: VeSdkFlutterPlugin.errMessageLicenseRevoked, details: nil))
             }
         })
     }
@@ -245,7 +245,7 @@ extension VideoEditorModule {
                 self.flutterResult?(data)
             } else {
                 print("Error while exporting video = \(String(describing: error))")
-                self.flutterResult?(FlutterError(code: VeSdkFlutterPlugin.errMissingExportResult, message: "", details: nil))
+                self.flutterResult?(FlutterError(code: VeSdkFlutterPlugin.errMissingExportResult, message: VeSdkFlutterPlugin.errMessageMissingExportResult, details: nil))
             }
             
             // Remove strong reference to video editor sdk instance
