@@ -1,19 +1,6 @@
 group 'com.banuba.ve.sdk.flutter.plugin.ve_sdk_flutter'
 version '0.1.0'
 
-buildscript {
-    ext.kotlin_version = '1.8.22'
-    repositories {
-        google()
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath 'com.android.tools.build:gradle:8.1.2'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
-}
-
 allprojects {
     repositories {
         google()
@@ -97,9 +84,6 @@ android {
 }
 
 dependencies {
-    // WARNING!!! Uncomment to edit Kotlin code
-    //implementation files('/Users/glebprischepa/Work/flutter-sdk-3.19.2/bin/cache/artifacts/engine/android-arm64-release/flutter.jar')
-
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     

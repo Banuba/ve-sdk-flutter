@@ -9,3 +9,6 @@ Initial version of Banuba Video Editor SDK Flutter plugin
 
 ## 0.0.2
 Update doc
+
+## 0.0.3
+Migrate Android to https://docs.flutter.dev/release/breaking-changes/flutter-gradle-plugin-apply
