@@ -1,17 +1,59 @@
 # Integration Guide
 
-## Add dependency
+This guide helps to complete full Video Editor SDK integration.
 
-Run this command via terminal in the root of your project:
+## Configuration
+
+### Android
+
+#### Update gradle files
+
+If you use [Flutter Gradle plugin](https://docs.flutter.dev/release/breaking-changes/flutter-gradle-plugin-apply#androidsettings-gradle) then add the following code to your [project gradle](example/android/build.gradle):
+
 ```
-$ flutter pub add ve_sdk_flutter
+buildscript {
+    ext.kotlin_version = '1.8.22'
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.1.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
 ```
-This will add a line like this to your package's pubspec.yaml (and run an implicit flutter pub get):
+
+Update your [settings.gradle](example/android/settings.gradle) plugin's according changes that you made in the [project gradle](example/android/build.gradle)
+
+### IOS
+
+#### Add specs to Podfile
+
+Add the following specs at the top of your [Podfile](example/ios/Podfile)
+
 ```
-dependencies:
-ve_sdk_flutter: ^0.0.3
+platform :ios, '15.0'
+
+source 'https://github.com/CocoaPods/Specs.git'
+source 'https://github.com/Banuba/specs.git'
+source 'https://github.com/sdk-banuba/banuba-sdk-podspecs.git'
 ```
-Alternatively, your editor might support flutter pub get. Check the docs for your editor to learn more.
+
+#### Add permissions
+
+Specify the required iOS permissions used by the SDK in your [Info.plist](example/ios/Runner/Info.plist)
+```
+<key>NSAppleMusicUsageDescription</key>
+<string>This app requires access to the media library</string>
+<key>NSCameraUsageDescription</key>
+<string>This app requires access to the camera.</string>
+<key>NSMicrophoneUsageDescription</key>
+<string>This app requires access to the microphone.</string>
+<key>NSPhotoLibraryUsageDescription</key>
+<string>This app requires access to the photo library.</string>
+```
 
 ## Add AR effects
 [Banuba Face AR SDK](https://www.banuba.com/facear-sdk/face-filters) product is used on camera and editor screens for applying various AR effects while making video content.
@@ -30,53 +72,13 @@ Previews files are not part of plugin by default since these resources add extra
 
 ### Android
 
-Add the following code to your [project gradle](example/android/build.gradle): 
-```
-buildscript {
-    ext.kotlin_version = '1.8.22'
-    repositories {
-        google()
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath 'com.android.tools.build:gradle:8.1.2'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
-}
-```
-
-Update your [settings.gradle](example/android/settings.gradle) according changes that you made in the [project gradle](example/android/build.gradle)
-
 Preview files are in [drawable-xhdpi](example/android/app/src/main/res/drawable-xhdpi),
 [drawable-xxhdpi](example/android/app/src/main/res/drawable-xxhdpi), [drawable-xxxhdpi](example/android/app/src/main/res/drawable-xxxhdpi) folders.  
 Keep in mind that ```drawable-xxxhdpi``` contains files with the highest resolution. Additionally, you can copy paste just one set of previews if it meets your requirements.
 
 ### iOS
 
-Add the following code at the top of your [Podfile](example/ios/Podfile)
-
-```
-platform :ios, '15.0'
-
-source 'https://github.com/CocoaPods/Specs.git'
-source 'https://github.com/Banuba/specs.git'
-source 'https://github.com/sdk-banuba/banuba-sdk-podspecs.git'
-```
-
 Copy the ```ColorEffectsPreview``` folder from [example's asset catalog](example/ios/Runner/Assets.xcassets) to your app's asset catalog.
-
-Add the following keys to your [Info.plist](example/ios/Runner/Info.plist)
-```
-<key>NSAppleMusicUsageDescription</key>
-<string>This app requires access to the media library</string>
-<key>NSCameraUsageDescription</key>
-<string>This app requires access to the camera.</string>
-<key>NSMicrophoneUsageDescription</key>
-<string>This app requires access to the microphone.</string>
-<key>NSPhotoLibraryUsageDescription</key>
-<string>This app requires access to the photo library.</string>
-```
 
 ## Limit processor architectures on Android
 Banuba Video Editor on Android supports the following processor architectures - ```arm64-v8a```, ```armeabi-v7a```, ```x86-64```.
