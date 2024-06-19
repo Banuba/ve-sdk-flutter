@@ -11,6 +11,21 @@ We will get back to you with the trial token.
 
 Feel free to [contact us](https://www.banuba.com/faq/kb-tickets/new) if you have any questions.
 
+## Installation
+
+Run in Terminal to install Video Editor Flutter plugin
+```
+$ flutter pub add ve_sdk_flutter
+```
+or specify the package in your ```pubspec.yaml``` file
+```
+dependencies:
+    ve_sdk_flutter: ^0.0.3
+```
+
+## Integration guide
+Please follow our [Integration Guide](guide.md) to complete full integration.
+
 ## Launch
 Set Banuba license token [within the app](example/lib/main.dart#L9)
 
@@ -21,9 +36,6 @@ Run ```flutter run``` in terminal to launch the app on a device or use IDE i.e. 
 1. Install CocoaPods dependencies. Open **ios** directory and run ```pod install``` in terminal.
 2. Open **Signing & Capabilities** tab in Target settings and select your Development Team.
 3. Run ```flutter run``` in terminal to launch the app on a device or launch the app in IDE i.e. XCode, Intellij, VC, etc.
-
-## Integration guide
-Please follow our [Integration Guide](guide.md) to complete full integration.
 
 ## Dependencies
 |       | Version | 
