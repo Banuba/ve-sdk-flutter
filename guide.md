@@ -15,7 +15,10 @@ import 'package:ve_sdk_flutter/ve_sdk_flutter.dart';
 
 #### Update gradle files
 
-If you use [Flutter Gradle plugin](https://docs.flutter.dev/release/breaking-changes/flutter-gradle-plugin-apply#androidsettings-gradle) then add the following code to your [project gradle](example/android/build.gradle#L1):
+> [!IMPORTANT]
+> if your project supports [Flutter Gradle plugin](https://docs.flutter.dev/release/breaking-changes/flutter-gradle-plugin-apply#androidsettings-gradle).
+
+Update your [project gradle](example/android/build.gradle#L1) with the following code:
 
 ```
 buildscript {
@@ -31,8 +34,6 @@ buildscript {
     }
 }
 ```
-
-Update your [settings.gradle](example/android/settings.gradle) plugin's according changes that you made in the [project gradle](example/android/build.gradle)
 
 ### IOS
 
