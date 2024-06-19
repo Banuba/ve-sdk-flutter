@@ -2,13 +2,20 @@
 
 This guide helps to complete full Video Editor SDK integration.
 
+## Import it
+Use in your Dart code
+
+``` dart
+import 'package:ve_sdk_flutter/ve_sdk_flutter.dart';
+```
+
 ## Configuration
 
 ### Android
 
 #### Update gradle files
 
-If you use [Flutter Gradle plugin](https://docs.flutter.dev/release/breaking-changes/flutter-gradle-plugin-apply#androidsettings-gradle) then add the following code to your [project gradle](example/android/build.gradle):
+If you use [Flutter Gradle plugin](https://docs.flutter.dev/release/breaking-changes/flutter-gradle-plugin-apply#androidsettings-gradle) then add the following code to your [project gradle](example/android/build.gradle#L1):
 
 ```
 buildscript {

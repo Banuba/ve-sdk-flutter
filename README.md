@@ -17,12 +17,11 @@ Run in Terminal to install Video Editor Flutter plugin
 ```
 $ flutter pub add ve_sdk_flutter
 ```
-This will add a line like this to your package's pubspec.yaml (and run an implicit flutter pub get):
+or specify the package in your ```pubspec.yaml``` file
 ```
 dependencies:
-ve_sdk_flutter: ^0.0.3
+    ve_sdk_flutter: ^0.0.3
 ```
-Alternatively, your editor might support flutter pub get. Check the docs for your editor to learn more.
 
 ## Integration guide
 Please follow our [Integration Guide](guide.md) to complete full integration.
