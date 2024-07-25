@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:ve_sdk_flutter/config.dart';
 import 'package:ve_sdk_flutter/export_result.dart';
 import 've_sdk_flutter_platform_interface.dart';
 
@@ -16,6 +17,7 @@ class MethodChannelVeSdkFlutter extends VeSdkFlutterPlatform {
 
   // Input params
   static const String _inputParamToken = 'token';
+  static const String _inputParamConfig = 'config';
   static const String _inputParamScreen = 'screen';
   static const String _inputParamVideoSources = 'videoSources';
 
@@ -29,19 +31,20 @@ class MethodChannelVeSdkFlutter extends VeSdkFlutterPlatform {
   final methodChannel = const MethodChannel(_channelName);
 
   @override
-  Future<ExportResult?> openCameraScreen(String token) => _open(token, _screenCamera, []);
+  Future<ExportResult?> openCameraScreen(String token, {Config? config}) => _open(token, config, _screenCamera, []);
 
   @override
-  Future<ExportResult?> openPipScreen(String token, String sourceVideoPath) =>
-      _open(token, _screenPip, [sourceVideoPath]);
+  Future<ExportResult?> openPipScreen(String token, String sourceVideoPath, {Config? config}) =>
+      _open(token, config, _screenPip, [sourceVideoPath]);
 
   @override
-  Future<ExportResult?> openTrimmerScreen(String token, List<String> sourceVideoPathList) =>
-      _open(token, _screenTrimmer, sourceVideoPathList);
+  Future<ExportResult?> openTrimmerScreen(String token, List<String> sourceVideoPathList, {Config? config}) =>
+      _open(token, config, _screenTrimmer, sourceVideoPathList);
 
-  Future<ExportResult?> _open(String token, String screen, List<String> sourceVideoPathList) async {
+  Future<ExportResult?> _open(String token, Config? config, String screen, List<String> sourceVideoPathList) async {
     final inputParams = {
       _inputParamToken: token,
+      _inputParamConfig: config?.serializeToJson(),
       _inputParamScreen: screen,
       _inputParamVideoSources: sourceVideoPathList
     };

@@ -19,9 +19,13 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import com.banuba.sdk.audiobrowser.autocut.AutoCutTrackLoaderSoundstripe
+import com.banuba.sdk.core.data.autocut.AutoCutTrackLoader
+import com.banuba.sdk.ve.data.autocut.AutoCutConfig
+import com.banuba.sdk.audiobrowser.domain.SoundstripeProvider
 
 class VideoEditorModule {
-    fun initialize(application: Application) {
+    fun initialize(application: Application, config: Config?) {
         startKoin {
             androidContext(application)
             allowOverride(true)
@@ -43,7 +47,7 @@ class VideoEditorModule {
                 GalleryKoinModule().module,
 
                 // Sample integration module
-                SampleIntegrationVeKoinModule().module,
+                SampleIntegrationVeKoinModule(config).module,
             )
         }
     }
@@ -55,7 +59,7 @@ class VideoEditorModule {
  * Some dependencies has no default implementations. It means that
  * these classes fully depends on your requirements
  */
-private class SampleIntegrationVeKoinModule {
+private class SampleIntegrationVeKoinModule(config: Config?) {
 
     val module = module {
         single<ArEffectsRepositoryProvider>(createdAtStart = true) {
@@ -71,7 +75,25 @@ private class SampleIntegrationVeKoinModule {
             named("musicTrackProvider")
         ) {
             // Default implementation that supports Soundstripe, Mubert and Local audio stored on the device
-            AudioBrowserMusicProvider()
+            if (config?.autoCut != null) {
+                SoundstripeProvider()
+            } else {
+                AudioBrowserMusicProvider()
+            }
+        }
+
+        config?.autoCut?.let { autoCut ->
+            single<AutoCutConfig> {
+                AutoCutConfig(
+                    audioDataUrl = autoCut.audioDataUrl,
+                    audioTracksUrl = autoCut.audioTracksUrl
+                )
+            }
+            single<AutoCutTrackLoader> {
+                AutoCutTrackLoaderSoundstripe(
+                    soundstripeApi = get()
+                )
+            }
         }
     }
 }

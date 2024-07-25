@@ -19,6 +19,10 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry.ActivityResultListener
 import java.io.File
+import android.os.Bundle
+import org.json.JSONObject
+import androidx.core.os.bundleOf
+import com.banuba.sdk.veui.data.captions.CaptionsApiService
 
 class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, ActivityResultListener {
     companion object {
@@ -60,6 +64,8 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
             return
         }
 
+        val config = getConfig(call.argument<String>(INPUT_PARAM_CONFIG))
+
         val screen = call.argument<String>(INPUT_PARAM_SCREEN)
         if (screen.isNullOrEmpty()) {
             channelResult?.error(ERR_INVALID_PARAMS, ERR_MESSAGE_MISSING_SCREEN, null)
@@ -68,7 +74,8 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
 
         when (methodName) {
             METHOD_START -> {
-                initialize(licenseToken) { activity ->
+                initialize(licenseToken, config) { activity ->
+                    val extras = createExtras(config)
                     val intent = when (screen) {
                         SCREEN_CAMERA -> {
                             Log.d(TAG, "Start video editor from camera screen")
@@ -82,10 +89,10 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
                                 pictureInPictureConfig = PipConfig(
                                     video = Uri.EMPTY,
                                     openPipSettings = false
-                                )
+                                ),
+                                extras = extras
                             )
                         }
-
                         SCREEN_PIP -> {
                             val videoSources =
                                 call.argument<List<String>>(INPUT_PARAM_VIDEO_SOURCES)
@@ -139,7 +146,8 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
                                 audioTrackData = null,
                                 // set Trimmer video configuration
                                 predefinedVideos = videoSources.map { Uri.fromFile(File(it)) }
-                                    .toTypedArray()
+                                    .toTypedArray(),
+                                extras = extras
                             )
                         }
 
@@ -213,6 +221,7 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
 
     private fun initialize(
         token: String,
+        config: Config?,
         block: (Activity) -> Unit
     ) {
         val activity = currentActivity
@@ -239,7 +248,7 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
         if (videoEditorModule == null) {
             // Initialize video editor sdk dependencies
             videoEditorModule = VideoEditorModule().apply {
-                initialize(activity.application)
+                initialize(activity.application, config)
             }
         }
 
@@ -257,6 +266,40 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
                     null
                 )
             }
+        }
+    }
+
+    private fun getConfig(configJson: String?): Config? {
+        if (configJson == null) return null
+
+        val jsonObject = JSONObject(configJson)
+
+        val autoCut = jsonObject.optJSONObject("autoCut")?.let { autoCutJson ->
+            AutoCut(
+                audioDataUrl = autoCutJson.optString("audioDataUrl", null),
+                audioTracksUrl = autoCutJson.optString("audioTracksUrl", null)
+            )
+        }
+
+        val closeCaptions = jsonObject.optJSONObject("closeCaptions")?.let { closeCaptionsJson ->
+            CloseCaptions(
+                argCaprionsUploadUrl = closeCaptionsJson.optString("argCaprionsUploadUrl", null),
+                argCaptionsTranscribeUrl = closeCaptionsJson.optString("argCaptionsTranscribeUrl", null),
+                argApiKey = closeCaptionsJson.optString("argApiKey", null)
+            )
+        }
+
+        val config = Config(autoCut, closeCaptions)
+        return config
+    }
+
+    private fun createExtras(config: Config?): Bundle? {
+        return config?.closeCaptions?.let {
+            bundleOf(
+                CaptionsApiService.ARG_CAPTIONS_UPLOAD_URL to it.argCaprionsUploadUrl,
+                CaptionsApiService.ARG_CAPTIONS_TRANSCRIBE_URL to it.argCaptionsTranscribeUrl,
+                CaptionsApiService.ARG_API_KEY to it.argApiKey
+            )
         }
     }
 

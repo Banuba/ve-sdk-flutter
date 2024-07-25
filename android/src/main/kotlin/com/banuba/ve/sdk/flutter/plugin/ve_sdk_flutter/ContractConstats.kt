@@ -6,6 +6,7 @@ internal const val METHOD_START = "startVideoEditor"
 
 // Input params
 internal const val INPUT_PARAM_TOKEN = "token"
+internal const val INPUT_PARAM_CONFIG = "config"
 internal const val INPUT_PARAM_SCREEN = "screen"
 internal const val INPUT_PARAM_VIDEO_SOURCES = "videoSources"
 
