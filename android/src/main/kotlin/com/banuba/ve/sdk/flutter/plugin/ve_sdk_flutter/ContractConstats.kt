@@ -58,3 +58,6 @@ internal const val ERR_MESSAGE_MISSING_EXPORT_RESULT =
     "Missing export result: video export has not been completed successfully. Please try again"
 
 internal const val ERR_MESSAGE_MISSING_HOST = "Missing host Activity to start video editor"
+
+internal const val ERR_MESSAGE_INVALID_CONFIG =
+    "Invalid $INPUT_PARAM_CONFIG value: set correct value to $INPUT_PARAM_CONFIG input params"

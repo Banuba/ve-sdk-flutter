@@ -1,49 +1,80 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 
 class Config{
 
-  AutoCut? autoCut;
-  CloseCaptions? closeCaptions;
+  final AiClipping? _aiClipping;
+  final AiCaptions? _aiCaptions;
 
-  Config({this.autoCut, this.closeCaptions});
+  Config._builder(ConfigBuilder builder)
+      : _aiClipping = builder._aiClipping,
+        _aiCaptions = builder._aiCaptions;
 
-  void setAutoCut({required String audioDataUrl, required String audioTracksUrl}){
-    autoCut = AutoCut(audioDataUrl: audioDataUrl, audioTracksUrl: audioTracksUrl);
-  }
-
-  void setCloseCaptions({required String argCaprionsUploadUrl, required String argCaptionsTranscribeUrl, required String argApiKey}){
-    closeCaptions = CloseCaptions(argCaprionsUploadUrl: argCaprionsUploadUrl, argCaptionsTranscribeUrl: argCaptionsTranscribeUrl, argApiKey: argApiKey);
-  }
-
-  String serializeToJson() {
+  String serialize() {
     final Map<String, dynamic> configMap = {
-      'autoCut': autoCut != null ? {
-        'audioDataUrl': autoCut!.audioDataUrl,
-        'audioTracksUrl': autoCut!.audioTracksUrl,
-      } : null,
-      'closeCaptions': closeCaptions != null ? {
-        'argCaprionsUploadUrl': closeCaptions!.argCaprionsUploadUrl,
-        'argCaptionsTranscribeUrl': closeCaptions!.argCaptionsTranscribeUrl,
-        'argApiKey': closeCaptions!.argApiKey,
-      } : null,
+      'aiClipping': _aiClipping?._toJson(),
+      'aiCaptions': _aiCaptions?._toJson(),
     };
     return jsonEncode(configMap);
   }
 }
 
-class AutoCut{
+class ConfigBuilder {
+  AiClipping? _aiClipping;
+  AiCaptions? _aiCaptions;
+
+  ConfigBuilder setAiClipping(aiClipping) {
+    _aiClipping = aiClipping;
+    return this;
+  }
+
+  ConfigBuilder setAiCaptions(aiCaptions) {
+    _aiCaptions = aiCaptions;
+    return this;
+  }
+
+  Config build() {
+    if (_isEmpty()) {
+      throw Exception("At least one of the Config must be provided");
+    }
+    return Config._builder(this);
+  }
+
+  bool _isEmpty() {
+    return _aiClipping == null && _aiCaptions == null;
+  }
+}
+
+@immutable
+class AiClipping{
   final String audioDataUrl;
   final String audioTracksUrl;
 
-  AutoCut({required this.audioDataUrl, required this.audioTracksUrl});
+  const AiClipping({required this.audioDataUrl, required this.audioTracksUrl});
+
+  Map<String, dynamic> _toJson(){
+    return {
+      'audioDataUrl': audioDataUrl,
+      'audioTracksUrl': audioTracksUrl,
+    };
+  }
 }
 
-class CloseCaptions{
-  final String argCaprionsUploadUrl;
-  final String argCaptionsTranscribeUrl;
-  final String argApiKey;
+@immutable
+class AiCaptions{
+  final String uploadUrl;
+  final String transcribeUrl;
+  final String apiKey;
 
-  CloseCaptions({required this.argCaprionsUploadUrl, required this.argCaptionsTranscribeUrl, required this.argApiKey});
+  const AiCaptions({required this.uploadUrl, required this.transcribeUrl, required this.apiKey});
+
+  Map<String, dynamic> _toJson(){
+    return {
+      'uploadUrl': uploadUrl,
+      'transcribeUrl': transcribeUrl,
+      'apiKey': apiKey,
+    };
+  }
 }
+
+// TODO: Add AudioBrowser with enum and map<K, V>

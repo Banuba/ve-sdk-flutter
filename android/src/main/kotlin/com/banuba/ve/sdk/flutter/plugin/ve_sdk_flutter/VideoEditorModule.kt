@@ -25,7 +25,7 @@ import com.banuba.sdk.ve.data.autocut.AutoCutConfig
 import com.banuba.sdk.audiobrowser.domain.SoundstripeProvider
 
 class VideoEditorModule {
-    fun initialize(application: Application, config: Config?) {
+    internal fun initialize(application: Application, androidConfig: AndroidConfig?) {
         startKoin {
             androidContext(application)
             allowOverride(true)
@@ -47,7 +47,7 @@ class VideoEditorModule {
                 GalleryKoinModule().module,
 
                 // Sample integration module
-                SampleIntegrationVeKoinModule(config).module,
+                SampleIntegrationVeKoinModule(androidConfig).module,
             )
         }
     }
@@ -59,7 +59,7 @@ class VideoEditorModule {
  * Some dependencies has no default implementations. It means that
  * these classes fully depends on your requirements
  */
-private class SampleIntegrationVeKoinModule(config: Config?) {
+private class SampleIntegrationVeKoinModule(androidConfig: AndroidConfig?) {
 
     val module = module {
         single<ArEffectsRepositoryProvider>(createdAtStart = true) {
@@ -75,18 +75,19 @@ private class SampleIntegrationVeKoinModule(config: Config?) {
             named("musicTrackProvider")
         ) {
             // Default implementation that supports Soundstripe, Mubert and Local audio stored on the device
-            if (config?.autoCut != null) {
+            if (androidConfig?.aiClipping != null) {
                 SoundstripeProvider()
             } else {
                 AudioBrowserMusicProvider()
             }
+            // TODO: Enum for AudioBrowser and check Sounstripe
         }
 
-        config?.autoCut?.let { autoCut ->
+        androidConfig?.aiClipping?.let { aiClipping ->
             single<AutoCutConfig> {
                 AutoCutConfig(
-                    audioDataUrl = autoCut.audioDataUrl,
-                    audioTracksUrl = autoCut.audioTracksUrl
+                    audioDataUrl = aiClipping.audioDataUrl,
+                    audioTracksUrl = aiClipping.audioTracksUrl
                 )
             }
             single<AutoCutTrackLoader> {

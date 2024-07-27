@@ -1,17 +1,18 @@
 package com.banuba.ve.sdk.flutter.plugin.ve_sdk_flutter
 
-data class Config(
-    val autoCut: AutoCut? = null,
-    val closeCaptions: CloseCaptions? = null
+internal data class AndroidConfig(
+
+    val aiClipping: AiClipping? = null,
+    val aiCaptions: AiCaptions? = null
 )
 
-data class AutoCut(
+internal data class AiClipping(
     val audioDataUrl: String,
     val audioTracksUrl: String
 )
 
-data class CloseCaptions(
-    val argCaprionsUploadUrl: String,
-    val argCaptionsTranscribeUrl: String,
-    val argApiKey: String
+internal data class AiCaptions(
+    val uploadUrl: String,
+    val transcribeUrl: String,
+    val apiKey: String
 )

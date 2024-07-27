@@ -44,7 +44,7 @@ class MethodChannelVeSdkFlutter extends VeSdkFlutterPlatform {
   Future<ExportResult?> _open(String token, Config? config, String screen, List<String> sourceVideoPathList) async {
     final inputParams = {
       _inputParamToken: token,
-      _inputParamConfig: config?.serializeToJson(),
+      _inputParamConfig: config?.serialize(),
       _inputParamScreen: screen,
       _inputParamVideoSources: sourceVideoPathList
     };

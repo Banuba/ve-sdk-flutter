@@ -21,6 +21,7 @@ import io.flutter.plugin.common.PluginRegistry.ActivityResultListener
 import java.io.File
 import android.os.Bundle
 import org.json.JSONObject
+import org.json.JSONException
 import androidx.core.os.bundleOf
 import com.banuba.sdk.veui.data.captions.CaptionsApiService
 
@@ -64,7 +65,7 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
             return
         }
 
-        val config = getConfig(call.argument<String>(INPUT_PARAM_CONFIG))
+        val androidConfig = getAndroidConfig(call.argument<String>(INPUT_PARAM_CONFIG))
 
         val screen = call.argument<String>(INPUT_PARAM_SCREEN)
         if (screen.isNullOrEmpty()) {
@@ -74,8 +75,8 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
 
         when (methodName) {
             METHOD_START -> {
-                initialize(licenseToken, config) { activity ->
-                    val extras = createExtras(config)
+                initialize(licenseToken, androidConfig) { activity ->
+                    val extras = createExtras(androidConfig)
                     val intent = when (screen) {
                         SCREEN_CAMERA -> {
                             Log.d(TAG, "Start video editor from camera screen")
@@ -221,7 +222,7 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
 
     private fun initialize(
         token: String,
-        config: Config?,
+        androidConfig: AndroidConfig?,
         block: (Activity) -> Unit
     ) {
         val activity = currentActivity
@@ -244,11 +245,10 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
             )
             return
         }
-
         if (videoEditorModule == null) {
             // Initialize video editor sdk dependencies
             videoEditorModule = VideoEditorModule().apply {
-                initialize(activity.application, config)
+                initialize(activity.application, androidConfig)
             }
         }
 
@@ -269,36 +269,41 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
         }
     }
 
-    private fun getConfig(configJson: String?): Config? {
-        if (configJson == null) return null
+    private fun getAndroidConfig(androidConfigJson: String?): AndroidConfig? {
+        return androidConfigJson?.let {
+            try {
+                val jsonObject = JSONObject(androidConfigJson)
 
-        val jsonObject = JSONObject(configJson)
+                val aiClipping = jsonObject.optJSONObject("aiClipping")?.let { autoCutJson ->
+                    AiClipping(
+                        audioDataUrl = autoCutJson.optString("audioDataUrl", null),
+                        audioTracksUrl = autoCutJson.optString("audioTracksUrl", null)
+                    )
+                }
 
-        val autoCut = jsonObject.optJSONObject("autoCut")?.let { autoCutJson ->
-            AutoCut(
-                audioDataUrl = autoCutJson.optString("audioDataUrl", null),
-                audioTracksUrl = autoCutJson.optString("audioTracksUrl", null)
-            )
+                val aiCaptions = jsonObject.optJSONObject("aiCaptions")?.let { closeCaptionsJson ->
+                    AiCaptions(
+                        uploadUrl = closeCaptionsJson.optString("uploadUrl", null),
+                        transcribeUrl = closeCaptionsJson.optString("transcribeUrl", null),
+                        apiKey = closeCaptionsJson.optString("apiKey", null)
+                    )
+                }
+
+                val androidConfig = AndroidConfig(aiClipping, aiCaptions)
+                return androidConfig
+            } catch (e: JSONException){
+                Log.d(TAG, ERR_MESSAGE_INVALID_CONFIG, e)
+                null
+            }
         }
-
-        val closeCaptions = jsonObject.optJSONObject("closeCaptions")?.let { closeCaptionsJson ->
-            CloseCaptions(
-                argCaprionsUploadUrl = closeCaptionsJson.optString("argCaprionsUploadUrl", null),
-                argCaptionsTranscribeUrl = closeCaptionsJson.optString("argCaptionsTranscribeUrl", null),
-                argApiKey = closeCaptionsJson.optString("argApiKey", null)
-            )
-        }
-
-        val config = Config(autoCut, closeCaptions)
-        return config
     }
 
-    private fun createExtras(config: Config?): Bundle? {
-        return config?.closeCaptions?.let {
+    private fun createExtras(androidConfig: AndroidConfig?): Bundle? {
+        return androidConfig?.aiCaptions?.let {
             bundleOf(
-                CaptionsApiService.ARG_CAPTIONS_UPLOAD_URL to it.argCaprionsUploadUrl,
-                CaptionsApiService.ARG_CAPTIONS_TRANSCRIBE_URL to it.argCaptionsTranscribeUrl,
-                CaptionsApiService.ARG_API_KEY to it.argApiKey
+                CaptionsApiService.ARG_CAPTIONS_UPLOAD_URL to it.uploadUrl,
+                CaptionsApiService.ARG_CAPTIONS_TRANSCRIBE_URL to it.transcribeUrl,
+                CaptionsApiService.ARG_API_KEY to it.apiKey
             )
         }
     }
