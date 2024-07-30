@@ -274,28 +274,49 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
             try {
                 val jsonObject = JSONObject(androidConfigJson)
 
-                val aiClipping = jsonObject.optJSONObject("aiClipping")?.let { autoCutJson ->
-                    AiClipping(
-                        audioDataUrl = autoCutJson.optString("audioDataUrl", null),
-                        audioTracksUrl = autoCutJson.optString("audioTracksUrl", null)
-                    )
-                }
+                val aiClipping = prepareAiClipping(jsonObject)
+                val aiCaptions = prepareAiCaptions(jsonObject)
+                val audioBrowser = prepareAudioBrowser(jsonObject)
 
-                val aiCaptions = jsonObject.optJSONObject("aiCaptions")?.let { closeCaptionsJson ->
-                    AiCaptions(
-                        uploadUrl = closeCaptionsJson.optString("uploadUrl", null),
-                        transcribeUrl = closeCaptionsJson.optString("transcribeUrl", null),
-                        apiKey = closeCaptionsJson.optString("apiKey", null)
-                    )
-                }
-
-                val androidConfig = AndroidConfig(aiClipping, aiCaptions)
+                val androidConfig = AndroidConfig(aiClipping, aiCaptions, audioBrowser)
                 return androidConfig
             } catch (e: JSONException){
                 Log.d(TAG, ERR_MESSAGE_INVALID_CONFIG, e)
                 null
             }
         }
+    }
+
+    private fun prepareAiClipping(jsonObject: JSONObject): AiClipping?{
+        val aiClipping = jsonObject.optJSONObject("aiClipping")?.let { aiClippingJson ->
+            return AiClipping(
+                audioDataUrl = aiClippingJson.optString("audioDataUrl", null),
+                audioTracksUrl = aiClippingJson.optString("audioTracksUrl", null)
+            )
+        }
+        return null;
+    }
+
+    private fun prepareAiCaptions(jsonObject: JSONObject): AiCaptions?{
+        val aiCaptions = jsonObject.optJSONObject("aiCaptions")?.let { aiCaptionsJson ->
+            return AiCaptions(
+                uploadUrl = aiCaptionsJson.optString("uploadUrl", null),
+                transcribeUrl = aiCaptionsJson.optString("transcribeUrl", null),
+                apiKey = aiCaptionsJson.optString("apiKey", null)
+            )
+        }
+        return null
+    }
+
+    private fun prepareAudioBrowser(jsonObject: JSONObject): AudioBrowser?{
+        val audioBrowser = jsonObject.optJSONObject("audioBrowser")?.let { audioBrowserJson ->
+            val paramsObject = audioBrowserJson.optJSONObject("params")
+            return AudioBrowser(
+                source = audioBrowserJson.optString("source", null),
+                params = paramsObject
+            )
+        }
+        return null
     }
 
     private fun createExtras(androidConfig: AndroidConfig?): Bundle? {

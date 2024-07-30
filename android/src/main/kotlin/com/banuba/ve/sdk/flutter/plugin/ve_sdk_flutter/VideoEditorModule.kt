@@ -23,6 +23,8 @@ import com.banuba.sdk.audiobrowser.autocut.AutoCutTrackLoaderSoundstripe
 import com.banuba.sdk.core.data.autocut.AutoCutTrackLoader
 import com.banuba.sdk.ve.data.autocut.AutoCutConfig
 import com.banuba.sdk.audiobrowser.domain.SoundstripeProvider
+import com.banuba.sdk.audiobrowser.data.MubertApiConfig
+import android.util.Log
 
 class VideoEditorModule {
     internal fun initialize(application: Application, androidConfig: AndroidConfig?) {
@@ -69,18 +71,38 @@ private class SampleIntegrationVeKoinModule(androidConfig: AndroidConfig?) {
             )
         }
 
-
-        // Audio Browser provider implementation.
         single<ContentFeatureProvider<TrackData, Fragment>>(
             named("musicTrackProvider")
         ) {
-            // Default implementation that supports Soundstripe, Mubert and Local audio stored on the device
-            if (androidConfig?.aiClipping != null) {
-                SoundstripeProvider()
+            if (androidConfig?.audioBrowser?.source != null){
+                val source = androidConfig.audioBrowser.source
+                when (source) {
+                    "soundStripe" -> SoundstripeProvider()
+                    "local" -> AudioBrowserMusicProvider()
+                    else -> { AudioBrowserMusicProvider() }
+                }
             } else {
                 AudioBrowserMusicProvider()
             }
-            // TODO: Enum for AudioBrowser and check Sounstripe
+        }
+
+        androidConfig?.audioBrowser?.params?.let { params ->
+            val paramsMap = params.keys().asSequence().associateWith { key ->
+                params.get(key)
+            }
+            val mubertLicence = paramsMap["mubertLicence"] as? String
+            val mubertToken = paramsMap["mubertToken"] as? String
+
+            if (mubertLicence != null && mubertToken != null) {
+                single {
+                    MubertApiConfig(
+                        mubertLicence = mubertLicence,
+                        mubertToken = mubertToken
+                    )
+                }
+            } else {
+                Log.d(TAG, "Missing parameters mubertLicence and mubertToken")
+            }
         }
 
         androidConfig?.aiClipping?.let { aiClipping ->

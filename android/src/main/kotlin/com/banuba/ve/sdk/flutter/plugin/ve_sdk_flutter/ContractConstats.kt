@@ -38,7 +38,6 @@ internal const val ERR_MESSAGE_LICENSE_REVOKED = """
     Please contact Banuba"
 """
 
-
 internal const val ERR_MESSAGE_MISSING_TOKEN =
     "Missing license token: set correct value to $INPUT_PARAM_TOKEN input params"
 
