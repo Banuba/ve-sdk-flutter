@@ -18,6 +18,7 @@ extension VeSdkFlutterPlugin {
     static let errMissingExportResult = "ERR_MISSING_EXPORT_RESULT"
     
     static let inputParamToken = "token"
+    static let inputParamConfig = "config"
     static let inputParamScreen = "screen"
     static let inputParamVideoSources = "videoSources"
     

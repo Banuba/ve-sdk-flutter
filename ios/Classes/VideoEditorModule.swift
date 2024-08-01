@@ -13,7 +13,7 @@ import VEExportSDK
 import Flutter
 
 protocol VideoEditor {
-    func initVideoEditor(token: String) -> Bool
+    func initVideoEditor(token: String, config: String?) -> Bool
     
     func openVideoEditorDefault(fromViewController controller: FlutterViewController, flutterResult: @escaping FlutterResult)
     
@@ -26,34 +26,75 @@ class VideoEditorModule: VideoEditor {
     
     private var videoEditorSDK: BanubaVideoEditor?
     private var flutterResult: FlutterResult?
-    
+    private var flutterConfig: IosConfig?
+
     // Use “true” if you want users could restore the last video editing session.
     private let restoreLastVideoEditingSession: Bool = false
-    
-    func initVideoEditor(token: String) -> Bool {
+
+    func initVideoEditor(token: String, iosConfig: String?) -> Bool {
         guard videoEditorSDK == nil else {
             debugPrint("Video Editor SDK is already initialized")
             return true
         }
-        
-        var config = VideoEditorConfig()
+
+        if let iosConfig = iosConfig?.data(using: .utf8){
+             do {
+                 self.flutterConfig = try JSONDecoder().decode(IosConfig.self, from: iosConfig)
+                 print(flutterConfig!)
+             } catch {
+                print("Error")
+             }
+        }
+
+        var config = createConfiguration(flutterConfig: flutterConfig)
+
         let lutsPath = Bundle(for: VideoEditorModule.self).bundleURL.appendingPathComponent("luts", isDirectory: true)
         config.filterConfiguration.colorEffectsURL = lutsPath
 
         // Make customization here
-        
+
         videoEditorSDK = BanubaVideoEditor(
             token: token,
             configuration: config,
             externalViewControllerFactory: provideCustomViewFactory()
         )
-        
+
         if videoEditorSDK == nil {
             return false
         }
-        
+
         videoEditorSDK?.delegate = self
         return true
+    }
+
+    func createConfiguration(flutterConfig: IosConfig?) -> VideoEditorConfig {
+        var config = VideoEditorConfig()
+
+        if let flutterConfig = flutterConfig{
+
+            if let aiClipping = flutterConfig.aiClipping, flutterConfig.audioBrowser?.source == "soundStripe"{
+
+                AudioBrowserConfig.shared.musicSource = .soundstripe
+
+                config.autoCutConfiguration.embeddingsDownloadUrl = aiClipping.audioDataUrl
+                config.autoCutConfiguration.musicApiSelectedTracksUrl = aiClipping.audioTracksUrl
+            }
+        } else {
+            // Set Mubert API KEYS here
+            BanubaAudioBrowser.setMubertKeys(
+                license: "SET MUBERT API LICENSE",
+                token: "SET MUBERT API TOKEN"
+            )
+            AudioBrowserConfig.shared.musicSource = .allSources
+            AudioBrowserConfig.shared.setPrimaryColor(#colorLiteral(red: 0.2350233793, green: 0.7372031212, blue: 0.7565478683, alpha: 1))
+
+            var featureConfiguration = config.featureConfiguration
+            featureConfiguration.supportsTrimRecordedVideo = true
+            featureConfiguration.isMuteCameraAudioEnabled = true
+            config.updateFeatureConfiguration(featureConfiguration: featureConfiguration)
+        }
+
+        return config
     }
     
     func provideCustomViewFactory() -> FlutterCustomViewFactory? {

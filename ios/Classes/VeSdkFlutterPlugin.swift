@@ -22,12 +22,14 @@ public class VeSdkFlutterPlugin: NSObject, FlutterPlugin {
             return
         }
         
+        let iosConfig = args[VeSdkFlutterPlugin.inputParamConfig] as? String
+        
         guard let screen = args[VeSdkFlutterPlugin.inputParamScreen] as? String else {
             result(FlutterError(code: VeSdkFlutterPlugin.errInvalidParams, message: VeSdkFlutterPlugin.errMessageMissingScreen, details: nil))
             return
         }
         
-        if (!videoEditor.initVideoEditor(token: licenseToken)) {
+        if (!videoEditor.initVideoEditor(token: licenseToken, iosConfig: iosConfig)) {
             result(FlutterError(code: VeSdkFlutterPlugin.errSdkNotInitialized, message: VeSdkFlutterPlugin.errMessageSdkNotInitialized, details: nil))
             return
         }
