@@ -13,7 +13,7 @@ import VEExportSDK
 import Flutter
 
 protocol VideoEditor {
-    func initVideoEditor(token: String, config: String?) -> Bool
+    func initVideoEditor(token: String, iosConfig: String?) -> Bool
     
     func openVideoEditorDefault(fromViewController controller: FlutterViewController, flutterResult: @escaping FlutterResult)
     
@@ -42,21 +42,23 @@ class VideoEditorModule: VideoEditor {
                  self.flutterConfig = try JSONDecoder().decode(IosConfig.self, from: iosConfig)
                  print(flutterConfig!)
              } catch {
-                print("Error")
+                print("❌ Invalid input params of config")
              }
         }
 
-        var config = createConfiguration(flutterConfig: flutterConfig)
+        var (config, useCustomViewFactory) = createConfiguration(flutterConfig: flutterConfig)
 
         let lutsPath = Bundle(for: VideoEditorModule.self).bundleURL.appendingPathComponent("luts", isDirectory: true)
         config.filterConfiguration.colorEffectsURL = lutsPath
 
         // Make customization here
+        
+        let viewControllerFactory: FlutterCustomViewFactory? = useCustomViewFactory ? provideCustomViewFactory() : nil
 
         videoEditorSDK = BanubaVideoEditor(
             token: token,
             configuration: config,
-            externalViewControllerFactory: provideCustomViewFactory()
+            externalViewControllerFactory: viewControllerFactory
         )
 
         if videoEditorSDK == nil {
@@ -67,40 +69,55 @@ class VideoEditorModule: VideoEditor {
         return true
     }
 
-    func createConfiguration(flutterConfig: IosConfig?) -> VideoEditorConfig {
+    func createConfiguration(flutterConfig: IosConfig?) -> (VideoEditorConfig, Bool) {
         var config = VideoEditorConfig()
-
-        if let flutterConfig = flutterConfig{
-
-            if let aiClipping = flutterConfig.aiClipping, flutterConfig.audioBrowser?.source == "soundStripe"{
-
-                AudioBrowserConfig.shared.musicSource = .soundstripe
-
+        
+        AudioBrowserConfig.shared.musicSource = .allSources
+        var useCustomViewFactory = true
+        
+        if let flutterConfig = flutterConfig {
+            if let source = flutterConfig.audioBrowser?.source{
+                switch source {
+                    case "soundStripe":
+                        AudioBrowserConfig.shared.musicSource = .soundstripe
+                        useCustomViewFactory = false
+                    default:
+                        break
+                }
+            }
+            
+            if let aiCaptions = flutterConfig.aiCaptions{
+                config.captionsConfiguration.captionsUploadUrl = aiCaptions.uploadUrl
+                config.captionsConfiguration.captionsTranscribeUrl = aiCaptions.transcribeUrl
+                config.captionsConfiguration.apiKey = aiCaptions.apiKey
+            }
+            
+            if let aiClipping = flutterConfig.aiClipping{
                 config.autoCutConfiguration.embeddingsDownloadUrl = aiClipping.audioDataUrl
                 config.autoCutConfiguration.musicApiSelectedTracksUrl = aiClipping.audioTracksUrl
             }
-        } else {
-            // Set Mubert API KEYS here
-            BanubaAudioBrowser.setMubertKeys(
-                license: "SET MUBERT API LICENSE",
-                token: "SET MUBERT API TOKEN"
-            )
-            AudioBrowserConfig.shared.musicSource = .allSources
-            AudioBrowserConfig.shared.setPrimaryColor(#colorLiteral(red: 0.2350233793, green: 0.7372031212, blue: 0.7565478683, alpha: 1))
-
-            var featureConfiguration = config.featureConfiguration
-            featureConfiguration.supportsTrimRecordedVideo = true
-            featureConfiguration.isMuteCameraAudioEnabled = true
-            config.updateFeatureConfiguration(featureConfiguration: featureConfiguration)
         }
+        
+        BanubaAudioBrowser.setMubertKeys(
+            license: "SET MUBERT API LICENSE",
+            token: "SET MUBERT API TOKEN"
+        )
+        
+        AudioBrowserConfig.shared.setPrimaryColor(#colorLiteral(red: 0.2350233793, green: 0.7372031212, blue: 0.7565478683, alpha: 1))
+        
+        var featureConfiguration = config.featureConfiguration
+        featureConfiguration.supportsTrimRecordedVideo = true
+        featureConfiguration.isMuteCameraAudioEnabled = true
+        config.updateFeatureConfiguration(featureConfiguration: featureConfiguration)
+        
 
-        return config
+        return (config, useCustomViewFactory)
     }
     
     func provideCustomViewFactory() -> FlutterCustomViewFactory? {
         let factory: FlutterCustomViewFactory?
-    
-        
+
+
         // Set your Mubert Api key here
         let mubertApiLicense = ""
         let mubertApiKey = ""
@@ -111,10 +128,9 @@ class VideoEditorModule: VideoEditor {
         )
         factory = nil
         
-        
         return factory
     }
-    
+
     func openVideoEditorDefault(
         fromViewController controller: FlutterViewController,
         flutterResult: @escaping FlutterResult

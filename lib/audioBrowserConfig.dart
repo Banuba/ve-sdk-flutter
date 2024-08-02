@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum Source {soundStripe, local}
+enum Source {soundstripe, local}
 
 @immutable
 class AudioBrowser {

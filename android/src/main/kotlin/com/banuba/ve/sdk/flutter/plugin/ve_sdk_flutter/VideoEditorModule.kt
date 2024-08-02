@@ -77,7 +77,7 @@ private class SampleIntegrationVeKoinModule(androidConfig: AndroidConfig?) {
             if (androidConfig?.audioBrowser?.source != null){
                 val source = androidConfig.audioBrowser.source
                 when (source) {
-                    "soundStripe" -> SoundstripeProvider()
+                    "soundstripe" -> SoundstripeProvider()
                     "local" -> AudioBrowserMusicProvider()
                     else -> { AudioBrowserMusicProvider() }
                 }
