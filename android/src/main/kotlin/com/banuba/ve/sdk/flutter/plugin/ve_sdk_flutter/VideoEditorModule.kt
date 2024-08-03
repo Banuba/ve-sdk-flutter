@@ -24,10 +24,13 @@ import com.banuba.sdk.core.data.autocut.AutoCutTrackLoader
 import com.banuba.sdk.ve.data.autocut.AutoCutConfig
 import com.banuba.sdk.audiobrowser.domain.SoundstripeProvider
 import com.banuba.sdk.audiobrowser.data.MubertApiConfig
+import org.json.JSONObject
+import org.json.JSONException
+import org.koin.core.module.Module
 import android.util.Log
 
 class VideoEditorModule {
-    internal fun initialize(application: Application, androidConfig: AndroidConfig?) {
+    internal fun initialize(application: Application, androidConfigObject: JSONObject?) {
         startKoin {
             androidContext(application)
             allowOverride(true)
@@ -49,7 +52,7 @@ class VideoEditorModule {
                 GalleryKoinModule().module,
 
                 // Sample integration module
-                SampleIntegrationVeKoinModule(androidConfig).module,
+                SampleIntegrationVeKoinModule(androidConfigObject).module,
             )
         }
     }
@@ -61,7 +64,7 @@ class VideoEditorModule {
  * Some dependencies has no default implementations. It means that
  * these classes fully depends on your requirements
  */
-private class SampleIntegrationVeKoinModule(androidConfig: AndroidConfig?) {
+private class SampleIntegrationVeKoinModule(androidConfigObject: JSONObject?) {
 
     val module = module {
         single<ArEffectsRepositoryProvider>(createdAtStart = true) {
@@ -71,52 +74,85 @@ private class SampleIntegrationVeKoinModule(androidConfig: AndroidConfig?) {
             )
         }
 
-        single<ContentFeatureProvider<TrackData, Fragment>>(
-            named("musicTrackProvider")
-        ) {
-            if (androidConfig?.audioBrowser?.source != null){
-                val source = androidConfig.audioBrowser.source
-                when (source) {
-                    "soundstripe" -> SoundstripeProvider()
-                    "local" -> AudioBrowserMusicProvider()
-                    else -> { AudioBrowserMusicProvider() }
-                }
-            } else {
-                AudioBrowserMusicProvider()
-            }
+        androidConfigObject?.let { androidConfigObject ->
+            addAiClipping(this, androidConfigObject)
+            addAudioBrowser(this, androidConfigObject)
+        } ?: run {
+            registerDefaultMusicTrackProvider(this)
         }
+    }
 
-        androidConfig?.audioBrowser?.params?.let { params ->
-            val paramsMap = params.keys().asSequence().associateWith { key ->
-                params.get(key)
-            }
-            val mubertLicence = paramsMap["mubertLicence"] as? String
-            val mubertToken = paramsMap["mubertToken"] as? String
-
-            if (mubertLicence != null && mubertToken != null) {
-                single {
-                    MubertApiConfig(
-                        mubertLicence = mubertLicence,
-                        mubertToken = mubertToken
+    private fun addAiClipping(module: Module, androidConfigObject: JSONObject){
+        try {
+            androidConfigObject.optJSONObject("aiClipping")?.let { aiClipping ->
+                module.single<AutoCutConfig> {
+                    AutoCutConfig(
+                        audioDataUrl = aiClipping.optString("audioDataUrl"),
+                        audioTracksUrl = aiClipping.optString("audioDataUrl")
                     )
                 }
-            } else {
-                Log.d(TAG, "Missing parameters mubertLicence and mubertToken")
+                module.single<AutoCutTrackLoader> {
+                    AutoCutTrackLoaderSoundstripe(
+                        soundstripeApi = get()
+                    )
+                }
             }
+        } catch (e: JSONException){
+            Log.d("TAG", "Error processing aiClipping", e)
+        }
+    }
+
+    private fun addAudioBrowser(module: Module, androidConfigObject: JSONObject){
+        try {
+            androidConfigObject.optJSONObject("audioBrowser")?.let { audioBrowser ->
+                val source = audioBrowser.optString("source")
+                val paramsObject = audioBrowser.optJSONObject("params")
+
+                module.single<ContentFeatureProvider<TrackData, Fragment>>(
+                    named("musicTrackProvider")
+                ) {
+                    when (source) {
+                        "soundstripe" -> SoundstripeProvider()
+                        "local" -> AudioBrowserMusicProvider()
+                        else -> { AudioBrowserMusicProvider() }
+                    }
+                }
+                audioBrowser.optJSONObject("params")?.let { paramsObject ->
+                    parseAudioBrowserParams(module, paramsObject)
+                }
+            } ?: run {
+                registerDefaultMusicTrackProvider(module)
+            }
+        } catch (e: JSONException){
+            Log.d(TAG, "Error processing AudioBrowser", e)
+        }
+    }
+
+    private fun registerDefaultMusicTrackProvider(module: Module) {
+        module.single<ContentFeatureProvider<TrackData, Fragment>>(
+            named("musicTrackProvider")
+        ) {
+            AudioBrowserMusicProvider()
+        }
+    }
+
+    private fun parseAudioBrowserParams(module: Module, paramsObject: JSONObject){
+        val paramsMap = paramsObject.keys().asSequence().associateWith { key ->
+            paramsObject.get(key)
         }
 
-        androidConfig?.aiClipping?.let { aiClipping ->
-            single<AutoCutConfig> {
-                AutoCutConfig(
-                    audioDataUrl = aiClipping.audioDataUrl,
-                    audioTracksUrl = aiClipping.audioTracksUrl
+        val mubertLicence = paramsMap["mubertLicence"] as? kotlin.String
+        val mubertToken = paramsMap["mubertToken"] as? kotlin.String
+
+        if (mubertLicence != null && mubertToken != null) {
+            module.single {
+                MubertApiConfig(
+                    mubertLicence = mubertLicence,
+                    mubertToken = mubertToken
                 )
             }
-            single<AutoCutTrackLoader> {
-                AutoCutTrackLoaderSoundstripe(
-                    soundstripeApi = get()
-                )
-            }
+        } else {
+            Log.d(TAG, "Missing parameters mubertLicence and mubertToken")
         }
     }
 }

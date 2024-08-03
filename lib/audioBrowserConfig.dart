@@ -7,7 +7,11 @@ class AudioBrowser {
   final Source source;
   final Map<String, dynamic>? params;
 
-  const AudioBrowser({required this.source, this.params});
+  const AudioBrowser._({required this.source, this.params});
+
+  factory AudioBrowser.fromSource(Source source, {Map<String, dynamic>? params}) {
+    return AudioBrowser._(source: source, params: params);
+  }
 
   Map<String, dynamic> toJson(){
     return {

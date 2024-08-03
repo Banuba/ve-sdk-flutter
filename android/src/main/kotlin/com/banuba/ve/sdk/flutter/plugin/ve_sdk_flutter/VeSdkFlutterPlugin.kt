@@ -27,8 +27,6 @@ import com.banuba.sdk.veui.data.captions.CaptionsApiService
 
 class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, ActivityResultListener {
     companion object {
-        private const val TAG = "VideoEditorPlugin"
-
         private const val VIDEO_EDITOR_REQUEST_CODE = 1000
     }
 
@@ -65,7 +63,7 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
             return
         }
 
-        val androidConfig = getAndroidConfig(call.argument<String>(INPUT_PARAM_CONFIG))
+        val androidConfigObject = parseAndroidConfig(call.argument<String>(INPUT_PARAM_CONFIG))
 
         val screen = call.argument<String>(INPUT_PARAM_SCREEN)
         if (screen.isNullOrEmpty()) {
@@ -75,8 +73,8 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
 
         when (methodName) {
             METHOD_START -> {
-                initialize(licenseToken, androidConfig) { activity ->
-                    val extras = createExtras(androidConfig)
+                initialize(licenseToken, androidConfigObject) { activity ->
+                    val extras = createExtras(androidConfigObject)
                     val intent = when (screen) {
                         SCREEN_CAMERA -> {
                             Log.d(TAG, "Start video editor from camera screen")
@@ -222,7 +220,7 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
 
     private fun initialize(
         token: String,
-        androidConfig: AndroidConfig?,
+        androidConfigObject: JSONObject?,
         block: (Activity) -> Unit
     ) {
         val activity = currentActivity
@@ -248,7 +246,7 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
         if (videoEditorModule == null) {
             // Initialize video editor sdk dependencies
             videoEditorModule = VideoEditorModule().apply {
-                initialize(activity.application, androidConfig)
+                initialize(activity.application, androidConfigObject)
             }
         }
 
@@ -269,17 +267,11 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
         }
     }
 
-    private fun getAndroidConfig(androidConfigJson: String?): AndroidConfig? {
+    private fun parseAndroidConfig(androidConfigJson: String?): JSONObject? {
         return androidConfigJson?.let {
             try {
-                val jsonObject = JSONObject(androidConfigJson)
-
-                val aiClipping = prepareAiClipping(jsonObject)
-                val aiCaptions = prepareAiCaptions(jsonObject)
-                val audioBrowser = prepareAudioBrowser(jsonObject)
-
-                val androidConfig = AndroidConfig(aiClipping, aiCaptions, audioBrowser)
-                return androidConfig
+                val configJsonObject = JSONObject(androidConfigJson)
+                return configJsonObject
             } catch (e: JSONException){
                 Log.d(TAG, ERR_MESSAGE_INVALID_CONFIG, e)
                 null
@@ -287,46 +279,20 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
         }
     }
 
-    private fun prepareAiClipping(jsonObject: JSONObject): AiClipping?{
-        val aiClipping = jsonObject.optJSONObject("aiClipping")?.let { aiClippingJson ->
-            return AiClipping(
-                audioDataUrl = aiClippingJson.optString("audioDataUrl", null),
-                audioTracksUrl = aiClippingJson.optString("audioTracksUrl", null)
-            )
-        }
-        return null;
-    }
-
-    private fun prepareAiCaptions(jsonObject: JSONObject): AiCaptions?{
-        val aiCaptions = jsonObject.optJSONObject("aiCaptions")?.let { aiCaptionsJson ->
-            return AiCaptions(
-                uploadUrl = aiCaptionsJson.optString("uploadUrl", null),
-                transcribeUrl = aiCaptionsJson.optString("transcribeUrl", null),
-                apiKey = aiCaptionsJson.optString("apiKey", null)
-            )
+    private fun createExtras(configJsonObject: JSONObject?): Bundle? {
+        try {
+            configJsonObject?.optJSONObject("aiCaptions")?.let { aiCaptionsJson ->
+                return bundleOf(
+                    CaptionsApiService.ARG_CAPTIONS_UPLOAD_URL to aiCaptionsJson.optString("uploadUrl"),
+                    CaptionsApiService.ARG_CAPTIONS_TRANSCRIBE_URL to aiCaptionsJson.optString("transcribeUrl"),
+                    CaptionsApiService.ARG_API_KEY to aiCaptionsJson.optString("apiKey")
+                )
+            }
+        } catch (e: JSONException) {
+            Log.d(TAG, ERR_MESSAGE_INVALID_CONFIG, e)
+            null
         }
         return null
-    }
-
-    private fun prepareAudioBrowser(jsonObject: JSONObject): AudioBrowser?{
-        val audioBrowser = jsonObject.optJSONObject("audioBrowser")?.let { audioBrowserJson ->
-            val paramsObject = audioBrowserJson.optJSONObject("params")
-            return AudioBrowser(
-                source = audioBrowserJson.optString("source", null),
-                params = paramsObject
-            )
-        }
-        return null
-    }
-
-    private fun createExtras(androidConfig: AndroidConfig?): Bundle? {
-        return androidConfig?.aiCaptions?.let {
-            bundleOf(
-                CaptionsApiService.ARG_CAPTIONS_UPLOAD_URL to it.uploadUrl,
-                CaptionsApiService.ARG_CAPTIONS_TRANSCRIBE_URL to it.transcribeUrl,
-                CaptionsApiService.ARG_API_KEY to it.apiKey
-            )
-        }
     }
 
     override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {

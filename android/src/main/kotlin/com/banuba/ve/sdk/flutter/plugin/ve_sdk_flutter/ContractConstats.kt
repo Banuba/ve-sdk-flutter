@@ -1,5 +1,8 @@
 package com.banuba.ve.sdk.flutter.plugin.ve_sdk_flutter
 
+// Tag
+internal const val TAG = "VideoEditorPlugin"
+
 // Method channel
 internal const val CHANNEL = "ve_sdk_flutter"
 internal const val METHOD_START = "startVideoEditor"
