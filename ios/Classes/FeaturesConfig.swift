@@ -1,6 +1,6 @@
 import Foundation
 
-struct IosConfig: Codable {
+struct FeaturesConfig: Codable {
     var aiCaptions: AiCaptions?
     var aiClipping: AiClipping?
     var audioBrowser: AudioBrowser?
@@ -18,7 +18,7 @@ struct AiCaptions: Codable {
 }
 
 struct AudioBrowser: Codable {
-    var source: String?
+    var source: String
     var params: Params?
 }
 

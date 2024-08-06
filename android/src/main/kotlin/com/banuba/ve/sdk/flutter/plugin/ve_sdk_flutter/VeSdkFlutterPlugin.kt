@@ -63,7 +63,8 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
             return
         }
 
-        val androidConfigObject = parseAndroidConfig(call.argument<String>(INPUT_PARAM_CONFIG))
+        val featuresConfig = parseFeaturesConfig(call.argument<String>(INPUT_PARAM_CONFIG))
+
 
         val screen = call.argument<String>(INPUT_PARAM_SCREEN)
         if (screen.isNullOrEmpty()) {
@@ -71,10 +72,14 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
             return
         }
 
+        var extras: Bundle? = null
+        if (featuresConfig.aiCaptions != null){
+            extras = createExtras(featuresConfig.aiCaptions)
+        }
+
         when (methodName) {
             METHOD_START -> {
-                initialize(licenseToken, androidConfigObject) { activity ->
-                    val extras = createExtras(androidConfigObject)
+                initialize(licenseToken, featuresConfig) { activity ->
                     val intent = when (screen) {
                         SCREEN_CAMERA -> {
                             Log.d(TAG, "Start video editor from camera screen")
@@ -149,7 +154,6 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
                                 extras = extras
                             )
                         }
-
                         else -> null
                     }
 
@@ -220,7 +224,7 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
 
     private fun initialize(
         token: String,
-        androidConfigObject: JSONObject?,
+        featuresConfig: FeaturesConfig,
         block: (Activity) -> Unit
     ) {
         val activity = currentActivity
@@ -246,7 +250,7 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
         if (videoEditorModule == null) {
             // Initialize video editor sdk dependencies
             videoEditorModule = VideoEditorModule().apply {
-                initialize(activity.application, androidConfigObject)
+                initialize(activity.application, featuresConfig)
             }
         }
 
@@ -265,34 +269,6 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
                 )
             }
         }
-    }
-
-    private fun parseAndroidConfig(androidConfigJson: String?): JSONObject? {
-        return androidConfigJson?.let {
-            try {
-                val configJsonObject = JSONObject(androidConfigJson)
-                return configJsonObject
-            } catch (e: JSONException){
-                Log.d(TAG, ERR_MESSAGE_INVALID_CONFIG, e)
-                null
-            }
-        }
-    }
-
-    private fun createExtras(configJsonObject: JSONObject?): Bundle? {
-        try {
-            configJsonObject?.optJSONObject("aiCaptions")?.let { aiCaptionsJson ->
-                return bundleOf(
-                    CaptionsApiService.ARG_CAPTIONS_UPLOAD_URL to aiCaptionsJson.optString("uploadUrl"),
-                    CaptionsApiService.ARG_CAPTIONS_TRANSCRIBE_URL to aiCaptionsJson.optString("transcribeUrl"),
-                    CaptionsApiService.ARG_API_KEY to aiCaptionsJson.optString("apiKey")
-                )
-            }
-        } catch (e: JSONException) {
-            Log.d(TAG, ERR_MESSAGE_INVALID_CONFIG, e)
-            null
-        }
-        return null
     }
 
     override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {

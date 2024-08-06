@@ -1,10 +1,10 @@
 package com.banuba.ve.sdk.flutter.plugin.ve_sdk_flutter
 import org.json.JSONObject
 
-internal data class AndroidConfig(
+internal data class FeaturesConfig(
     val aiClipping: AiClipping?,
     val aiCaptions: AiCaptions?,
-    val audioBrowser: AudioBrowser?
+    val audioBrowser: AudioBrowser
 )
 
 internal data class AiClipping(

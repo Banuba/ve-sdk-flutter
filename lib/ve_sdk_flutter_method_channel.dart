@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:ve_sdk_flutter/config.dart';
+import 'package:ve_sdk_flutter/features_config.dart';
+import 'package:ve_sdk_flutter/extension_config.dart';
 import 'package:ve_sdk_flutter/export_result.dart';
 import 've_sdk_flutter_platform_interface.dart';
 
@@ -17,7 +18,7 @@ class MethodChannelVeSdkFlutter extends VeSdkFlutterPlatform {
 
   // Input params
   static const String _inputParamToken = 'token';
-  static const String _inputParamConfig = 'config';
+  static const String _inputParamConfig = 'featuresConfig';
   static const String _inputParamScreen = 'screen';
   static const String _inputParamVideoSources = 'videoSources';
 
@@ -31,17 +32,17 @@ class MethodChannelVeSdkFlutter extends VeSdkFlutterPlatform {
   final methodChannel = const MethodChannel(_channelName);
 
   @override
-  Future<ExportResult?> openCameraScreen(String token, {Config? config}) => _open(token, config, _screenCamera, []);
+  Future<ExportResult?> openCameraScreen(String token, {FeaturesConfig? config}) => _open(token, config, _screenCamera, []);
 
   @override
-  Future<ExportResult?> openPipScreen(String token, String sourceVideoPath, {Config? config}) =>
+  Future<ExportResult?> openPipScreen(String token, String sourceVideoPath, {FeaturesConfig? config}) =>
       _open(token, config, _screenPip, [sourceVideoPath]);
 
   @override
-  Future<ExportResult?> openTrimmerScreen(String token, List<String> sourceVideoPathList, {Config? config}) =>
+  Future<ExportResult?> openTrimmerScreen(String token, List<String> sourceVideoPathList, {FeaturesConfig? config}) =>
       _open(token, config, _screenTrimmer, sourceVideoPathList);
 
-  Future<ExportResult?> _open(String token, Config? config, String screen, List<String> sourceVideoPathList) async {
+  Future<ExportResult?> _open(String token, FeaturesConfig? config, String screen, List<String> sourceVideoPathList) async {
     final inputParams = {
       _inputParamToken: token,
       _inputParamConfig: config?.serialize(),
