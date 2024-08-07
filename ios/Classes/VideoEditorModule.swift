@@ -13,7 +13,7 @@ import VEExportSDK
 import Flutter
 
 protocol VideoEditor {
-    func initVideoEditor(token: String, featuresConfigString: String?) -> Bool
+    func initVideoEditor(token: String, featuresConfig: FeaturesConfig) -> Bool
     
     func openVideoEditorDefault(fromViewController controller: FlutterViewController, flutterResult: @escaping FlutterResult)
     
@@ -26,27 +26,22 @@ class VideoEditorModule: VideoEditor {
     
     private var videoEditorSDK: BanubaVideoEditor?
     private var flutterResult: FlutterResult?
-    private var featuresConfig: FeaturesConfig?
 
     // Use “true” if you want users could restore the last video editing session.
     private let restoreLastVideoEditingSession: Bool = false
 
-    func initVideoEditor(token: String, featuresConfigString: String?) -> Bool {
+    func initVideoEditor(token: String, featuresConfig: FeaturesConfig) -> Bool {
         guard videoEditorSDK == nil else {
             debugPrint("Video Editor SDK is already initialized")
             return true
         }
         
-        featuresConfig = parseFeatureConfig(featuresConfigString: featuresConfigString)
-        
         var config = VideoEditorConfig()
         
-        config.applyFeatureConfig(featuresConfig ?? emptyFeaturesConfig)
+        config.applyFeatureConfig(featuresConfig)
 
         let lutsPath = Bundle(for: VideoEditorModule.self).bundleURL.appendingPathComponent("luts", isDirectory: true)
         config.filterConfiguration.colorEffectsURL = lutsPath
-
-        // Make customization here
 
         videoEditorSDK = BanubaVideoEditor(
             token: token,
@@ -69,14 +64,6 @@ class VideoEditorModule: VideoEditor {
             return nil
         }
 
-        // Set your Mubert Api key here
-        let mubertApiLicense = ""
-        let mubertApiKey = ""
-        AudioBrowserConfig.shared.musicSource = .allSources
-        BanubaAudioBrowser.setMubertKeys(
-            license: mubertApiLicense,
-            token: mubertApiKey
-        )
         factory = nil
         
         return factory
@@ -298,56 +285,46 @@ extension VideoEditorModule: BanubaVideoEditorDelegate {
     }
 }
 
-extension VideoEditorModule{
-    var emptyFeaturesConfig : FeaturesConfig {
-        return FeaturesConfig(aiCaptions: nil, aiClipping: nil, audioBrowser: AudioBrowser(source: "local", params: nil))
-    }
-    
-    private func parseFeatureConfig(featuresConfigString: String?) -> FeaturesConfig{
-        do {
-            guard let featuresConfigString = featuresConfigString?.data(using: .utf8) else {return emptyFeaturesConfig}
-            var decodedFeatureConfig = try JSONDecoder().decode(FeaturesConfig.self, from: featuresConfigString)
-            if decodedFeatureConfig.audioBrowser == nil{
-                decodedFeatureConfig.audioBrowser = AudioBrowser(source: "local")
-            }
-            return decodedFeatureConfig
-        } catch {
-            print("❌ Invalid input params of config")
-            return emptyFeaturesConfig
-        }
-    }
-}
 
-extension VideoEditorConfig{
-    mutating func applyFeatureConfig(_ featuresConfig: FeaturesConfig){
+extension VideoEditorConfig {
+    mutating func applyFeatureConfig(_ featuresConfig: FeaturesConfig) {
         
-        AudioBrowserConfig.shared.musicSource = .allSources
-        
-        let source = featuresConfig.audioBrowser?.source
-        
-        switch source {
-            case "soundstripe":
+        switch featuresConfig.audioBrowser?.source {
+            case VideoEditorConfig.featuresConfigAudioBrowserSourceSoundstripe:
                 AudioBrowserConfig.shared.musicSource = .soundstripe
+            case VideoEditorConfig.featuresConfigAudioBrowserSourceLocal:
+                AudioBrowserConfig.shared.musicSource = .localStorageWithMyFiles
             default:
-                break
+                AudioBrowserConfig.shared.musicSource = .allSources
         }
         
-        if let aiCaptions = featuresConfig.aiCaptions{
+        if let aiCaptions = featuresConfig.aiCaptions {
             self.captionsConfiguration.captionsUploadUrl = aiCaptions.uploadUrl
             self.captionsConfiguration.captionsTranscribeUrl = aiCaptions.transcribeUrl
             self.captionsConfiguration.apiKey = aiCaptions.apiKey
         }
             
             
-        if let aiClipping = featuresConfig.aiClipping{
+        if let aiClipping = featuresConfig.aiClipping {
             self.autoCutConfiguration.embeddingsDownloadUrl = aiClipping.audioDataUrl
             self.autoCutConfiguration.musicApiSelectedTracksUrl = aiClipping.audioTracksUrl
         }
         
-        BanubaAudioBrowser.setMubertKeys(
-            license: "SET MUBERT API LICENSE",
-            token: "SET MUBERT API TOKEN"
-        )
+        if let audioBrowserParams = featuresConfig.audioBrowser?.params {
+            if let mubertLicence = audioBrowserParams.mubertLicence, let mubertToken = audioBrowserParams.mubertToken{
+                AudioBrowserConfig.shared.musicSource = .mubert
+                BanubaAudioBrowser.setMubertKeys(
+                    license: mubertLicence,
+                    token: mubertToken
+                )
+            }
+        }
+        
+        if let editorConfig = featuresConfig.editorConfig{
+            self.editorConfiguration.isVideoAspectFillEnabled = editorConfig.isVideoAspectFillEnabled ?? true
+        }
+
+        // Make customization here
         
         AudioBrowserConfig.shared.setPrimaryColor(#colorLiteral(red: 0.2350233793, green: 0.7372031212, blue: 0.7565478683, alpha: 1))
         

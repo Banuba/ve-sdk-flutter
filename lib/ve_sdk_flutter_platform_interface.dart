@@ -24,15 +24,15 @@ abstract class VeSdkFlutterPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  Future<ExportResult?> openCameraScreen(String token, {FeaturesConfig? config}) {
+  Future<ExportResult?> openCameraScreen(String token, FeaturesConfig featuresConfig) {
     throw UnimplementedError('openCameraScreen() has not been implemented.');
   }
 
-  Future<ExportResult?> openPipScreen(String token, String sourceVideoPath, {FeaturesConfig? config}) {
+  Future<ExportResult?> openPipScreen(String token, FeaturesConfig featuresConfig, String sourceVideoPath) {
     throw UnimplementedError('openPipScreen() has not been implemented.');
   }
 
-  Future<ExportResult?> openTrimmerScreen(String token, List<String> sourceVideoPathList, {FeaturesConfig? config}) {
+  Future<ExportResult?> openTrimmerScreen(String token, FeaturesConfig featuresConfig, List<String> sourceVideoPathList) {
     throw UnimplementedError('openTrimmerScreen() has not been implemented.');
   }
 }

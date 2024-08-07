@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ve_sdk_flutter/export_result.dart';
+import 'package:ve_sdk_flutter/features_config.dart';
 import 'package:ve_sdk_flutter/ve_sdk_flutter.dart';
 
-
-const _licenseToken = SET UP YOUR LICENSE TOKEN;
+const _licenseToken = "SET UP YOUR LICENSE TOKEN";
 
 void main() {
   runApp(const MyApp());
@@ -38,11 +38,20 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _veSdkFlutterPlugin = VeSdkFlutter();
+
+  // Set the Video Editor SDK Config here
+  // Below is default implementation of the Video Editor SDK
+
+  final _config = FeatureConfigBuilder()
+      .setAudioBrowser(AudioBrowser.fromSource(AudioBrowserSource.local))
+      .build();
+
   String _errorMessage = '';
 
   Future<void> _startVideoEditorInCameraMode() async {
     try {
-      dynamic exportResult = await _veSdkFlutterPlugin.openCameraScreen(_licenseToken);
+      dynamic exportResult =
+          await _veSdkFlutterPlugin.openCameraScreen(_licenseToken, _config);
       _handleExportResult(exportResult);
     } on PlatformException catch (e) {
       _handlePlatformException(e);
@@ -60,7 +69,8 @@ class _HomePageState extends State<HomePage> {
     }
 
     try {
-      dynamic exportResult = await _veSdkFlutterPlugin.openPipScreen(_licenseToken, sourceVideoFile);
+      dynamic exportResult = await _veSdkFlutterPlugin.openPipScreen(
+          _licenseToken, _config, sourceVideoFile);
       _handleExportResult(exportResult);
     } on PlatformException catch (e) {
       _handlePlatformException(e);
@@ -79,7 +89,8 @@ class _HomePageState extends State<HomePage> {
     final sources = videoFiles.map((f) => f.path).toList();
 
     try {
-      dynamic exportResult = await _veSdkFlutterPlugin.openTrimmerScreen(_licenseToken, sources);
+      dynamic exportResult = await _veSdkFlutterPlugin.openTrimmerScreen(
+          _licenseToken, _config, sources);
       _handleExportResult(exportResult);
     } on PlatformException catch (e) {
       _handlePlatformException(e);

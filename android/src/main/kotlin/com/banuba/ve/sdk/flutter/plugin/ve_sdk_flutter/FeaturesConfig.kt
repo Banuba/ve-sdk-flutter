@@ -1,10 +1,12 @@
 package com.banuba.ve.sdk.flutter.plugin.ve_sdk_flutter
+
 import org.json.JSONObject
 
 internal data class FeaturesConfig(
     val aiClipping: AiClipping?,
     val aiCaptions: AiCaptions?,
-    val audioBrowser: AudioBrowser
+    val audioBrowser: AudioBrowser,
+    val editorConfig: EditorConfig?
 )
 
 internal data class AiClipping(
@@ -21,4 +23,8 @@ internal data class AiCaptions(
 internal data class AudioBrowser(
     val source: String,
     val params: JSONObject?,
+)
+
+internal data class EditorConfig(
+    val isVideoAspectFillEnabled: Boolean?
 )

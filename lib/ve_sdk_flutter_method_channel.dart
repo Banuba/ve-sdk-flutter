@@ -32,20 +32,20 @@ class MethodChannelVeSdkFlutter extends VeSdkFlutterPlatform {
   final methodChannel = const MethodChannel(_channelName);
 
   @override
-  Future<ExportResult?> openCameraScreen(String token, {FeaturesConfig? config}) => _open(token, config, _screenCamera, []);
+  Future<ExportResult?> openCameraScreen(String token, FeaturesConfig featuresConfig) => _open(token, featuresConfig, _screenCamera, []);
 
   @override
-  Future<ExportResult?> openPipScreen(String token, String sourceVideoPath, {FeaturesConfig? config}) =>
-      _open(token, config, _screenPip, [sourceVideoPath]);
+  Future<ExportResult?> openPipScreen(String token, FeaturesConfig featuresConfig, String sourceVideoPath) =>
+      _open(token, featuresConfig, _screenPip, [sourceVideoPath]);
 
   @override
-  Future<ExportResult?> openTrimmerScreen(String token, List<String> sourceVideoPathList, {FeaturesConfig? config}) =>
-      _open(token, config, _screenTrimmer, sourceVideoPathList);
+  Future<ExportResult?> openTrimmerScreen(String token, FeaturesConfig featuresConfig, List<String> sourceVideoPathList) =>
+      _open(token, featuresConfig, _screenTrimmer, sourceVideoPathList);
 
-  Future<ExportResult?> _open(String token, FeaturesConfig? config, String screen, List<String> sourceVideoPathList) async {
+  Future<ExportResult?> _open(String token, FeaturesConfig featuresConfig, String screen, List<String> sourceVideoPathList) async {
     final inputParams = {
       _inputParamToken: token,
-      _inputParamConfig: config?.serialize(),
+      _inputParamConfig: featuresConfig.serialize(),
       _inputParamScreen: screen,
       _inputParamVideoSources: sourceVideoPathList
     };

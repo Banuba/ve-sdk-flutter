@@ -1,30 +1,35 @@
 import Foundation
 
 struct FeaturesConfig: Codable {
-    var aiCaptions: AiCaptions?
-    var aiClipping: AiClipping?
-    var audioBrowser: AudioBrowser?
+    let aiCaptions: AiCaptions?
+    let aiClipping: AiClipping?
+    let audioBrowser: AudioBrowser?
+    let editorConfig: EditorConfig?
 }
 
 struct AiClipping: Codable {
-    var audioDataUrl: String?
-    var audioTracksUrl: String?
+    let audioDataUrl: String?
+    let audioTracksUrl: String?
 }
 
 struct AiCaptions: Codable {
-    var uploadUrl: String?
-    var transcribeUrl: String?
-    var apiKey: String?
+    let uploadUrl: String?
+    let transcribeUrl: String?
+    let apiKey: String?
 }
 
 struct AudioBrowser: Codable {
-    var source: String
-    var params: Params?
+    let source: String
+    let params: Params?
 }
 
-struct Params : Codable {
-    var mubertLicence: String?
-    var mubertToken: String?
+struct Params: Codable {
+    let mubertLicence: String?
+    let mubertToken: String?
+}
+
+struct EditorConfig: Codable {
+    let isVideoAspectFillEnabled: Bool?
 }
 
 

@@ -65,16 +65,10 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
 
         val featuresConfig = parseFeaturesConfig(call.argument<String>(INPUT_PARAM_CONFIG))
 
-
         val screen = call.argument<String>(INPUT_PARAM_SCREEN)
         if (screen.isNullOrEmpty()) {
             channelResult?.error(ERR_INVALID_PARAMS, ERR_MESSAGE_MISSING_SCREEN, null)
             return
-        }
-
-        var extras: Bundle? = null
-        if (featuresConfig.aiCaptions != null){
-            extras = createExtras(featuresConfig.aiCaptions)
         }
 
         when (methodName) {
@@ -94,9 +88,10 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
                                     video = Uri.EMPTY,
                                     openPipSettings = false
                                 ),
-                                extras = extras
+                                extras = prepareExtras(featuresConfig.aiCaptions)
                             )
                         }
+
                         SCREEN_PIP -> {
                             val videoSources =
                                 call.argument<List<String>>(INPUT_PARAM_VIDEO_SOURCES)
@@ -124,7 +119,8 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
                                 pictureInPictureConfig = PipConfig(
                                     video = videoUri,
                                     openPipSettings = false
-                                )
+                                ),
+                                extras = prepareExtras(featuresConfig.aiCaptions)
                             )
                         }
 
@@ -151,9 +147,10 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
                                 // set Trimmer video configuration
                                 predefinedVideos = videoSources.map { Uri.fromFile(File(it)) }
                                     .toTypedArray(),
-                                extras = extras
+                                extras = prepareExtras(featuresConfig.aiCaptions)
                             )
                         }
+
                         else -> null
                     }
 

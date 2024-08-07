@@ -1,28 +1,20 @@
 import 'dart:convert';
 import 'package:ve_sdk_flutter/features_config.dart';
 
-extension ConfigExtension on FeaturesConfig{
+extension FeatureConfigSerializer on FeaturesConfig {
   String serialize() {
     final Map<String, dynamic> configMap = {
-      'aiClipping': aiClipping?.toJson(),
-      'aiCaptions': aiCaptions?.toJson(),
-      'audioBrowser': audioBrowser?.toJson(),
+      'aiClipping': aiClipping?._serialize(),
+      'aiCaptions': aiCaptions?._serialize(),
+      'audioBrowser': audioBrowser._serialize(),
+      'editorConfig': editorConfig?._serialize(),
     };
     return jsonEncode(configMap);
   }
 }
 
-extension AudioBrowserExtensions on AudioBrowser {
-  Map<String, dynamic> toJson(){
-    return {
-      'source' : source.name,
-      'params' : params,
-    };
-  }
-}
-
-extension AiClippingExtension on AiClipping {
-  Map<String, dynamic> toJson(){
+extension AiClippingSerializer on AiClipping {
+  Map<String, dynamic> _serialize() {
     return {
       'audioDataUrl': audioDataUrl,
       'audioTracksUrl': audioTracksUrl,
@@ -30,12 +22,29 @@ extension AiClippingExtension on AiClipping {
   }
 }
 
-extension AiCaptionsExtension on AiCaptions {
-  Map<String, dynamic> toJson(){
+extension AiCaptionsSerializer on AiCaptions {
+  Map<String, dynamic> _serialize() {
     return {
       'uploadUrl': uploadUrl,
       'transcribeUrl': transcribeUrl,
       'apiKey': apiKey,
+    };
+  }
+}
+
+extension AudioBrowserSerializer on AudioBrowser {
+  Map<String, dynamic> _serialize() {
+    return {
+      'source': source.name,
+      'params': params,
+    };
+  }
+}
+
+extension EditorConfigSerializer on EditorConfig {
+  Map<String, dynamic> _serialize() {
+    return {
+      'isVideoAspectFillEnabled': isVideoAspectFillEnabled
     };
   }
 }

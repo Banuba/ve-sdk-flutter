@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import BanubaVideoEditorSDK
 
 extension VeSdkFlutterPlugin {
     static let channel = "ve_sdk_flutter"
@@ -40,6 +41,7 @@ extension VeSdkFlutterPlugin {
         YOUR LICENSE TOKEN EITHER EXPIRED OR REVOKED!
         Please contact Banuba
     """
+    
     static let errMessageInvalidParams = "Method started with invalid params!"
     static let errMessageMissingToken = "Missing license token: set correct value to \(inputParamToken) input params"
     static let errMessageMissingScreen = "Missing screen: set correct value to \(inputParamScreen) input params"
@@ -50,6 +52,19 @@ extension VeSdkFlutterPlugin {
     
     static let errMessageMissingExportResult =
     "Missing export result: video export has not been completed successfully. Please try again"
+    static let errMessageMissingConfigParams =
+    "❌ Missing or invalid config: \(inputParamConfig)"
     
     static let errMessageMissingHost = "Missing host ViewController to start video editor"
+    
+    //Empty feature config
+    var emptyFeaturesConfig : FeaturesConfig {
+        return FeaturesConfig(aiCaptions: nil, aiClipping: nil, audioBrowser: AudioBrowser(source: "local", params: nil), editorConfig: nil)
+    }
+}
+
+extension VideoEditorConfig {
+    // Features config params
+    static let featuresConfigAudioBrowserSourceSoundstripe = "soundstripe"
+    static let featuresConfigAudioBrowserSourceLocal = "local"
 }
