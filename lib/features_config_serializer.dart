@@ -8,6 +8,7 @@ extension FeatureConfigSerializer on FeaturesConfig {
       'aiCaptions': aiCaptions?._serialize(),
       'audioBrowser': audioBrowser._serialize(),
       'editorConfig': editorConfig?._serialize(),
+      'draftConfig': draftConfig._serialize()
     };
     return jsonEncode(configMap);
   }
@@ -45,6 +46,14 @@ extension EditorConfigSerializer on EditorConfig {
   Map<String, dynamic> _serialize() {
     return {
       'isVideoAspectFillEnabled': isVideoAspectFillEnabled
+    };
+  }
+}
+
+extension DraftConfigSerializer on DraftConfig {
+  Map<String, dynamic> _serialize() {
+    return {
+      'option': option.name,
     };
   }
 }

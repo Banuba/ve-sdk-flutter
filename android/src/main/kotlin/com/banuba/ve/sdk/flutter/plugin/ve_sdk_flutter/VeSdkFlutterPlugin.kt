@@ -63,7 +63,7 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
             return
         }
 
-        val featuresConfig = parseFeaturesConfig(call.argument<String>(INPUT_PARAM_CONFIG))
+        val featuresConfig = parseFeaturesConfig(call.argument<String>(INPUT_PARAM_FEATURES_CONFIG))
 
         val screen = call.argument<String>(INPUT_PARAM_SCREEN)
         if (screen.isNullOrEmpty()) {
@@ -88,7 +88,7 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
                                     video = Uri.EMPTY,
                                     openPipSettings = false
                                 ),
-                                extras = prepareExtras(featuresConfig.aiCaptions)
+                                extras = prepareExtras(featuresConfig)
                             )
                         }
 
@@ -120,7 +120,7 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
                                     video = videoUri,
                                     openPipSettings = false
                                 ),
-                                extras = prepareExtras(featuresConfig.aiCaptions)
+                                extras = prepareExtras(featuresConfig)
                             )
                         }
 
@@ -147,7 +147,7 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
                                 // set Trimmer video configuration
                                 predefinedVideos = videoSources.map { Uri.fromFile(File(it)) }
                                     .toTypedArray(),
-                                extras = prepareExtras(featuresConfig.aiCaptions)
+                                extras = prepareExtras(featuresConfig)
                             )
                         }
 

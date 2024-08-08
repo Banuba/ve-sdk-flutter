@@ -13,7 +13,7 @@ internal const val METHOD_START = "startVideoEditor"
 
 // Input params
 internal const val INPUT_PARAM_TOKEN = "token"
-internal const val INPUT_PARAM_CONFIG = "featuresConfig"
+internal const val INPUT_PARAM_FEATURES_CONFIG = "featuresConfig"
 internal const val INPUT_PARAM_SCREEN = "screen"
 internal const val INPUT_PARAM_VIDEO_SOURCES = "videoSources"
 
@@ -27,18 +27,34 @@ internal const val FEATURES_CONFIG_AI_CAPTIONS = "aiCaptions"
 internal const val FEATURES_CONFIG_AI_CAPTIONS_UPLOAD_URL = "uploadUrl"
 internal const val FEATURES_CONFIG_AI_CAPTIONS_TRANSCRIBE_URL = "transcribeUrl"
 internal const val FEATURES_CONFIG_AI_CAPTIONS_API_KEY = "apiKey"
+
 internal const val FEATURES_CONFIG_AI_CLIPPING = "aiClipping"
 internal const val FEATURES_CONFIG_AI_CLIPPING_AUDIO_DATA_URL = "audioDataUrl"
 internal const val FEATURES_CONFIG_AI_CLIPPING_AUDIO_TRACK_URL = "audioTracksUrl"
+
 internal const val FEATURES_CONFIG_AUDIO_BROWSER = "audioBrowser"
 internal const val FEATURES_CONFIG_AUDIO_BROWSER_SOURCE = "source"
-internal const val FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_LOCAL = "local"
-internal const val FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_SOUNDSTRIPE = "soundstripe"
 internal const val FEATURES_CONFIG_AUDIO_BROWSER_PARAMS = "params"
+
+internal const val FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_LOCAL = "local"
+internal const val FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_MUBERT = "mubert"
+internal const val FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_SOUNDSTRIPE = "soundstripe"
+
 internal const val FEATURES_CONFIG_AUDIO_BROWSER_PARAMS_MUBERT_LICENCE = "mubertLicence"
 internal const val FEATURES_CONFIG_AUDIO_BROWSER_PARAMS_MUBERT_TOKEN = "mubertToken"
+
 internal const val FEATURES_CONFIG_EDITOR_CONFIG = "editorConfig"
 internal const val FEATURES_CONFIG_EDITOR_CONFIG_VIDEO_ASPECT_ENABLED = "isVideoAspectFillEnabled"
+
+internal const val FEATURES_CONFIG_DRAFT_CONFIG = "draftConfig"
+internal const val FEATURES_CONFIG_DRAFT_CONFIG_OPTION = "option"
+
+internal const val FEATURES_CONFIG_DRAFT_CONFIG_ENABLED = "enabled"
+internal const val FEATURES_CONFIG_DRAFT_CONFIG_ENABLED_ASK_IF_SAVE_NOT_EXPORT = "enabledAskIfSaveNotExport"
+internal const val FEATURES_CONFIG_DRAFT_CONFIG_ENABLED_SAVE_TO_DRAFTS_BY_DEFAULT = "enabledSaveToDraftsByDefault"
+internal const val FEATURES_CONFIG_DRAFT_CONFIG_DISABLED = "disabled"
+
+
 // Screens
 internal const val SCREEN_CAMERA = "camera"
 internal const val SCREEN_PIP = "pip"
@@ -83,15 +99,15 @@ internal const val ERR_MESSAGE_MISSING_EXPORT_RESULT =
 internal const val ERR_MESSAGE_MISSING_HOST = "Missing host Activity to start video editor"
 
 internal const val ERR_MESSAGE_INVALID_CONFIG =
-    "Missing or invalid config params, will use default config. Input params: $INPUT_PARAM_CONFIG"
+    "Missing or invalid config params, will use default config. Input params: $INPUT_PARAM_FEATURES_CONFIG"
 
 //Prepare Extras from AiCaptions
-internal fun prepareExtras(aiCaptions: AiCaptions?): Bundle {
-    aiCaptions?.let {
+internal fun prepareExtras(featuresConfig: FeaturesConfig): Bundle {
+    featuresConfig.aiCaptions?.let { params ->
         return bundleOf(
-            CaptionsApiService.ARG_CAPTIONS_UPLOAD_URL to aiCaptions.uploadUrl,
-            CaptionsApiService.ARG_CAPTIONS_TRANSCRIBE_URL to aiCaptions.transcribeUrl,
-            CaptionsApiService.ARG_API_KEY to aiCaptions.apiKey
+            CaptionsApiService.ARG_CAPTIONS_UPLOAD_URL to params.uploadUrl,
+            CaptionsApiService.ARG_CAPTIONS_TRANSCRIBE_URL to params.transcribeUrl,
+            CaptionsApiService.ARG_API_KEY to params.apiKey
         )
     } ?: run {
         return Bundle()
@@ -103,6 +119,7 @@ internal val emptyFeaturesConfig = FeaturesConfig(
     aiClipping = null,
     aiCaptions = null,
     AudioBrowser(source = FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_LOCAL, params = null),
-    editorConfig = null
+    editorConfig = null,
+    DraftConfig(option = FEATURES_CONFIG_DRAFT_CONFIG_ENABLED)
 )
 

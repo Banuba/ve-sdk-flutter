@@ -39,12 +39,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final _veSdkFlutterPlugin = VeSdkFlutter();
 
-  // Set the Video Editor SDK Config here
-  // Below is default implementation of the Video Editor SDK
+  // Specify your Config params in the builder below
 
-  final _config = FeatureConfigBuilder()
-      .setAudioBrowser(AudioBrowser.fromSource(AudioBrowserSource.local))
-      .build();
+  final _config = FeatureConfigBuilder().build();
 
   String _errorMessage = '';
 

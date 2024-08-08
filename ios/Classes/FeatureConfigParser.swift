@@ -8,8 +8,8 @@
 import Foundation
 
 extension VeSdkFlutterPlugin {
-    func parseFeatureConfig(_ featuresConfigString: String?) -> FeaturesConfig {
-        guard let featuresConfigData = featuresConfigString?.data(using: .utf8) else {return emptyFeaturesConfig}
+    func parseFeatureConfig(_ rawConfigParams: String?) -> FeaturesConfig {
+        guard let featuresConfigData = rawConfigParams?.data(using: .utf8) else {return emptyFeaturesConfig}
         do {
             let decodedFeatureConfig = try JSONDecoder().decode(FeaturesConfig.self, from: featuresConfigData)
             return decodedFeatureConfig

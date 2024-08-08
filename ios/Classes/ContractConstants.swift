@@ -19,7 +19,7 @@ extension VeSdkFlutterPlugin {
     static let errMissingExportResult = "ERR_MISSING_EXPORT_RESULT"
     
     static let inputParamToken = "token"
-    static let inputParamConfig = "featuresConfig"
+    static let inputParamFeaturesConfig = "featuresConfig"
     static let inputParamScreen = "screen"
     static let inputParamVideoSources = "videoSources"
     
@@ -53,18 +53,24 @@ extension VeSdkFlutterPlugin {
     static let errMessageMissingExportResult =
     "Missing export result: video export has not been completed successfully. Please try again"
     static let errMessageMissingConfigParams =
-    "❌ Missing or invalid config: \(inputParamConfig)"
+    "❌ Missing or invalid config: \(inputParamFeaturesConfig)"
     
     static let errMessageMissingHost = "Missing host ViewController to start video editor"
     
     //Empty feature config
     var emptyFeaturesConfig : FeaturesConfig {
-        return FeaturesConfig(aiCaptions: nil, aiClipping: nil, audioBrowser: AudioBrowser(source: "local", params: nil), editorConfig: nil)
+        return FeaturesConfig(aiCaptions: nil, aiClipping: nil, audioBrowser: AudioBrowser(source: "local", params: nil), editorConfig: nil, draftConfig: DraftConfig(option: "enable"))
     }
 }
 
 extension VideoEditorConfig {
     // Features config params
     static let featuresConfigAudioBrowserSourceSoundstripe = "soundstripe"
+    static let featuresConfigAudioBrowserSourceMubert = "mubert"
     static let featuresConfigAudioBrowserSourceLocal = "local"
+
+    static let featureConfigDraftConfigOptionEnabled = "enabled"
+    static let featureConfigDraftConfigOptionEnabledAskIfSaveNotExport = "enabledAskIfSaveNotExport"
+    static let featureConfigDraftConfigOptionEnabledSaveToDraftsByDefault = "enabledSaveToDraftsByDefault"
+    static let featureConfigDraftConfigOptionDisabled = "disabled"
 }

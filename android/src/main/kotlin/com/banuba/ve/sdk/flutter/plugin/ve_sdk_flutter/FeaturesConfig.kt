@@ -6,7 +6,8 @@ internal data class FeaturesConfig(
     val aiClipping: AiClipping?,
     val aiCaptions: AiCaptions?,
     val audioBrowser: AudioBrowser,
-    val editorConfig: EditorConfig?
+    val editorConfig: EditorConfig?,
+    val draftConfig: DraftConfig
 )
 
 internal data class AiClipping(
@@ -22,9 +23,13 @@ internal data class AiCaptions(
 
 internal data class AudioBrowser(
     val source: String,
-    val params: JSONObject?,
+    val params: JSONObject?
 )
 
 internal data class EditorConfig(
     val isVideoAspectFillEnabled: Boolean?
+)
+
+internal data class DraftConfig(
+    val option: String
 )

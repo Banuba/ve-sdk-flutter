@@ -18,6 +18,7 @@ import com.banuba.sdk.core.ui.ContentFeatureProvider
 import com.banuba.sdk.playback.PlayerScaleType
 import com.banuba.sdk.audiobrowser.autocut.AutoCutTrackLoaderSoundstripe
 import com.banuba.sdk.core.data.autocut.AutoCutTrackLoader
+import com.banuba.sdk.core.domain.DraftConfig
 import com.banuba.sdk.ve.data.autocut.AutoCutConfig
 import com.banuba.sdk.audiobrowser.domain.SoundstripeProvider
 import com.banuba.sdk.audiobrowser.data.MubertApiConfig
@@ -82,20 +83,21 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig) {
         ) {
             when (featuresConfig.audioBrowser.source) {
                 FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_SOUNDSTRIPE -> SoundstripeProvider()
-                FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_LOCAL -> AudioBrowserMusicProvider()
                 else -> {
                     AudioBrowserMusicProvider()
                 }
             }
         }
 
-        this.updateAudioBrowserWithParams(featuresConfig)
+        if (featuresConfig.audioBrowser.source == FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_MUBERT) {
+            this.addMubertParams(featuresConfig)
+        }
 
-        featuresConfig.aiClipping?.let { aiClipping ->
+        featuresConfig.aiClipping?.let { params ->
             this.single<AutoCutConfig> {
                 AutoCutConfig(
-                    audioDataUrl = aiClipping.audioDataUrl,
-                    audioTracksUrl = aiClipping.audioTracksUrl
+                    audioDataUrl = params.audioDataUrl,
+                    audioTracksUrl = params.audioTracksUrl
                 )
             }
             this.single<AutoCutTrackLoader> {
@@ -105,21 +107,34 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig) {
             }
         }
 
-        featuresConfig.editorConfig?.isVideoAspectFillEnabled?.let { isVideoAspectFillEnabled ->
-            if (!isVideoAspectFillEnabled) {
+        featuresConfig.editorConfig?.isVideoAspectFillEnabled?.let { flag ->
+            if (!flag) {
                 factory<PlayerScaleType>(named("editorVideoScaleType")){
                     PlayerScaleType.CENTER_INSIDE
                 }
             }
         }
+
+        factory<DraftConfig> {
+            when (featuresConfig.draftConfig.option) {
+                FEATURES_CONFIG_DRAFT_CONFIG_ENABLED_SAVE_TO_DRAFTS_BY_DEFAULT ->
+                    DraftConfig.ENABLED_SAVE_BY_DEFAULT
+                FEATURES_CONFIG_DRAFT_CONFIG_ENABLED_ASK_IF_SAVE_NOT_EXPORT ->
+                    DraftConfig.ENABLED_ASK_IF_SAVE_NOT_EXPORT
+                FEATURES_CONFIG_DRAFT_CONFIG_DISABLED ->
+                    DraftConfig.DISABLED
+                else -> {
+                    DraftConfig.ENABLED_ASK_TO_SAVE
+                }
+            }
+        }
     }
 
-    private fun Module.updateAudioBrowserWithParams(featuresConfig: FeaturesConfig) {
-
+    private fun Module.addMubertParams(featuresConfig: FeaturesConfig) {
         val paramsObject = featuresConfig.audioBrowser.params
         val source = featuresConfig.audioBrowser.source
 
-        if (paramsObject != null && source != FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_SOUNDSTRIPE) {
+        if (paramsObject != null) {
             try {
                 val paramsMap = paramsObject.keys().asSequence().associateWith { key ->
                     paramsObject.get(key)
@@ -133,7 +148,8 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig) {
                 if (mubertLicence != null && mubertToken != null) {
                     this.single {
                         MubertApiConfig(
-                            mubertLicence = mubertLicence, mubertToken = mubertToken
+                            mubertLicence = mubertLicence,
+                            mubertToken = mubertToken
                         )
                     }
                 } else {

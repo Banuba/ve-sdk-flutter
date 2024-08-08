@@ -22,7 +22,7 @@ public class VeSdkFlutterPlugin: NSObject, FlutterPlugin {
             return
         }
         
-        let featuresConfig = parseFeatureConfig(args[VeSdkFlutterPlugin.inputParamConfig] as? String)
+        let featuresConfig = parseFeatureConfig(args[VeSdkFlutterPlugin.inputParamFeaturesConfig] as? String)
         
         guard let screen = args[VeSdkFlutterPlugin.inputParamScreen] as? String else {
             result(FlutterError(code: VeSdkFlutterPlugin.errInvalidParams, message: VeSdkFlutterPlugin.errMessageMissingScreen, details: nil))
@@ -44,30 +44,30 @@ public class VeSdkFlutterPlugin: NSObject, FlutterPlugin {
             return
         }
         switch screen {
-        case VeSdkFlutterPlugin.screenCamera:
-            videoEditor.openVideoEditorDefault(fromViewController: controller, flutterResult: result)
+            case VeSdkFlutterPlugin.screenCamera:
+                videoEditor.openVideoEditorDefault(fromViewController: controller, flutterResult: result)
             
-        case VeSdkFlutterPlugin.screenPip:
-            let videoSources = args[VeSdkFlutterPlugin.inputParamVideoSources] as? Array<String>
-            if (videoSources == nil || videoSources!.isEmpty) {
-                result(FlutterError(code: VeSdkFlutterPlugin.errInvalidParams, message: VeSdkFlutterPlugin.errMessageInvalidPiPVideo, details: nil))
+            case VeSdkFlutterPlugin.screenPip:
+                let videoSources = args[VeSdkFlutterPlugin.inputParamVideoSources] as? Array<String>
+                if (videoSources == nil || videoSources!.isEmpty) {
+                    result(FlutterError(code: VeSdkFlutterPlugin.errInvalidParams, message: VeSdkFlutterPlugin.errMessageInvalidPiPVideo, details: nil))
+                    return
+                }
+                videoEditor.openVideoEditorPIP(fromViewController: controller, videoURL: URL(fileURLWithPath: videoSources!.first!), flutterResult: result)
+            
+            case VeSdkFlutterPlugin.screenTrimmer:
+                let videoSources = args[VeSdkFlutterPlugin.inputParamVideoSources] as? Array<String>
+                if (videoSources == nil || videoSources!.isEmpty) {
+                    result(FlutterError(code: VeSdkFlutterPlugin.errInvalidParams, message: VeSdkFlutterPlugin.errMessageInvalidTrimmerVideo, details: nil))
+                    return
+                }
+                let videoURLs = videoSources!.compactMap { URL(string: $0) }
+            
+                videoEditor.openVideoEditorTrimmer(fromViewController: controller, videoSources: videoURLs, flutterResult: result)
+            default:
+                debugPrint("Unknown screen value = \(screen)")
+                result(FlutterError(code: VeSdkFlutterPlugin.errInvalidParams, message: VeSdkFlutterPlugin.errMessageUnknownScreen, details: nil))
                 return
-            }
-            videoEditor.openVideoEditorPIP(fromViewController: controller, videoURL: URL(fileURLWithPath: videoSources!.first!), flutterResult: result)
-            
-        case VeSdkFlutterPlugin.screenTrimmer:
-            let videoSources = args[VeSdkFlutterPlugin.inputParamVideoSources] as? Array<String>
-            if (videoSources == nil || videoSources!.isEmpty) {
-                result(FlutterError(code: VeSdkFlutterPlugin.errInvalidParams, message: VeSdkFlutterPlugin.errMessageInvalidTrimmerVideo, details: nil))
-                return
-            }
-            let videoURLs = videoSources!.compactMap { URL(string: $0) }
-            
-            videoEditor.openVideoEditorTrimmer(fromViewController: controller, videoSources: videoURLs, flutterResult: result)
-        default:
-            debugPrint("Unknown screen value = \(screen)")
-            result(FlutterError(code: VeSdkFlutterPlugin.errInvalidParams, message: VeSdkFlutterPlugin.errMessageUnknownScreen, details: nil))
-            return
         }
     }
 }

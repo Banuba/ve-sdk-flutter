@@ -5,12 +5,14 @@ class FeaturesConfig {
   final AiCaptions? aiCaptions;
   final AudioBrowser audioBrowser;
   final EditorConfig? editorConfig;
+  final DraftConfig draftConfig;
 
   FeaturesConfig._builder(FeatureConfigBuilder builder)
       : aiClipping = builder._aiClipping,
         aiCaptions = builder._aiCaptions,
         audioBrowser = builder._audioBrowser,
-        editorConfig = builder._editorConfig;
+        editorConfig = builder._editorConfig,
+        draftConfig = builder._draftConfig;
 }
 
 class FeatureConfigBuilder {
@@ -19,6 +21,8 @@ class FeatureConfigBuilder {
   AudioBrowser _audioBrowser =
       AudioBrowser.fromSource(AudioBrowserSource.local);
   EditorConfig? _editorConfig;
+  DraftConfig _draftConfig = 
+      DraftConfig.fromOption(DraftOption.enabled);
 
   FeatureConfigBuilder setAiClipping(aiClipping) {
     _aiClipping = aiClipping;
@@ -40,12 +44,17 @@ class FeatureConfigBuilder {
     return this;
   }
 
+  FeatureConfigBuilder setDraftConfig(draftConfig) {
+    _draftConfig = draftConfig;
+    return this;
+  }
+
   FeaturesConfig build() {
     return FeaturesConfig._builder(this);
   }
 }
 
-enum AudioBrowserSource { soundstripe, local }
+enum AudioBrowserSource { soundstripe, local, mubert }
 
 @immutable
 class AudioBrowser {
@@ -91,4 +100,17 @@ class EditorConfig {
   const EditorConfig({
         this.isVideoAspectFillEnabled
   });
+}
+
+enum DraftOption { enabled, enabledAskIfSaveNotExport, enabledSaveToDraftsByDefault, disabled }
+
+@immutable
+class DraftConfig {
+  final DraftOption option;
+
+  const DraftConfig._({required this.option});
+
+  factory DraftConfig.fromOption(DraftOption option) {
+    return DraftConfig._(option: option);
+  }
 }

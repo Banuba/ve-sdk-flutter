@@ -288,14 +288,25 @@ extension VideoEditorModule: BanubaVideoEditorDelegate {
 
 extension VideoEditorConfig {
     mutating func applyFeatureConfig(_ featuresConfig: FeaturesConfig) {
-        
         switch featuresConfig.audioBrowser?.source {
             case VideoEditorConfig.featuresConfigAudioBrowserSourceSoundstripe:
                 AudioBrowserConfig.shared.musicSource = .soundstripe
             case VideoEditorConfig.featuresConfigAudioBrowserSourceLocal:
                 AudioBrowserConfig.shared.musicSource = .localStorageWithMyFiles
+            case VideoEditorConfig.featuresConfigAudioBrowserSourceMubert:
+                AudioBrowserConfig.shared.musicSource = .mubert
             default:
                 AudioBrowserConfig.shared.musicSource = .allSources
+        }
+        
+        if featuresConfig.audioBrowser?.source == VideoEditorConfig.featuresConfigAudioBrowserSourceMubert {
+            guard let audioBrowserParams = featuresConfig.audioBrowser?.params else { return }
+            guard let mubertLicence = audioBrowserParams.mubertLicence, let mubertToken = audioBrowserParams.mubertToken else { return }
+            
+            BanubaAudioBrowser.setMubertKeys(
+                license: mubertLicence,
+                token: mubertToken
+            )
         }
         
         if let aiCaptions = featuresConfig.aiCaptions {
@@ -310,18 +321,19 @@ extension VideoEditorConfig {
             self.autoCutConfiguration.musicApiSelectedTracksUrl = aiClipping.audioTracksUrl
         }
         
-        if let audioBrowserParams = featuresConfig.audioBrowser?.params {
-            if let mubertLicence = audioBrowserParams.mubertLicence, let mubertToken = audioBrowserParams.mubertToken{
-                AudioBrowserConfig.shared.musicSource = .mubert
-                BanubaAudioBrowser.setMubertKeys(
-                    license: mubertLicence,
-                    token: mubertToken
-                )
-            }
-        }
-        
         if let editorConfig = featuresConfig.editorConfig{
             self.editorConfiguration.isVideoAspectFillEnabled = editorConfig.isVideoAspectFillEnabled ?? true
+        }
+        
+        switch featuresConfig.draftConfig?.option{
+            case VideoEditorConfig.featureConfigDraftConfigOptionEnabledSaveToDraftsByDefault:
+                self.featureConfiguration.draftsConfig = .enabledSaveToDraftsByDefault
+            case VideoEditorConfig.featureConfigDraftConfigOptionEnabledAskIfSaveNotExport:
+                self.featureConfiguration.draftsConfig = .enabledAskIfSaveNotExport
+            case VideoEditorConfig.featureConfigDraftConfigOptionDisabled:
+                self.featureConfiguration.draftsConfig = .disabled
+            default:
+                self.featureConfiguration.draftsConfig = .enabled
         }
 
         // Make customization here
