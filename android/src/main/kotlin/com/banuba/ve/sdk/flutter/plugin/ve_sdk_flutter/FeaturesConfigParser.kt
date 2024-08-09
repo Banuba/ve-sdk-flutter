@@ -5,9 +5,9 @@ import org.json.JSONException
 import org.json.JSONObject
 
 internal fun parseFeaturesConfig(rawConfigParams: String?): FeaturesConfig {
-    rawConfigParams?.let {
+    rawConfigParams?.let { params ->
         return try {
-            val featuresConfigObject = JSONObject(it)
+            val featuresConfigObject = JSONObject(params)
             FeaturesConfig(
                 featuresConfigObject.extractAiClipping(),
                 featuresConfigObject.extractAiCaptions(),
@@ -23,10 +23,10 @@ internal fun parseFeaturesConfig(rawConfigParams: String?): FeaturesConfig {
 
 private fun JSONObject.extractAiClipping(): AiClipping? {
     return try {
-        this.optJSONObject(FEATURES_CONFIG_AI_CLIPPING)?.let { params ->
+        this.optJSONObject(FEATURES_CONFIG_AI_CLIPPING)?.let { json ->
             AiClipping(
-                audioDataUrl = params.optString(FEATURES_CONFIG_AI_CLIPPING_AUDIO_DATA_URL),
-                audioTracksUrl = params.optString(FEATURES_CONFIG_AI_CLIPPING_AUDIO_TRACK_URL)
+                audioDataUrl = json.optString(FEATURES_CONFIG_AI_CLIPPING_AUDIO_DATA_URL),
+                audioTracksUrl = json.optString(FEATURES_CONFIG_AI_CLIPPING_AUDIO_TRACK_URL)
             )
         }
     } catch (e: JSONException) {
@@ -37,11 +37,11 @@ private fun JSONObject.extractAiClipping(): AiClipping? {
 
 private fun JSONObject.extractAiCaptions(): AiCaptions? {
     return try {
-        this.optJSONObject(FEATURES_CONFIG_AI_CAPTIONS)?.let { params ->
+        this.optJSONObject(FEATURES_CONFIG_AI_CAPTIONS)?.let { json ->
             AiCaptions(
-                uploadUrl = params.optString(FEATURES_CONFIG_AI_CAPTIONS_UPLOAD_URL),
-                transcribeUrl = params.optString(FEATURES_CONFIG_AI_CAPTIONS_TRANSCRIBE_URL),
-                apiKey = params.optString(FEATURES_CONFIG_AI_CAPTIONS_API_KEY)
+                uploadUrl = json.optString(FEATURES_CONFIG_AI_CAPTIONS_UPLOAD_URL),
+                transcribeUrl = json.optString(FEATURES_CONFIG_AI_CAPTIONS_TRANSCRIBE_URL),
+                apiKey = json.optString(FEATURES_CONFIG_AI_CAPTIONS_API_KEY)
             )
         }
     } catch (e: JSONException) {
@@ -53,10 +53,10 @@ private fun JSONObject.extractAiCaptions(): AiCaptions? {
 private fun JSONObject.extractAudioBrowser(): AudioBrowser {
     val defaultAudioBrowser = emptyFeaturesConfig.audioBrowser
     return try {
-        this.optJSONObject(FEATURES_CONFIG_AUDIO_BROWSER)?.let { params ->
+        this.optJSONObject(FEATURES_CONFIG_AUDIO_BROWSER)?.let { json ->
             AudioBrowser(
-                source = params.optString(FEATURES_CONFIG_AUDIO_BROWSER_SOURCE),
-                params = params.optJSONObject(FEATURES_CONFIG_AUDIO_BROWSER_PARAMS)
+                source = json.optString(FEATURES_CONFIG_AUDIO_BROWSER_SOURCE),
+                params = json.optJSONObject(FEATURES_CONFIG_AUDIO_BROWSER_PARAMS)
             )
         } ?: run {
             defaultAudioBrowser
@@ -69,12 +69,13 @@ private fun JSONObject.extractAudioBrowser(): AudioBrowser {
 
 private fun JSONObject.extractEditorConfig(): EditorConfig? {
     return try {
-        this.optJSONObject(FEATURES_CONFIG_EDITOR_CONFIG)?.let { params ->
+        this.optJSONObject(FEATURES_CONFIG_EDITOR_CONFIG)?.let { json ->
             EditorConfig(
-                // If isVideoAspectFillEnabled is null, the default value is set to true.
-                // The EditorConfig may come without this parameter (null) from the Flutter side.
-                // true -> in IOS this parameter is true by default.
-                isVideoAspectFillEnabled = params.optBoolean(
+                // The EditorConfig may come without "isVideoAspectFillEnabled" parameter (null)
+                // from the Flutter side.
+                // If isVideoAspectFillEnabled" is null, the default value is set to true.
+                // Because this parameter is set to true by default in IOS.
+                isVideoAspectFillEnabled = json.optBoolean(
                     FEATURES_CONFIG_EDITOR_CONFIG_VIDEO_ASPECT_ENABLED, true
                 )
             )
@@ -88,9 +89,9 @@ private fun JSONObject.extractEditorConfig(): EditorConfig? {
 private fun JSONObject.extractDraftConfig(): DraftConfig {
     val defaultDraftConfig = emptyFeaturesConfig.draftConfig
     return try {
-        this.optJSONObject(FEATURES_CONFIG_DRAFT_CONFIG)?.let { params ->
+        this.optJSONObject(FEATURES_CONFIG_DRAFT_CONFIG)?.let { json ->
             DraftConfig(
-                option = params.optString(FEATURES_CONFIG_DRAFT_CONFIG_OPTION),
+                option = json.optString(FEATURES_CONFIG_DRAFT_CONFIG_OPTION),
             )
         } ?: run {
             defaultDraftConfig

@@ -22,7 +22,7 @@ class FeatureConfigBuilder {
       AudioBrowser.fromSource(AudioBrowserSource.local);
   EditorConfig? _editorConfig;
   DraftConfig _draftConfig = 
-      DraftConfig.fromOption(DraftOption.enabled);
+      DraftConfig.fromOption(DraftOption.askToSave);
 
   FeatureConfigBuilder setAiClipping(aiClipping) {
     _aiClipping = aiClipping;
@@ -102,7 +102,7 @@ class EditorConfig {
   });
 }
 
-enum DraftOption { enabled, enabledAskIfSaveNotExport, enabledSaveToDraftsByDefault, disabled }
+enum DraftOption { askToSave, closeOnSave, auto, disabled }
 
 @immutable
 class DraftConfig {

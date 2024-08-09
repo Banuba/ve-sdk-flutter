@@ -34,8 +34,7 @@ class MethodChannelVeSdkFlutter extends VeSdkFlutterPlatform {
   @override
   Future<ExportResult?> openCameraScreen(
       String token,
-      FeaturesConfig
-      featuresConfig
+      FeaturesConfig featuresConfig
   ) => _open(
       token,
       featuresConfig,

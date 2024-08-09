@@ -7,7 +7,7 @@ import 'package:ve_sdk_flutter/export_result.dart';
 import 'package:ve_sdk_flutter/features_config.dart';
 import 'package:ve_sdk_flutter/ve_sdk_flutter.dart';
 
-const _licenseToken = "SET UP YOUR LICENSE TOKEN";
+const _licenseToken = SET UP YOUR LICENSE TOKEN;
 
 void main() {
   runApp(const MyApp());
@@ -41,7 +41,13 @@ class _HomePageState extends State<HomePage> {
 
   // Specify your Config params in the builder below
 
-  final _config = FeatureConfigBuilder().build();
+  final _config = FeatureConfigBuilder()
+      // .setDraftConfig(DraftConfig.fromOption(DraftOption.auto))
+      // .setEditorConfig(EditorConfig(isVideoAspectFillEnabled: false))
+      // .setAudioBrowser(AudioBrowser.fromSource(AudioBrowserSource.local))
+      // .setAiClipping(AiClipping(audioDataUrl: "audioDataUrl", audioTracksUrl: "audioTracksUrl"))
+      // .setAiCaptions(AiCaptions(uploadUrl: "uploadUrl", transcribeUrl: "transcribeUrl", apiKey: "apiKey"))
+      .build();
 
   String _errorMessage = '';
 

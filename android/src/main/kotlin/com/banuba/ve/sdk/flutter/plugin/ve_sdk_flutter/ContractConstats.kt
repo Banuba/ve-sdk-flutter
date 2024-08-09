@@ -3,9 +3,12 @@ package com.banuba.ve.sdk.flutter.plugin.ve_sdk_flutter
 import androidx.core.os.bundleOf
 import android.os.Bundle
 import com.banuba.sdk.veui.data.captions.CaptionsApiService
+import android.util.Log
 
 // Tag
 internal const val TAG = "VideoEditorPlugin"
+
+internal const val TAG_FEATURES_CONFIG = "FeaturesConfig"
 
 // Method channel
 internal const val CHANNEL = "ve_sdk_flutter"
@@ -49,11 +52,10 @@ internal const val FEATURES_CONFIG_EDITOR_CONFIG_VIDEO_ASPECT_ENABLED = "isVideo
 internal const val FEATURES_CONFIG_DRAFT_CONFIG = "draftConfig"
 internal const val FEATURES_CONFIG_DRAFT_CONFIG_OPTION = "option"
 
-internal const val FEATURES_CONFIG_DRAFT_CONFIG_ENABLED = "enabled"
-internal const val FEATURES_CONFIG_DRAFT_CONFIG_ENABLED_ASK_IF_SAVE_NOT_EXPORT = "enabledAskIfSaveNotExport"
-internal const val FEATURES_CONFIG_DRAFT_CONFIG_ENABLED_SAVE_TO_DRAFTS_BY_DEFAULT = "enabledSaveToDraftsByDefault"
+internal const val FEATURES_CONFIG_DRAFT_CONFIG_ASK_TO_SAVE = "askToSave"
+internal const val FEATURES_CONFIG_DRAFT_CONFIG_CLOSE_ON_SAVE = "closeOnSave"
+internal const val FEATURES_CONFIG_DRAFT_CONFIG_AUTO = "auto"
 internal const val FEATURES_CONFIG_DRAFT_CONFIG_DISABLED = "disabled"
-
 
 // Screens
 internal const val SCREEN_CAMERA = "camera"
@@ -104,6 +106,7 @@ internal const val ERR_MESSAGE_INVALID_CONFIG =
 //Prepare Extras from AiCaptions
 internal fun prepareExtras(featuresConfig: FeaturesConfig): Bundle {
     featuresConfig.aiCaptions?.let { params ->
+        Log.d(TAG_FEATURES_CONFIG, "Add ${FEATURES_CONFIG_AI_CAPTIONS} with params: ${params}")
         return bundleOf(
             CaptionsApiService.ARG_CAPTIONS_UPLOAD_URL to params.uploadUrl,
             CaptionsApiService.ARG_CAPTIONS_TRANSCRIBE_URL to params.transcribeUrl,
@@ -120,6 +123,5 @@ internal val emptyFeaturesConfig = FeaturesConfig(
     aiCaptions = null,
     AudioBrowser(source = FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_LOCAL, params = null),
     editorConfig = null,
-    DraftConfig(option = FEATURES_CONFIG_DRAFT_CONFIG_ENABLED)
+    DraftConfig(option = FEATURES_CONFIG_DRAFT_CONFIG_ASK_TO_SAVE)
 )
-

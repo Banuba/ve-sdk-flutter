@@ -64,13 +64,68 @@ extension VeSdkFlutterPlugin {
 }
 
 extension VideoEditorConfig {
+    // Tag
+    static let featuresConfigTag = "Features Config"
+    
     // Features config params
     static let featuresConfigAudioBrowserSourceSoundstripe = "soundstripe"
     static let featuresConfigAudioBrowserSourceMubert = "mubert"
     static let featuresConfigAudioBrowserSourceLocal = "local"
 
-    static let featureConfigDraftConfigOptionEnabled = "enabled"
-    static let featureConfigDraftConfigOptionEnabledAskIfSaveNotExport = "enabledAskIfSaveNotExport"
-    static let featureConfigDraftConfigOptionEnabledSaveToDraftsByDefault = "enabledSaveToDraftsByDefault"
-    static let featureConfigDraftConfigOptionDisabled = "disabled"
+    // Draft Configs
+    static let featuresConfigDraftConfigOptionAskToSave = "askToSave"
+    static let featuresConfigDraftConfigOptionСloseOnSave = "closeOnSave"
+    static let featuresConfigDraftConfigOptionAuto = "auto"
+    static let featuresConfigDraftConfigOptionDisabled = "disabled"
+    
+    //Editor Configs
+    static let featuresConfigIsVideoAspectFillEnabled = "isVideoAspectFillEnabled"
+    
+    // Unknown params
+    static let featuresConfigUnknownParams = "Undefined"
+}
+
+public protocol ReflectedStringConvertible: CustomStringConvertible {}
+
+extension ReflectedStringConvertible {
+    public var description: String {
+        let mirror = Mirror(reflecting: self)
+        
+        var str = "\(mirror.subjectType)("
+        var first = true
+        for (label, value) in mirror.children {
+            if let label = label {
+                if first {
+                    first = false
+                } else {
+                    str += ", "
+                }
+                str += "\(label): "
+                
+                if let optionalValue = value as? OptionalProtocol {
+                    str += "\(optionalValue.logable)"
+                } else {
+                    str += "\(value)"
+                }
+            }
+        }
+        str += ")"
+        
+        return str
+    }
+}
+
+protocol OptionalProtocol {
+    var logable: Any { get }
+}
+
+extension Optional: OptionalProtocol {
+    var logable: Any {
+        switch self {
+        case .none:
+            return VideoEditorConfig.featuresConfigUnknownParams
+        case let .some(value):
+            return value
+        }
+    }
 }

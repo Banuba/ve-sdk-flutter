@@ -60,7 +60,7 @@ class VideoEditorModule: VideoEditor {
     func provideCustomViewFactory(featuresConfig: FeaturesConfig?) -> FlutterCustomViewFactory? {
         let factory: FlutterCustomViewFactory?
         
-        if featuresConfig?.audioBrowser?.source == "soundstripe"{
+        if featuresConfig?.audioBrowser.source == "soundstripe"{
             return nil
         }
 
@@ -285,10 +285,10 @@ extension VideoEditorModule: BanubaVideoEditorDelegate {
     }
 }
 
-
+// MARK: - Feature Config flow
 extension VideoEditorConfig {
     mutating func applyFeatureConfig(_ featuresConfig: FeaturesConfig) {
-        switch featuresConfig.audioBrowser?.source {
+        switch featuresConfig.audioBrowser.source {
             case VideoEditorConfig.featuresConfigAudioBrowserSourceSoundstripe:
                 AudioBrowserConfig.shared.musicSource = .soundstripe
             case VideoEditorConfig.featuresConfigAudioBrowserSourceLocal:
@@ -299,8 +299,8 @@ extension VideoEditorConfig {
                 AudioBrowserConfig.shared.musicSource = .allSources
         }
         
-        if featuresConfig.audioBrowser?.source == VideoEditorConfig.featuresConfigAudioBrowserSourceMubert {
-            guard let audioBrowserParams = featuresConfig.audioBrowser?.params else { return }
+        if featuresConfig.audioBrowser.source == VideoEditorConfig.featuresConfigAudioBrowserSourceMubert {
+            guard let audioBrowserParams = featuresConfig.audioBrowser.params else { return }
             guard let mubertLicence = audioBrowserParams.mubertLicence, let mubertToken = audioBrowserParams.mubertToken else { return }
             
             BanubaAudioBrowser.setMubertKeys(
@@ -309,32 +309,42 @@ extension VideoEditorConfig {
             )
         }
         
+        print("\(VideoEditorConfig.featuresConfigTag): Add Audio Browser with params: \(featuresConfig.audioBrowser)")
+        
         if let aiCaptions = featuresConfig.aiCaptions {
             self.captionsConfiguration.captionsUploadUrl = aiCaptions.uploadUrl
             self.captionsConfiguration.captionsTranscribeUrl = aiCaptions.transcribeUrl
             self.captionsConfiguration.apiKey = aiCaptions.apiKey
+            
+            print("\(VideoEditorConfig.featuresConfigTag): Add AI Caption with params: \(aiCaptions)")
         }
             
             
         if let aiClipping = featuresConfig.aiClipping {
             self.autoCutConfiguration.embeddingsDownloadUrl = aiClipping.audioDataUrl
             self.autoCutConfiguration.musicApiSelectedTracksUrl = aiClipping.audioTracksUrl
+            
+            print("\(VideoEditorConfig.featuresConfigTag): Add AI Clipping with params: \(aiClipping)")
         }
         
         if let editorConfig = featuresConfig.editorConfig{
             self.editorConfiguration.isVideoAspectFillEnabled = editorConfig.isVideoAspectFillEnabled ?? true
+            
+            print("\(VideoEditorConfig.featuresConfigTag): Add Editor Config with params: \(editorConfig)")
         }
         
-        switch featuresConfig.draftConfig?.option{
-            case VideoEditorConfig.featureConfigDraftConfigOptionEnabledSaveToDraftsByDefault:
+        switch featuresConfig.draftConfig.option{
+            case VideoEditorConfig.featuresConfigDraftConfigOptionAuto:
                 self.featureConfiguration.draftsConfig = .enabledSaveToDraftsByDefault
-            case VideoEditorConfig.featureConfigDraftConfigOptionEnabledAskIfSaveNotExport:
+            case VideoEditorConfig.featuresConfigDraftConfigOptionСloseOnSave:
                 self.featureConfiguration.draftsConfig = .enabledAskIfSaveNotExport
-            case VideoEditorConfig.featureConfigDraftConfigOptionDisabled:
+            case VideoEditorConfig.featuresConfigDraftConfigOptionDisabled:
                 self.featureConfiguration.draftsConfig = .disabled
             default:
                 self.featureConfiguration.draftsConfig = .enabled
         }
+        
+        print("\(VideoEditorConfig.featuresConfigTag): Add Draft Config with option: \(featuresConfig.draftConfig)")
 
         // Make customization here
         

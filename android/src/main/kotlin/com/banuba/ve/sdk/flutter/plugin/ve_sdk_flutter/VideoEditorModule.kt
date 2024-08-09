@@ -88,6 +88,10 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig) {
                 }
             }
         }
+        Log.d(
+            TAG_FEATURES_CONFIG,
+            "Add $FEATURES_CONFIG_AUDIO_BROWSER: ${featuresConfig.audioBrowser.source}"
+        )
 
         if (featuresConfig.audioBrowser.source == FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_MUBERT) {
             this.addMubertParams(featuresConfig)
@@ -105,6 +109,7 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig) {
                     soundstripeApi = get()
                 )
             }
+            Log.d(TAG_FEATURES_CONFIG, "Add ${FEATURES_CONFIG_AI_CLIPPING} with params: ${params}")
         }
 
         featuresConfig.editorConfig?.isVideoAspectFillEnabled?.let { flag ->
@@ -113,13 +118,17 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig) {
                     PlayerScaleType.CENTER_INSIDE
                 }
             }
+            Log.d(
+                TAG_FEATURES_CONFIG,
+                "Add $FEATURES_CONFIG_EDITOR_CONFIG with params: $FEATURES_CONFIG_EDITOR_CONFIG_VIDEO_ASPECT_ENABLED : $flag"
+            )
         }
 
         factory<DraftConfig> {
             when (featuresConfig.draftConfig.option) {
-                FEATURES_CONFIG_DRAFT_CONFIG_ENABLED_SAVE_TO_DRAFTS_BY_DEFAULT ->
+                FEATURES_CONFIG_DRAFT_CONFIG_AUTO ->
                     DraftConfig.ENABLED_SAVE_BY_DEFAULT
-                FEATURES_CONFIG_DRAFT_CONFIG_ENABLED_ASK_IF_SAVE_NOT_EXPORT ->
+                FEATURES_CONFIG_DRAFT_CONFIG_CLOSE_ON_SAVE ->
                     DraftConfig.ENABLED_ASK_IF_SAVE_NOT_EXPORT
                 FEATURES_CONFIG_DRAFT_CONFIG_DISABLED ->
                     DraftConfig.DISABLED
@@ -128,6 +137,10 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig) {
                 }
             }
         }
+        Log.d(
+            TAG_FEATURES_CONFIG,
+            "Add ${FEATURES_CONFIG_DRAFT_CONFIG} with option: ${featuresConfig.draftConfig.option}"
+        )
     }
 
     private fun Module.addMubertParams(featuresConfig: FeaturesConfig) {
@@ -152,6 +165,10 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig) {
                             mubertToken = mubertToken
                         )
                     }
+                    Log.d(
+                        TAG_FEATURES_CONFIG,
+                        "Add $FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_MUBERT with params: $mubertLicence, $mubertToken"
+                    )
                 } else {
                     Log.d(TAG, "Missing parameters mubertLicence and mubertToken")
                     return
