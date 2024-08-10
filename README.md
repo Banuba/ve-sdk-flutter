@@ -20,7 +20,7 @@ $ flutter pub add ve_sdk_flutter
 or specify the package in your ```pubspec.yaml``` file
 ```
 dependencies:
-    ve_sdk_flutter: ^0.0.3
+    ve_sdk_flutter: ^0.1.0
 ```
 
 ## Integration guide
