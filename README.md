@@ -20,14 +20,16 @@ $ flutter pub add ve_sdk_flutter
 or specify the package in your ```pubspec.yaml``` file
 ```
 dependencies:
-    ve_sdk_flutter: ^0.0.3
+    ve_sdk_flutter: ^0.0.4
 ```
 
 ## Integration guide
-Please follow our [Integration Guide](guide.md) to complete full integration.
+Please follow our [Integration Guide](mddocs/integration_guide.md) to complete full integration.
 
 ## Launch
 Set Banuba license token [within the app](example/lib/main.dart#L9)
+
+Set Video Editor [Features Configuration builder](example/lib/main.dart#L44). Please follow our [Features Configuration Guide](mddocs/features_configuration_guide.md) to set available options
 
 ### Android
 Run ```flutter run``` in terminal to launch the app on a device or use IDE i.e. Intellij, VC, etc. to launch the app.

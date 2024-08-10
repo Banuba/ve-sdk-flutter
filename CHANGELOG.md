@@ -12,3 +12,6 @@ Update doc
 
 ## 0.0.3
 Migrate Android to https://docs.flutter.dev/release/breaking-changes/flutter-gradle-plugin-apply
+
+## 0.0.4
+Migrate Android and IOS to the 1.36.4 and 1.36.2 versions. Add Configuration setup.
