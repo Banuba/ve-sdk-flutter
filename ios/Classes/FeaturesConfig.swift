@@ -1,6 +1,6 @@
 import Foundation
 
-struct FeaturesConfig: Codable, ReflectedStringConvertible {
+struct FeaturesConfig: Codable {
     let aiCaptions: AiCaptions?
     let aiClipping: AiClipping?
     let audioBrowser: AudioBrowser
@@ -8,32 +8,32 @@ struct FeaturesConfig: Codable, ReflectedStringConvertible {
     let draftConfig: DraftConfig
 }
 
-struct AiClipping: Codable, ReflectedStringConvertible {
+struct AiClipping: Codable {
     let audioDataUrl: String
     let audioTracksUrl: String
 }
 
-struct AiCaptions: Codable, ReflectedStringConvertible {
+struct AiCaptions: Codable {
     let uploadUrl: String
     let transcribeUrl: String
     let apiKey: String
 }
 
-struct AudioBrowser: Codable, ReflectedStringConvertible {
+struct AudioBrowser: Codable {
     let source: String
     let params: Params?
 }
 
-struct Params: Codable, ReflectedStringConvertible {
+struct Params: Codable {
     let mubertLicence: String?
     let mubertToken: String?
 }
 
-struct EditorConfig: Codable, ReflectedStringConvertible {
+struct EditorConfig: Codable {
     let isVideoAspectFillEnabled: Bool?
 }
 
-struct DraftConfig: Codable, ReflectedStringConvertible {
+struct DraftConfig: Codable {
     let option: String
 }
 

@@ -1,45 +1,31 @@
-# Features Configuration
+#  Customizations
 
-The ```Features Configuration``` allows to customize and add several Video Editor features. Next configuration options available: 
+## Usage
 
-1. [AI Captions](ai_captions_guide.md)
-2. [AI Clipping](ai_clipping_guide.md)
-3. [Audio Browser](audio_browser_guide.md). Available options included: 
-    - Soundstipe
-    - Mubert
-    - Local storage
-4. Editor screen. Available options included: 
-    - Video Aspect Fill (on/off) 
-5. Draft
-    - Ask to save
-    - Save by default
-    - Close on save
-    - Disable
+Create instance of the ```FeaturesConfig``` to apply various Video Editor configurations. 
 
-# Integration
-
-Set up the [features configuration](example/lib/main.dart#L44) before starting the Video Editor:
-
-```dart
-final _config = FeatureConfigBuilder()
-    .setAudioBrowser(AudioBrowser.fromSource(AudioBrowserSource.local))
-    .setDraftConfig(DraftConfig.fromOption(DraftOption.auto))
-    .setEditorConfig(EditorConfig(isVideoAspectFillEnabled: false))
-    .setAiClipping(AiClipping(audioDataUrl: "audioDataUrl", audioTracksUrl: "audioTracksUrl"))
-    .setAiCaptions(AiCaptions(uploadUrl: "uploadUrl", transcribeUrl: "transcribeUrl", apiKey: "apiKey"))
-    .build();
-```
-
-Pass the features configuration to the Video Editor [start method](example/lib/main.dart#L54):
+Pass the ```FeaturesConfig``` instance to any Video Editor [start method](example/lib/main.dart#L54-L112). For example:
 
 ```dart
 Future<void> _startVideoEditorInCameraMode() async {
+    final config = FeaturesConfigBuilder()
+    .setAudioBrowser(AudioBrowser.fromSource(AudioBrowserSource.local))
+    // ...
+    .build();
     try {
       dynamic exportResult =
-          await _veSdkFlutterPlugin.openCameraScreen(_licenseToken, _config);
+          await _veSdkFlutterPlugin.openCameraScreen(_licenseToken, config);
       _handleExportResult(exportResult);
     } on PlatformException catch (e) {
       _handlePlatformException(e);
     }
 }
 ```
+
+## Configurations
+
+1. [AI Captions](ai_captions_guide.md)
+2. [AI Clipping](ai_clipping_guide.md)
+3. [Audio Browser](audio_browser_guide.md)
+4. [Editor screen](editor_screen_guide.md)
+5. [Draft](draft_guide.md)

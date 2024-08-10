@@ -7,7 +7,7 @@ class FeaturesConfig {
   final EditorConfig? editorConfig;
   final DraftConfig draftConfig;
 
-  FeaturesConfig._builder(FeatureConfigBuilder builder)
+  FeaturesConfig._builder(FeaturesConfigBuilder builder)
       : aiClipping = builder._aiClipping,
         aiCaptions = builder._aiCaptions,
         audioBrowser = builder._audioBrowser,
@@ -15,7 +15,7 @@ class FeaturesConfig {
         draftConfig = builder._draftConfig;
 }
 
-class FeatureConfigBuilder {
+class FeaturesConfigBuilder {
   AiClipping? _aiClipping;
   AiCaptions? _aiCaptions;
   AudioBrowser _audioBrowser =
@@ -24,27 +24,27 @@ class FeatureConfigBuilder {
   DraftConfig _draftConfig = 
       DraftConfig.fromOption(DraftOption.askToSave);
 
-  FeatureConfigBuilder setAiClipping(aiClipping) {
+  FeaturesConfigBuilder setAiClipping(aiClipping) {
     _aiClipping = aiClipping;
     return this;
   }
 
-  FeatureConfigBuilder setAiCaptions(aiCaptions) {
+  FeaturesConfigBuilder setAiCaptions(aiCaptions) {
     _aiCaptions = aiCaptions;
     return this;
   }
 
-  FeatureConfigBuilder setAudioBrowser(audioBrowser) {
+  FeaturesConfigBuilder setAudioBrowser(audioBrowser) {
     _audioBrowser = audioBrowser;
     return this;
   }
 
-  FeatureConfigBuilder setEditorConfig(editorConfig) {
+  FeaturesConfigBuilder setEditorConfig(editorConfig) {
     _editorConfig = editorConfig;
     return this;
   }
 
-  FeatureConfigBuilder setDraftConfig(draftConfig) {
+  FeaturesConfigBuilder setDraftConfig(draftConfig) {
     _draftConfig = draftConfig;
     return this;
   }

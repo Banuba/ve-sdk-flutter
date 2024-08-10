@@ -10,14 +10,22 @@ Here is how users can interact with it:
 4. User exports, edits, or regenerates the clip. Upon completion, users have the flexibility to export the video as is, make further edits, or regenerate the clip for a fresh perspective.
 5. Regardless of the user’s editing skills, with the help of Auto Cut, everyone can get a stunning video within seconds.
 
-## Integration
+## Usage
 
-Set up ```AI Clipping``` in ```Features Config``` builder: 
+Specify instance of ```AiClipping``` in ```FeaturesConfig``` builder:
+
+> [!IMPORTANT]
+> A trial option for AI Clipping
+> Please contact your Banuba representative before use in production. 
 
 ```dart
-final _config = FeatureConfigBuilder()
-    .setAiClipping(AiClipping(
-        audioDataUrl: "https://ve-autocut-v2-ap-south-1.s3.ap-south-1.amazonaws.com/index.zip",
-        audioTracksUrl: "https://soundstripe-proxy.banuba.net/v1/songs"))
+final config = FeaturesConfigBuilder()
+    .setAiClipping(
+        AiClipping(
+            audioDataUrl: "https://ve-autocut-v2-ap-south-1.s3.ap-south-1.amazonaws.com/index.zip",
+            audioTracksUrl: "https://soundstripe-proxy.banuba.net/v1/songs"
+        )
+    )
+    ...
     .build();
 ```

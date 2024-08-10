@@ -12,15 +12,23 @@ Over 80% of videos played on mobile devices don’t have sound turned on. This m
 - Spanish
 - Portuguese
 
-## Integration
+## Usage
 
-Set up ```AI Captions``` in ```Features Config``` builder:
+Specify instance of ```AiCaptions``` in ```FeaturesConfig``` builder:
+
+> [!IMPORTANT]
+> A trial option for AI Captions
+> Please contact your Banuba representative before use in production. 
 
 ```dart
-final _config = FeatureConfigBuilder()
-    .setAiCaptions(AiCaptions(
-        uploadUrl: "https://internal.transcribe.banuba.net",
-        transcribeUrl: "https://rest.internal.transcribe.banuba.net/transcribe/v1/status",
-        apiKey: "CheiYaaphoK6eungecheec4eingeik9shaijiech"))
+final config = FeaturesConfigBuilder()
+    .setAiCaptions(
+        AiCaptions(
+            uploadUrl: "https://internal.transcribe.banuba.net",
+            transcribeUrl: "https://rest.internal.transcribe.banuba.net/transcribe/v1/status",
+            apiKey: "CheiYaaphoK6eungecheec4eingeik9shaijiech"
+        )
+    )
+    ...
     .build();
 ```
