@@ -11,6 +11,6 @@ final config = FeaturesConfigBuilder()
       .build()
 ```
 
-### Configurations
+### Options
 
-- isVideoAspectFillEnabled - Fill video aspect on the editor screen while playback. Default value is ```true```.
+- ```isVideoAspectFillEnabled``` - Fill video aspect on the editor screen while playback. Default value is ```true```.
