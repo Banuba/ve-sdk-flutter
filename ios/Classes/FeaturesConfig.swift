@@ -4,7 +4,7 @@ struct FeaturesConfig: Codable {
     let aiCaptions: AiCaptions?
     let aiClipping: AiClipping?
     let audioBrowser: AudioBrowser
-    let editorConfig: EditorConfig?
+    let editorConfig: EditorConfig
     let draftConfig: DraftConfig
 }
 
@@ -30,7 +30,7 @@ struct Params: Codable {
 }
 
 struct EditorConfig: Codable {
-    let isVideoAspectFillEnabled: Bool?
+    let enableVideoAspectFill: Bool
 }
 
 struct DraftConfig: Codable {

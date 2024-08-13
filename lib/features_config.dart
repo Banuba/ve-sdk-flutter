@@ -4,7 +4,7 @@ class FeaturesConfig {
   final AiClipping? aiClipping;
   final AiCaptions? aiCaptions;
   final AudioBrowser audioBrowser;
-  final EditorConfig? editorConfig;
+  final EditorConfig editorConfig;
   final DraftConfig draftConfig;
 
   FeaturesConfig._builder(FeaturesConfigBuilder builder)
@@ -20,8 +20,8 @@ class FeaturesConfigBuilder {
   AiCaptions? _aiCaptions;
   AudioBrowser _audioBrowser =
       AudioBrowser.fromSource(AudioBrowserSource.local);
-  EditorConfig? _editorConfig;
-  DraftConfig _draftConfig = 
+  EditorConfig _editorConfig = EditorConfig(enableVideoAspectFill: true);
+  DraftConfig _draftConfig =
       DraftConfig.fromOption(DraftOption.askToSave);
 
   FeaturesConfigBuilder setAiClipping(aiClipping) {
@@ -95,10 +95,10 @@ class AiCaptions {
 
 @immutable
 class EditorConfig {
-  final bool? isVideoAspectFillEnabled;
+  final bool? enableVideoAspectFill;
 
   const EditorConfig({
-        this.isVideoAspectFillEnabled
+        this.enableVideoAspectFill
   });
 }
 

@@ -4,10 +4,12 @@ import android.util.Log
 import org.json.JSONException
 import org.json.JSONObject
 
-internal fun parseFeaturesConfig(rawConfigParams: String?): FeaturesConfig {
-    rawConfigParams?.let { params ->
-        return try {
-            val featuresConfigObject = JSONObject(params)
+internal fun parseFeaturesConfig(rawConfigParams: String?): FeaturesConfig =
+    if (rawConfigParams.isNullOrEmpty()) {
+        emptyFeaturesConfig
+    } else {
+        try {
+            val featuresConfigObject = JSONObject(rawConfigParams)
             FeaturesConfig(
                 featuresConfigObject.extractAiClipping(),
                 featuresConfigObject.extractAiCaptions(),
@@ -18,8 +20,7 @@ internal fun parseFeaturesConfig(rawConfigParams: String?): FeaturesConfig {
         } catch (e: JSONException) {
             emptyFeaturesConfig
         }
-    } ?: return emptyFeaturesConfig
-}
+    }
 
 private fun JSONObject.extractAiClipping(): AiClipping? {
     return try {
@@ -50,54 +51,41 @@ private fun JSONObject.extractAiCaptions(): AiCaptions? {
     }
 }
 
-private fun JSONObject.extractAudioBrowser(): AudioBrowser {
-    val defaultAudioBrowser = emptyFeaturesConfig.audioBrowser
-    return try {
+private fun JSONObject.extractAudioBrowser(): AudioBrowser =
+    try {
         this.optJSONObject(FEATURES_CONFIG_AUDIO_BROWSER)?.let { json ->
             AudioBrowser(
                 source = json.optString(FEATURES_CONFIG_AUDIO_BROWSER_SOURCE),
                 params = json.optJSONObject(FEATURES_CONFIG_AUDIO_BROWSER_PARAMS)
             )
-        } ?: run {
-            defaultAudioBrowser
         }
     } catch (e: JSONException) {
         Log.d(TAG, "Missing Audio Browser params", e)
         defaultAudioBrowser
-    }
-}
+    } ?: defaultAudioBrowser
 
-private fun JSONObject.extractEditorConfig(): EditorConfig? {
-    return try {
+private fun JSONObject.extractEditorConfig(): EditorConfig =
+    try {
         this.optJSONObject(FEATURES_CONFIG_EDITOR_CONFIG)?.let { json ->
             EditorConfig(
-                // The EditorConfig may come without "isVideoAspectFillEnabled" parameter (null)
-                // from the Flutter side.
-                // If isVideoAspectFillEnabled" is null, the default value is set to true.
-                // Because this parameter is set to true by default in IOS.
-                isVideoAspectFillEnabled = json.optBoolean(
-                    FEATURES_CONFIG_EDITOR_CONFIG_VIDEO_ASPECT_ENABLED, true
+                enableVideoAspectFill = json.optBoolean(
+                    FEATURES_CONFIG_EDITOR_CONFIG_ENABLE_VIDEO_ASPECT_FILL
                 )
             )
         }
     } catch (e: JSONException) {
         Log.d(TAG, "Missing Editor Config params", e)
-        null
-    }
-}
+        defaultEditorConfig
+    } ?: defaultEditorConfig
 
-private fun JSONObject.extractDraftConfig(): DraftConfig {
-    val defaultDraftConfig = emptyFeaturesConfig.draftConfig
-    return try {
+private fun JSONObject.extractDraftConfig(): DraftConfig =
+    try {
         this.optJSONObject(FEATURES_CONFIG_DRAFT_CONFIG)?.let { json ->
             DraftConfig(
-                option = json.optString(FEATURES_CONFIG_DRAFT_CONFIG_OPTION),
+                option = json.optString(FEATURES_CONFIG_DRAFT_CONFIG_OPTION)
             )
-        } ?: run {
-            defaultDraftConfig
         }
     } catch (e: JSONException) {
         Log.d(TAG, "Missing Draft Config params", e)
         defaultDraftConfig
-    }
-}
+    } ?: defaultDraftConfig

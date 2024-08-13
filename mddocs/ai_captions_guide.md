@@ -18,7 +18,7 @@ Specify instance of ```AiCaptions``` in ```FeaturesConfig``` builder:
 
 > [!IMPORTANT]
 > A trial option for AI Captions
-> Please contact your Banuba representative before use in production. 
+> Please contact Banuba representatives before use in production. 
 
 ```dart
 final config = FeaturesConfigBuilder()

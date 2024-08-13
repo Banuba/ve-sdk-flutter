@@ -47,7 +47,7 @@ internal const val FEATURES_CONFIG_AUDIO_BROWSER_PARAMS_MUBERT_LICENCE = "mubert
 internal const val FEATURES_CONFIG_AUDIO_BROWSER_PARAMS_MUBERT_TOKEN = "mubertToken"
 
 internal const val FEATURES_CONFIG_EDITOR_CONFIG = "editorConfig"
-internal const val FEATURES_CONFIG_EDITOR_CONFIG_VIDEO_ASPECT_ENABLED = "isVideoAspectFillEnabled"
+internal const val FEATURES_CONFIG_EDITOR_CONFIG_ENABLE_VIDEO_ASPECT_FILL = "enableVideoAspectFill"
 
 internal const val FEATURES_CONFIG_DRAFT_CONFIG = "draftConfig"
 internal const val FEATURES_CONFIG_DRAFT_CONFIG_OPTION = "option"
@@ -105,23 +105,14 @@ internal const val ERR_MESSAGE_INVALID_CONFIG =
 
 //Prepare Extras from AiCaptions
 internal fun prepareExtras(featuresConfig: FeaturesConfig): Bundle {
+    val bundle = Bundle()
     featuresConfig.aiCaptions?.let { params ->
-        Log.d(TAG_FEATURES_CONFIG, "Add ${FEATURES_CONFIG_AI_CAPTIONS} with params: ${params}")
-        return bundleOf(
-            CaptionsApiService.ARG_CAPTIONS_UPLOAD_URL to params.uploadUrl,
-            CaptionsApiService.ARG_CAPTIONS_TRANSCRIBE_URL to params.transcribeUrl,
-            CaptionsApiService.ARG_API_KEY to params.apiKey
-        )
-    } ?: run {
-        return Bundle()
+        bundle.putString(CaptionsApiService.ARG_CAPTIONS_UPLOAD_URL, params.uploadUrl)
+        bundle.putString(CaptionsApiService.ARG_CAPTIONS_TRANSCRIBE_URL, params.transcribeUrl)
+        bundle.putString(CaptionsApiService.ARG_API_KEY, params.apiKey)
     }
+    return bundle
 }
 
 //Empty Feature Config
-internal val emptyFeaturesConfig = FeaturesConfig(
-    aiClipping = null,
-    aiCaptions = null,
-    AudioBrowser(source = FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_LOCAL, params = null),
-    editorConfig = null,
-    DraftConfig(option = FEATURES_CONFIG_DRAFT_CONFIG_ASK_TO_SAVE)
-)
+internal val emptyFeaturesConfig = FeaturesConfig()

@@ -288,6 +288,9 @@ extension VideoEditorModule: BanubaVideoEditorDelegate {
 // MARK: - Feature Config flow
 extension VideoEditorConfig {
     mutating func applyFeatureConfig(_ featuresConfig: FeaturesConfig) {
+        
+        print("\(VideoEditorConfig.featuresConfigTag): Add Features Config with params: \(featuresConfig)")
+        
         switch featuresConfig.audioBrowser.source {
             case VideoEditorConfig.featuresConfigAudioBrowserSourceSoundstripe:
                 AudioBrowserConfig.shared.musicSource = .soundstripe
@@ -309,30 +312,20 @@ extension VideoEditorConfig {
             )
         }
         
-        print("\(VideoEditorConfig.featuresConfigTag): Add Audio Browser with params: \(featuresConfig.audioBrowser)")
-        
         if let aiCaptions = featuresConfig.aiCaptions {
             self.captionsConfiguration.captionsUploadUrl = aiCaptions.uploadUrl
             self.captionsConfiguration.captionsTranscribeUrl = aiCaptions.transcribeUrl
             self.captionsConfiguration.apiKey = aiCaptions.apiKey
-            
-            print("\(VideoEditorConfig.featuresConfigTag): Add AI Caption with params: \(aiCaptions)")
         }
             
             
         if let aiClipping = featuresConfig.aiClipping {
             self.autoCutConfiguration.embeddingsDownloadUrl = aiClipping.audioDataUrl
             self.autoCutConfiguration.musicApiSelectedTracksUrl = aiClipping.audioTracksUrl
-            
-            print("\(VideoEditorConfig.featuresConfigTag): Add AI Clipping with params: \(aiClipping)")
         }
-        
-        if let editorConfig = featuresConfig.editorConfig{
-            self.editorConfiguration.isVideoAspectFillEnabled = editorConfig.isVideoAspectFillEnabled ?? true
-            
-            print("\(VideoEditorConfig.featuresConfigTag): Add Editor Config with params: \(editorConfig)")
-        }
-        
+
+        self.editorConfiguration.isVideoAspectFillEnabled = featuresConfig.editorConfig.enableVideoAspectFill
+
         switch featuresConfig.draftConfig.option{
             case VideoEditorConfig.featuresConfigDraftConfigOptionAuto:
                 self.featureConfiguration.draftsConfig = .enabledSaveToDraftsByDefault
@@ -343,8 +336,6 @@ extension VideoEditorConfig {
             default:
                 self.featureConfiguration.draftsConfig = .enabled
         }
-        
-        print("\(VideoEditorConfig.featuresConfigTag): Add Draft Config with option: \(featuresConfig.draftConfig)")
 
         // Make customization here
         

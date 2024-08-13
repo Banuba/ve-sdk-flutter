@@ -59,7 +59,7 @@ extension VeSdkFlutterPlugin {
     
     //Empty feature config
     var emptyFeaturesConfig : FeaturesConfig {
-        return FeaturesConfig(aiCaptions: nil, aiClipping: nil, audioBrowser: AudioBrowser(source: "local", params: nil), editorConfig: nil, draftConfig: DraftConfig(option: "enable"))
+        return FeaturesConfig(aiCaptions: nil, aiClipping: nil, audioBrowser: AudioBrowser(source: "local", params: nil), editorConfig: EditorConfig(enableVideoAspectFill: true), draftConfig: DraftConfig(option: "enable"))
     }
 }
 
@@ -79,7 +79,7 @@ extension VideoEditorConfig {
     static let featuresConfigDraftConfigOptionDisabled = "disabled"
     
     //Editor Configs
-    static let featuresConfigIsVideoAspectFillEnabled = "isVideoAspectFillEnabled"
+    static let featuresConfigEnableVideoAspectFill = "enableVideoAspectFill"
     
     // Unknown params
     static let featuresConfigUnknownParams = "Undefined"

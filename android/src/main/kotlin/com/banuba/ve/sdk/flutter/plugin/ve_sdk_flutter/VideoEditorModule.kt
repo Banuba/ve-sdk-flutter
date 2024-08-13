@@ -74,6 +74,10 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig) {
                 ioDispatcher = get(named("ioDispatcher"))
             )
         }
+        Log.d(
+            TAG_FEATURES_CONFIG,
+            "Add $INPUT_PARAM_FEATURES_CONFIG with params: ${featuresConfig}"
+        )
         this.applyFeaturesConfig(featuresConfig)
     }
 
@@ -88,10 +92,6 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig) {
                 }
             }
         }
-        Log.d(
-            TAG_FEATURES_CONFIG,
-            "Add $FEATURES_CONFIG_AUDIO_BROWSER: ${featuresConfig.audioBrowser.source}"
-        )
 
         if (featuresConfig.audioBrowser.source == FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_MUBERT) {
             this.addMubertParams(featuresConfig)
@@ -109,19 +109,12 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig) {
                     soundstripeApi = get()
                 )
             }
-            Log.d(TAG_FEATURES_CONFIG, "Add ${FEATURES_CONFIG_AI_CLIPPING} with params: ${params}")
         }
 
-        featuresConfig.editorConfig?.isVideoAspectFillEnabled?.let { flag ->
-            if (!flag) {
-                factory<PlayerScaleType>(named("editorVideoScaleType")){
+        if (!featuresConfig.editorConfig.enableVideoAspectFill) {
+            factory<PlayerScaleType>(named("editorVideoScaleType")) {
                     PlayerScaleType.CENTER_INSIDE
-                }
             }
-            Log.d(
-                TAG_FEATURES_CONFIG,
-                "Add $FEATURES_CONFIG_EDITOR_CONFIG with params: $FEATURES_CONFIG_EDITOR_CONFIG_VIDEO_ASPECT_ENABLED : $flag"
-            )
         }
 
         factory<DraftConfig> {
@@ -137,15 +130,10 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig) {
                 }
             }
         }
-        Log.d(
-            TAG_FEATURES_CONFIG,
-            "Add ${FEATURES_CONFIG_DRAFT_CONFIG} with option: ${featuresConfig.draftConfig.option}"
-        )
     }
 
     private fun Module.addMubertParams(featuresConfig: FeaturesConfig) {
         val paramsObject = featuresConfig.audioBrowser.params
-        val source = featuresConfig.audioBrowser.source
 
         if (paramsObject != null) {
             try {
@@ -165,20 +153,16 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig) {
                             mubertToken = mubertToken
                         )
                     }
-                    Log.d(
-                        TAG_FEATURES_CONFIG,
-                        "Add $FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_MUBERT with params: $mubertLicence, $mubertToken"
-                    )
                 } else {
-                    Log.d(TAG, "Missing parameters mubertLicence and mubertToken")
+                    Log.w(TAG, "Missing parameters mubertLicence and mubertToken")
                     return
                 }
             } catch (e: JSONException) {
-                Log.d(TAG, "Error parsing Params of AudioBrowser")
+                Log.w(TAG, "Error parsing Params of AudioBrowser")
                 return
             }
         } else {
-            Log.d(TAG, "Missing Params of AudioBrowser")
+            Log.w(TAG, "Missing Params in AudioBrowser")
             return
         }
     }

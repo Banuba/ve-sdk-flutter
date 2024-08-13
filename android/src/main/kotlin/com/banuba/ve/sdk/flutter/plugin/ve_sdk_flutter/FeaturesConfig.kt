@@ -3,11 +3,11 @@ package com.banuba.ve.sdk.flutter.plugin.ve_sdk_flutter
 import org.json.JSONObject
 
 internal data class FeaturesConfig(
-    val aiClipping: AiClipping?,
-    val aiCaptions: AiCaptions?,
-    val audioBrowser: AudioBrowser,
-    val editorConfig: EditorConfig?,
-    val draftConfig: DraftConfig
+    val aiClipping: AiClipping? = null,
+    val aiCaptions: AiCaptions? = null,
+    val audioBrowser: AudioBrowser = defaultAudioBrowser,
+    val editorConfig: EditorConfig = defaultEditorConfig,
+    val draftConfig: DraftConfig = defaultDraftConfig
 )
 
 internal data class AiClipping(
@@ -26,10 +26,23 @@ internal data class AudioBrowser(
     val params: JSONObject?
 )
 
+internal val defaultAudioBrowser = AudioBrowser(
+    source = FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_LOCAL,
+    params = null
+)
+
 internal data class EditorConfig(
-    val isVideoAspectFillEnabled: Boolean?
+    val enableVideoAspectFill: Boolean
+)
+
+internal val defaultEditorConfig = EditorConfig(
+    enableVideoAspectFill = true
 )
 
 internal data class DraftConfig(
     val option: String
+)
+
+internal val defaultDraftConfig = DraftConfig(
+    option = "askToSave"
 )

@@ -6,11 +6,11 @@ Specify instance of ```EditorConfig``` in ```FeaturesConfig``` builder:
 
 ```dart
 final config = FeaturesConfigBuilder()
-      .setEditorConfig(EditorConfig(isVideoAspectFillEnabled: false))
+      .setEditorConfig(EditorConfig(enableVideoAspectFill: false))
       ...
       .build()
 ```
 
 ### Options
 
-- ```isVideoAspectFillEnabled``` - Fill video aspect on the editor screen while playback. Default value is ```true```.
+- ```enableVideoAspectFill``` - Fill video aspect on the editor screen while playback. Default value is ```true```.

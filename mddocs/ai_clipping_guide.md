@@ -16,7 +16,7 @@ Specify instance of ```AiClipping``` in ```FeaturesConfig``` builder:
 
 > [!IMPORTANT]
 > A trial option for AI Clipping
-> Please contact your Banuba representative before use in production. 
+> Please contact Banuba representatives before use in production. 
 
 ```dart
 final config = FeaturesConfigBuilder()
