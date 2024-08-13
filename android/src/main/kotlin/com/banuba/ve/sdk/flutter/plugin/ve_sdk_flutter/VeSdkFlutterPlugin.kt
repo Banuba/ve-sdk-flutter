@@ -19,11 +19,14 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry.ActivityResultListener
 import java.io.File
+import android.os.Bundle
+import org.json.JSONObject
+import org.json.JSONException
+import androidx.core.os.bundleOf
+import com.banuba.sdk.veui.data.captions.CaptionsApiService
 
 class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, ActivityResultListener {
     companion object {
-        private const val TAG = "VideoEditorPlugin"
-
         private const val VIDEO_EDITOR_REQUEST_CODE = 1000
     }
 
@@ -60,6 +63,8 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
             return
         }
 
+        val featuresConfig = parseFeaturesConfig(call.argument<String>(INPUT_PARAM_FEATURES_CONFIG))
+
         val screen = call.argument<String>(INPUT_PARAM_SCREEN)
         if (screen.isNullOrEmpty()) {
             channelResult?.error(ERR_INVALID_PARAMS, ERR_MESSAGE_MISSING_SCREEN, null)
@@ -68,7 +73,7 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
 
         when (methodName) {
             METHOD_START -> {
-                initialize(licenseToken) { activity ->
+                initialize(licenseToken, featuresConfig) { activity ->
                     val intent = when (screen) {
                         SCREEN_CAMERA -> {
                             Log.d(TAG, "Start video editor from camera screen")
@@ -82,7 +87,8 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
                                 pictureInPictureConfig = PipConfig(
                                     video = Uri.EMPTY,
                                     openPipSettings = false
-                                )
+                                ),
+                                extras = prepareExtras(featuresConfig)
                             )
                         }
 
@@ -113,7 +119,8 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
                                 pictureInPictureConfig = PipConfig(
                                     video = videoUri,
                                     openPipSettings = false
-                                )
+                                ),
+                                extras = prepareExtras(featuresConfig)
                             )
                         }
 
@@ -139,7 +146,8 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
                                 audioTrackData = null,
                                 // set Trimmer video configuration
                                 predefinedVideos = videoSources.map { Uri.fromFile(File(it)) }
-                                    .toTypedArray()
+                                    .toTypedArray(),
+                                extras = prepareExtras(featuresConfig)
                             )
                         }
 
@@ -213,6 +221,7 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
 
     private fun initialize(
         token: String,
+        featuresConfig: FeaturesConfig,
         block: (Activity) -> Unit
     ) {
         val activity = currentActivity
@@ -235,11 +244,10 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
             )
             return
         }
-
         if (videoEditorModule == null) {
             // Initialize video editor sdk dependencies
             videoEditorModule = VideoEditorModule().apply {
-                initialize(activity.application)
+                initialize(activity.application, featuresConfig)
             }
         }
 

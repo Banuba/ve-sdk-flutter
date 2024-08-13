@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ve_sdk_flutter/export_result.dart';
+import 'package:ve_sdk_flutter/features_config.dart';
 import 'package:ve_sdk_flutter/ve_sdk_flutter.dart';
-
 
 const _licenseToken = SET UP YOUR LICENSE TOKEN;
 
@@ -41,8 +41,16 @@ class _HomePageState extends State<HomePage> {
   String _errorMessage = '';
 
   Future<void> _startVideoEditorInCameraMode() async {
+
+    // Specify your Config params in the builder below
+
+    final config = FeaturesConfigBuilder()
+      .setAiCaptions(AiCaptions(uploadUrl: "uploadUrl", transcribeUrl: "transcribeUrl", apiKey: "apiKey"))
+      // ...
+      .build();
     try {
-      dynamic exportResult = await _veSdkFlutterPlugin.openCameraScreen(_licenseToken);
+      dynamic exportResult =
+          await _veSdkFlutterPlugin.openCameraScreen(_licenseToken, config);
       _handleExportResult(exportResult);
     } on PlatformException catch (e) {
       _handlePlatformException(e);
@@ -50,6 +58,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _startVideoEditorInPipMode() async {
+
+    // Specify your Config params in the builder below
+
+    final config = FeaturesConfigBuilder()
+      .setAudioBrowser(AudioBrowser.fromSource(AudioBrowserSource.local))
+      // ...
+      .build();
     final ImagePicker picker = ImagePicker();
     final videoFile = await picker.pickVideo(source: ImageSource.gallery);
 
@@ -60,7 +75,8 @@ class _HomePageState extends State<HomePage> {
     }
 
     try {
-      dynamic exportResult = await _veSdkFlutterPlugin.openPipScreen(_licenseToken, sourceVideoFile);
+      dynamic exportResult = await _veSdkFlutterPlugin.openPipScreen(
+          _licenseToken, config, sourceVideoFile);
       _handleExportResult(exportResult);
     } on PlatformException catch (e) {
       _handlePlatformException(e);
@@ -68,6 +84,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _startVideoEditorInTrimmerMode() async {
+
+    // Specify your Config params in the builder below
+
+    final config = FeaturesConfigBuilder()
+      .setDraftConfig(DraftConfig.fromOption(DraftOption.auto))
+      //...
+      .build();
     final ImagePicker picker = ImagePicker();
     final videoFiles = await picker.pickMultipleMedia(imageQuality: 3);
 
@@ -79,7 +102,8 @@ class _HomePageState extends State<HomePage> {
     final sources = videoFiles.map((f) => f.path).toList();
 
     try {
-      dynamic exportResult = await _veSdkFlutterPlugin.openTrimmerScreen(_licenseToken, sources);
+      dynamic exportResult = await _veSdkFlutterPlugin.openTrimmerScreen(
+          _licenseToken, config, sources);
       _handleExportResult(exportResult);
     } on PlatformException catch (e) {
       _handlePlatformException(e);

@@ -24,7 +24,7 @@ dependencies:
 ```
 
 ## Integration guide
-Please follow our [Integration Guide](guide.md) to complete full integration.
+Please follow our [Integration Guide](mddocs/integration_guide.md) to complete full integration.
 
 ## Launch
 Set Banuba license token [within the app](example/lib/main.dart#L9)
