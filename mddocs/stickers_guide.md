@@ -4,7 +4,7 @@ Stickers are interactive objects (gif images) that can be added to the video rec
 
 ## Giphy
 
-Video Editor SDK/Flutter plugin has built in integration with [Giphy service](https://developers.giphy.com/docs/api/) for loading stickers.
+Video Editor uses [Giphy service](https://developers.giphy.com/docs/api/) for loading stickers.
 Any sticker effect is a GIF file.
 
 ## Usage
