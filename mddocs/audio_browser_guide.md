@@ -1,4 +1,4 @@
-# Audio Browser Убрать Underscore for config
+# Audio Browser
 
 ```Audio Browser``` - a specific module and set of screens that include the built-in support of browsing and applying audio content within the Video Editor. The user does not leave the SDK while using audio.
 
