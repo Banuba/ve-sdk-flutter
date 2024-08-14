@@ -1,8 +1,8 @@
-# Audio Browser Убрать Underscore for config
+# Audio Browser
 
 ```Audio Browser``` - a specific module and set of screens that include the built-in support of browsing and applying audio content within the Video Editor. The user does not leave the SDK while using audio.
 
-> [!IMPORTANT]
+> [!NOTE]
 > Banuba does not deliver audio content for the Video Editor SDK.
 The Video Editor can apply audio files stored on the device. The SDK is not responsible for downloading audio content except for [Soundstripe](https://www.soundstripe.com/) and [Mubert](https://mubert.com/).
 
@@ -21,7 +21,7 @@ It supports 3 sources for audio content:
 
 [Soundstripe](https://www.soundstripe.com/) is a service for providing the best audio tracks for creating video content. Your users will be able to add audio tracks while recording or editing video content.
 
-> [!INFO]
+> [!NOTE]
 > The feature is not activated by default.
 > Please contact Banuba representatives to know more about using this feature.
 
@@ -38,7 +38,7 @@ final config = FeaturesConfigBuilder()
 
 [Mubert](https://mubert.com/) is a service that delivers Generative AI Music. Your users will be able to add audio tracks while recording or editing video content.
 
-> [!INFO]
+> [!NOTE]
 > Please contact Mubert representatives to request keys.
 
 Specify the instance of ```AudioBrowser``` in ```FeaturesConfig``` builder with Mubert source and params:
