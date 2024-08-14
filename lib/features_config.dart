@@ -6,13 +6,15 @@ class FeaturesConfig {
   final AudioBrowser audioBrowser;
   final EditorConfig editorConfig;
   final DraftConfig draftConfig;
+  final GifPickerConfig? gifPickerConfig;
 
   FeaturesConfig._builder(FeaturesConfigBuilder builder)
       : aiClipping = builder._aiClipping,
         aiCaptions = builder._aiCaptions,
         audioBrowser = builder._audioBrowser,
         editorConfig = builder._editorConfig,
-        draftConfig = builder._draftConfig;
+        draftConfig = builder._draftConfig,
+        gifPickerConfig = builder._gifPickerConfig;
 }
 
 class FeaturesConfigBuilder {
@@ -20,9 +22,11 @@ class FeaturesConfigBuilder {
   AiCaptions? _aiCaptions;
   AudioBrowser _audioBrowser =
       AudioBrowser.fromSource(AudioBrowserSource.local);
-  EditorConfig _editorConfig = EditorConfig(enableVideoAspectFill: true);
+  EditorConfig _editorConfig =
+      EditorConfig(enableVideoAspectFill: true);
   DraftConfig _draftConfig =
       DraftConfig.fromOption(DraftOption.askToSave);
+  GifPickerConfig? _gifPickerConfig;
 
   FeaturesConfigBuilder setAiClipping(aiClipping) {
     _aiClipping = aiClipping;
@@ -46,6 +50,11 @@ class FeaturesConfigBuilder {
 
   FeaturesConfigBuilder setDraftConfig(draftConfig) {
     _draftConfig = draftConfig;
+    return this;
+  }
+
+  FeaturesConfigBuilder setGifPickerConfig(gifPickerConfig) {
+    _gifPickerConfig = gifPickerConfig;
     return this;
   }
 
@@ -113,4 +122,11 @@ class DraftConfig {
   factory DraftConfig.fromOption(DraftOption option) {
     return DraftConfig._(option: option);
   }
+}
+
+@immutable
+class GifPickerConfig {
+  final String giphyApiKey;
+
+  const GifPickerConfig({required this.giphyApiKey});
 }

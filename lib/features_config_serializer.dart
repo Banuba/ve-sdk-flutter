@@ -8,7 +8,8 @@ extension FeatureConfigSerializer on FeaturesConfig {
       'aiCaptions': aiCaptions?._serialize(),
       'audioBrowser': audioBrowser._serialize(),
       'editorConfig': editorConfig._serialize(),
-      'draftConfig': draftConfig._serialize()
+      'draftConfig': draftConfig._serialize(),
+      'gifPickerConfig': gifPickerConfig?._serialize()
     };
     return jsonEncode(configMap);
   }
@@ -55,5 +56,11 @@ extension DraftConfigSerializer on DraftConfig {
     return {
       'option': option.name,
     };
+  }
+}
+
+extension GifPickerConfigSerializer on GifPickerConfig {
+  Map<String, dynamic> _serialize() {
+    return {'giphyApiKey': giphyApiKey};
   }
 }

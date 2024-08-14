@@ -7,7 +7,8 @@ internal data class FeaturesConfig(
     val aiCaptions: AiCaptions? = null,
     val audioBrowser: AudioBrowser = defaultAudioBrowser,
     val editorConfig: EditorConfig = defaultEditorConfig,
-    val draftConfig: DraftConfig = defaultDraftConfig
+    val draftConfig: DraftConfig = defaultDraftConfig,
+    val gifPickerConfig: GifPickerConfig? = null,
 )
 
 internal data class AiClipping(
@@ -45,4 +46,8 @@ internal data class DraftConfig(
 
 internal val defaultDraftConfig = DraftConfig(
     option = "askToSave"
+)
+
+internal data class GifPickerConfig(
+    val giphyApiKey: String
 )

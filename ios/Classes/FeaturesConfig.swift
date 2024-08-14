@@ -6,6 +6,7 @@ struct FeaturesConfig: Codable {
     let audioBrowser: AudioBrowser
     let editorConfig: EditorConfig
     let draftConfig: DraftConfig
+    let gifPickerConfig: GifPickerConfig?
 }
 
 struct AiClipping: Codable {
@@ -35,5 +36,9 @@ struct EditorConfig: Codable {
 
 struct DraftConfig: Codable {
     let option: String
+}
+
+struct GifPickerConfig: Codable {
+    let giphyApiKey: String
 }
 

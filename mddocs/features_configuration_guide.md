@@ -29,3 +29,4 @@ Future<void> _startVideoEditorInCameraMode() async {
 3. [Audio Browser](audio_browser_guide.md)
 4. [Editor screen](editor_screen_guide.md)
 5. [Draft](draft_guide.md)
+6. [Stickers](stickers_guide.md)

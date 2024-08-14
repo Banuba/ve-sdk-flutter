@@ -15,7 +15,8 @@ internal fun parseFeaturesConfig(rawConfigParams: String?): FeaturesConfig =
                 featuresConfigObject.extractAiCaptions(),
                 featuresConfigObject.extractAudioBrowser(),
                 featuresConfigObject.extractEditorConfig(),
-                featuresConfigObject.extractDraftConfig()
+                featuresConfigObject.extractDraftConfig(),
+                featuresConfigObject.extractGifPickerConfig()
             )
         } catch (e: JSONException) {
             emptyFeaturesConfig
@@ -31,7 +32,7 @@ private fun JSONObject.extractAiClipping(): AiClipping? {
             )
         }
     } catch (e: JSONException) {
-        Log.d(TAG, "Missing AiClipping params", e)
+        Log.w(TAG, "Missing AiClipping params", e)
         null
     }
 }
@@ -46,7 +47,7 @@ private fun JSONObject.extractAiCaptions(): AiCaptions? {
             )
         }
     } catch (e: JSONException) {
-        Log.d(TAG, "Missing AiCaptions params", e)
+        Log.w(TAG, "Missing AiCaptions params", e)
         null
     }
 }
@@ -60,7 +61,7 @@ private fun JSONObject.extractAudioBrowser(): AudioBrowser =
             )
         }
     } catch (e: JSONException) {
-        Log.d(TAG, "Missing Audio Browser params", e)
+        Log.w(TAG, "Missing Audio Browser params", e)
         defaultAudioBrowser
     } ?: defaultAudioBrowser
 
@@ -74,7 +75,7 @@ private fun JSONObject.extractEditorConfig(): EditorConfig =
             )
         }
     } catch (e: JSONException) {
-        Log.d(TAG, "Missing Editor Config params", e)
+        Log.w(TAG, "Missing Editor Config params", e)
         defaultEditorConfig
     } ?: defaultEditorConfig
 
@@ -86,6 +87,19 @@ private fun JSONObject.extractDraftConfig(): DraftConfig =
             )
         }
     } catch (e: JSONException) {
-        Log.d(TAG, "Missing Draft Config params", e)
+        Log.w(TAG, "Missing Draft Config params", e)
         defaultDraftConfig
     } ?: defaultDraftConfig
+
+private fun JSONObject.extractGifPickerConfig(): GifPickerConfig? {
+    return try {
+        this.optJSONObject(FEATURES_CONFIG_GIF_PICKER_CONFIG)?.let { json ->
+            GifPickerConfig(
+                giphyApiKey = json.optString(FEATURES_CONFIG_GIF_PICKER_CONFIG_API_KEY)
+            )
+        }
+    } catch (e: JSONException) {
+        Log.w(TAG, "Missing Gif Picker Config params", e)
+        null
+    }
+}

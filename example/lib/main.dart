@@ -45,7 +45,7 @@ class _HomePageState extends State<HomePage> {
     // Specify your Config params in the builder below
 
     final config = FeaturesConfigBuilder()
-      .setAiCaptions(AiCaptions(uploadUrl: "uploadUrl", transcribeUrl: "transcribeUrl", apiKey: "apiKey"))
+      // .setAiCaptions(AiCaptions(uploadUrl: , transcribeUrl: , apiKey: ))
       // ...
       .build();
     try {
@@ -62,7 +62,7 @@ class _HomePageState extends State<HomePage> {
     // Specify your Config params in the builder below
 
     final config = FeaturesConfigBuilder()
-      .setAudioBrowser(AudioBrowser.fromSource(AudioBrowserSource.local))
+      // .setAudioBrowser(AudioBrowser.fromSource(AudioBrowserSource.)
       // ...
       .build();
     final ImagePicker picker = ImagePicker();
@@ -88,7 +88,7 @@ class _HomePageState extends State<HomePage> {
     // Specify your Config params in the builder below
 
     final config = FeaturesConfigBuilder()
-      .setDraftConfig(DraftConfig.fromOption(DraftOption.auto))
+      // .setDraftConfig(DraftConfig.fromOption(DraftOption.))
       //...
       .build();
     final ImagePicker picker = ImagePicker();

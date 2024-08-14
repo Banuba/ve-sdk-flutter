@@ -336,6 +336,10 @@ extension VideoEditorConfig {
             default:
                 self.featureConfiguration.draftsConfig = .enabled
         }
+        
+        if let gifPickerConfig = featuresConfig.gifPickerConfig {
+            self.gifPickerConfiguration.giphyAPIKey = gifPickerConfig.giphyApiKey
+        }
 
         // Make customization here
         
