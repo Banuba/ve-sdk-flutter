@@ -20,6 +20,7 @@ import com.banuba.sdk.audiobrowser.autocut.AutoCutTrackLoaderSoundstripe
 import com.banuba.sdk.core.data.autocut.AutoCutTrackLoader
 import com.banuba.sdk.core.domain.DraftConfig
 import com.banuba.sdk.ve.data.autocut.AutoCutConfig
+import com.banuba.sdk.veui.data.stickers.GifPickerConfigurations
 import com.banuba.sdk.audiobrowser.domain.SoundstripeProvider
 import com.banuba.sdk.audiobrowser.data.MubertApiConfig
 import org.koin.android.ext.koin.androidContext
@@ -128,6 +129,14 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig) {
                 else -> {
                     DraftConfig.ENABLED_ASK_TO_SAVE
                 }
+            }
+        }
+
+        featuresConfig.gifPickerConfig?.let { params ->
+            factory<GifPickerConfigurations> {
+                GifPickerConfigurations(
+                    giphyApiKey = params.giphyApiKey
+                )
             }
         }
     }

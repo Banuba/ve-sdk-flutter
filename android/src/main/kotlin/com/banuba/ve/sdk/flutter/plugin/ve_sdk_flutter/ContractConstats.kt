@@ -57,6 +57,9 @@ internal const val FEATURES_CONFIG_DRAFT_CONFIG_CLOSE_ON_SAVE = "closeOnSave"
 internal const val FEATURES_CONFIG_DRAFT_CONFIG_AUTO = "auto"
 internal const val FEATURES_CONFIG_DRAFT_CONFIG_DISABLED = "disabled"
 
+internal const val FEATURES_CONFIG_GIF_PICKER_CONFIG = "gifPickerConfig"
+internal const val FEATURES_CONFIG_GIF_PICKER_CONFIG_API_KEY = "giphyApiKey"
+
 // Screens
 internal const val SCREEN_CAMERA = "camera"
 internal const val SCREEN_PIP = "pip"
