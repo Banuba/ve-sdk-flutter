@@ -17,3 +17,6 @@ Migrate Android to https://docs.flutter.dev/release/breaking-changes/flutter-gra
 - Supports Video Editor Android 1.36.4
 - Supports Video Editor IOS 1.36.2
 - Introduce ```FeaturesConfig``` for customizing Video Editor SDK
+
+## 0.2.0
+- Add ```GifPickerConfig``` to ```FeaturesConfig```
