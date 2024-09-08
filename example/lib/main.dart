@@ -45,8 +45,8 @@ class _HomePageState extends State<HomePage> {
     // Specify your Config params in the builder below
 
     final config = FeaturesConfigBuilder()
-      // .setAiCaptions(...)
-      // ...
+      .setDraftsConfig(DraftsConfig.fromOption(DraftsOption.auto))
+      .setAudioBrowser(AudioBrowser.fromSource(AudioBrowserSource.soundstripe))
       .build();
     try {
       dynamic exportResult =

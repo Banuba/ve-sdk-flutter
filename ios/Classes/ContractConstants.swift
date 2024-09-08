@@ -69,7 +69,7 @@ extension VeSdkFlutterPlugin {
             editorConfig: EditorConfig(
                 enableVideoAspectFill: true
             ),
-            draftConfig: DraftConfig(
+            draftsConfig: DraftsConfig(
                 option: "enable"
             ),
             gifPickerConfig: nil

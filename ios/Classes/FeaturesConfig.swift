@@ -1,11 +1,13 @@
 import Foundation
+import BanubaVideoEditorSDK
+import BanubaAudioBrowserSDK
 
 struct FeaturesConfig: Codable {
     let aiCaptions: AiCaptions?
     let aiClipping: AiClipping?
     let audioBrowser: AudioBrowser
     let editorConfig: EditorConfig
-    let draftConfig: DraftConfig
+    let draftsConfig: DraftsConfig
     let gifPickerConfig: GifPickerConfig?
 }
 
@@ -23,6 +25,19 @@ struct AiCaptions: Codable {
 struct AudioBrowser: Codable {
     let source: String
     let params: Params?
+    
+    public func value() -> AudioBrowserMusicSource{
+        switch source {
+            case VideoEditorConfig.featuresConfigAudioBrowserSourceSoundstripe:
+                return .soundstripe
+            case VideoEditorConfig.featuresConfigAudioBrowserSourceLocal:
+                return .localStorageWithMyFiles
+            case VideoEditorConfig.featuresConfigAudioBrowserSourceMubert:
+                return .mubert
+            default:
+                return .allSources
+        }
+    }
 }
 
 struct Params: Codable {
@@ -34,8 +49,21 @@ struct EditorConfig: Codable {
     let enableVideoAspectFill: Bool
 }
 
-struct DraftConfig: Codable {
+struct DraftsConfig: Codable {
     let option: String
+    
+    public func value() -> DraftsFeatureConfig {
+        switch option {
+            case VideoEditorConfig.featuresConfigDraftConfigOptionAuto:
+                return .enabledSaveToDraftsByDefault
+            case VideoEditorConfig.featuresConfigDraftConfigOptionСloseOnSave:
+                return .enabledAskIfSaveNotExport
+            case VideoEditorConfig.featuresConfigDraftConfigOptionDisabled:
+                return .disabled
+            default:
+                return .enabled
+        }
+    }
 }
 
 struct GifPickerConfig: Codable {
