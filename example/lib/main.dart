@@ -180,7 +180,7 @@ class _HomePageState extends State<HomePage> {
                       backgroundColor: Colors.blueAccent,
                       shadowColor: Colors.blueGrey,
                       elevation: 10,
-                      fixedSize: const Size(280, 50),
+                      fixedSize: const Size(300, 50),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
@@ -200,7 +200,7 @@ class _HomePageState extends State<HomePage> {
                       backgroundColor: Colors.blueAccent,
                       shadowColor: Colors.blueGrey,
                       elevation: 10,
-                      fixedSize: const Size(280, 50),
+                      fixedSize: const Size(300, 50),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
@@ -220,7 +220,7 @@ class _HomePageState extends State<HomePage> {
                       backgroundColor: Colors.blueAccent,
                       shadowColor: Colors.blueGrey,
                       elevation: 10,
-                      fixedSize: const Size(280, 50),
+                      fixedSize: const Size(300, 50),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
