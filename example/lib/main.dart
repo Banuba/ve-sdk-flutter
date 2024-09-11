@@ -138,84 +138,104 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Banuba Video Editor Flutter plugin"),
+        backgroundColor: Colors.black38,
+        centerTitle: true,
+        title: const Text("Video Editor Flutter plugin"),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Padding(
-              padding: EdgeInsets.all(15.0),
-              child: Text(
-                'The plugin demonstrates how to use Banuba Video Editor',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 17.0,
+            const Expanded(
+              flex: 1,
+              child: Center(
+                child: Padding(
+                  padding: EdgeInsets.all(15.0),
+                  child: Text(
+                    'The plugin demonstrates how to use Banuba Video Editor',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 17.0,
+                    ),
+                  ),
                 ),
               ),
             ),
-            Visibility(
-              visible: _errorMessage.isNotEmpty,
-              child: Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Text(
-                  _errorMessage,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 17.0, color: Colors.red),
-                ),
+            Expanded(
+              flex: 2,
+              child: Column(
+                children: [
+                  Visibility(
+                    visible: _errorMessage.isNotEmpty,
+                    child: Text(
+                      _errorMessage,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontSize: 17.0, color: Colors.red),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.blueAccent,
+                      shadowColor: Colors.blueGrey,
+                      elevation: 10,
+                      fixedSize: const Size(300, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
+                    onPressed: () => _startVideoEditorInCameraMode(),
+                    child: const Text(
+                      'Open Video Editor - Camera screen',
+                      style: TextStyle(
+                        fontSize: 14.0,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.blueAccent,
+                      shadowColor: Colors.blueGrey,
+                      elevation: 10,
+                      fixedSize: const Size(300, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
+                    onPressed: () => _startVideoEditorInPipMode(),
+                    child: const Text(
+                      'Open Video Editor - PIP screen ',
+                      style: TextStyle(
+                        fontSize: 14.0,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.blueAccent,
+                      shadowColor: Colors.blueGrey,
+                      elevation: 10,
+                      fixedSize: const Size(300, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
+                    onPressed: () => _startVideoEditorInTrimmerMode(),
+                    child: const Text(
+                      'Open Video Editor - Trimmer screen',
+                      style: TextStyle(
+                        fontSize: 14.0,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ),
-            const SizedBox(height: 24),
-            MaterialButton(
-              color: Colors.blue,
-              textColor: Colors.white,
-              disabledColor: Colors.grey,
-              disabledTextColor: Colors.black,
-              padding: const EdgeInsets.all(12.0),
-              splashColor: Colors.blueAccent,
-              minWidth: 240,
-              onPressed: () => _startVideoEditorInCameraMode(),
-              child: const Text(
-                'Open Video Editor - Camera screen',
-                style: TextStyle(
-                  fontSize: 14.0,
-                ),
-              ),
-            ),
-            const SizedBox(height: 24),
-            MaterialButton(
-              color: Colors.blue,
-              textColor: Colors.white,
-              disabledColor: Colors.grey,
-              disabledTextColor: Colors.black,
-              padding: const EdgeInsets.all(12.0),
-              splashColor: Colors.blueAccent,
-              minWidth: 240,
-              onPressed: () => _startVideoEditorInPipMode(),
-              child: const Text(
-                'Open Video Editor - PIP screen ',
-                style: TextStyle(
-                  fontSize: 14.0,
-                ),
-              ),
-            ),
-            const SizedBox(height: 24),
-            MaterialButton(
-              color: Colors.blue,
-              textColor: Colors.white,
-              disabledColor: Colors.grey,
-              disabledTextColor: Colors.black,
-              padding: const EdgeInsets.all(12.0),
-              splashColor: Colors.blueAccent,
-              minWidth: 240,
-              onPressed: () => _startVideoEditorInTrimmerMode(),
-              child: const Text(
-                'Open Video Editor - Trimmer screen',
-                style: TextStyle(
-                  fontSize: 14.0,
-                ),
-              ),
-            ),
+            )
           ],
         ),
       ),
