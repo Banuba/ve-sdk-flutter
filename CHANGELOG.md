@@ -20,3 +20,6 @@ Migrate Android to https://docs.flutter.dev/release/breaking-changes/flutter-gra
 
 ## 0.2.0
 - Add ```GifPickerConfig``` to ```FeaturesConfig```
+
+## 0.3.0
+- Update access pass 
