@@ -13,7 +13,9 @@ It supports 3 sources for audio content:
 
 2. Mubert - includes built in integration with Mubert API.
 
-3. My Library - includes audio content available on the user's device
+3. Banuba FM - includes built in integration with Banuba FM.
+
+4. My Library - includes audio content available on the user's device
 
 ## Usage
 
