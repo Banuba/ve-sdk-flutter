@@ -15,10 +15,10 @@ import com.banuba.sdk.arcloud.data.source.ArEffectsRepositoryProvider
 import com.banuba.sdk.core.data.TrackData
 import com.banuba.sdk.core.ui.ContentFeatureProvider
 import com.banuba.sdk.playback.PlayerScaleType
-import com.banuba.sdk.audiobrowser.autocut.AutoCutTrackLoaderSoundstripe
 import com.banuba.sdk.core.data.autocut.AutoCutTrackLoader
-import com.banuba.sdk.core.domain.DraftConfig
 import com.banuba.sdk.ve.data.autocut.AutoCutConfig
+import com.banuba.sdk.audiobrowser.soundstripe.AutoCutSoundstripeTrackLoader
+import com.banuba.sdk.core.domain.DraftConfig
 import com.banuba.sdk.veui.data.stickers.GifPickerConfigurations
 import com.banuba.sdk.audiobrowser.data.MubertApiConfig
 import org.koin.android.ext.koin.androidContext
@@ -119,7 +119,7 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig) {
                 )
             }
             this.single<AutoCutTrackLoader> {
-                AutoCutTrackLoaderSoundstripe(
+                AutoCutSoundstripeTrackLoader(
                     soundstripeApi = get()
                 )
             }

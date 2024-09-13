@@ -57,6 +57,23 @@ final config = FeaturesConfigBuilder()
     .build();
 ```
 
+### Banuba FM
+
+Over 35 GB of royalty-free tracks available from within the Video Editor SDK. Your users could check them out through an inbuilt music browser and legally include them in their content.
+
+> [!NOTE]
+> The feature is not activated by default.
+> Please contact Banuba representatives to know more about using this feature.
+
+Specify the instance of ```AudioBrowser``` in ```FeaturesConfig``` builder with Banuba FM source and params:
+
+```dart
+final config = FeaturesConfigBuilder()
+    .setAudioBrowser(AudioBrowser.fromSource(AudioBrowserSource.banubaFm))
+    ...
+    .build();
+```
+
 ### My Library 
 
 ```My Library``` is a default implementation in AudioBrowser . It allows the user to apply audio that is available on a device.
