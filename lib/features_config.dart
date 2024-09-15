@@ -63,7 +63,7 @@ class FeaturesConfigBuilder {
   }
 }
 
-enum AudioBrowserSource { soundstripe, local, mubert, banubaFm }
+enum AudioBrowserSource { soundstripe, local, mubert, banubaMusic }
 
 @immutable
 class AudioBrowser {

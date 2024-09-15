@@ -85,7 +85,7 @@ extension VideoEditorConfig {
     static let featuresConfigAudioBrowserSourceSoundstripe = "soundstripe"
     static let featuresConfigAudioBrowserSourceMubert = "mubert"
     static let featuresConfigAudioBrowserSourceLocal = "local"
-    static let featuresConfigAudioBrowserSourceBanubaFm = "banubaFm"
+    static let featuresConfigAudioBrowserSourceBanubaMusic = "banubaMusic"
 
     // Draft Configs
     static let featuresConfigDraftConfigOptionAskToSave = "askToSave"
