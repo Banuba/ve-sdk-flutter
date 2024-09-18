@@ -28,5 +28,5 @@ Migrate Android to https://docs.flutter.dev/release/breaking-changes/flutter-gra
 - Supports Video Editor SDK 1.37.0
 - Add ```BanubaMusic``` to ```AudioBrowser``` config
 
-## 0.4.1 
+## 0.5.0 
 - Minor fixes
