@@ -5,7 +5,7 @@ class FeaturesConfig {
   final AiCaptions? aiCaptions;
   final AudioBrowser audioBrowser;
   final EditorConfig editorConfig;
-  final DraftConfig draftConfig;
+  final DraftsConfig draftsConfig;
   final GifPickerConfig? gifPickerConfig;
 
   FeaturesConfig._builder(FeaturesConfigBuilder builder)
@@ -13,7 +13,7 @@ class FeaturesConfig {
         aiCaptions = builder._aiCaptions,
         audioBrowser = builder._audioBrowser,
         editorConfig = builder._editorConfig,
-        draftConfig = builder._draftConfig,
+        draftsConfig = builder._draftsConfig,
         gifPickerConfig = builder._gifPickerConfig;
 }
 
@@ -24,8 +24,8 @@ class FeaturesConfigBuilder {
       AudioBrowser.fromSource(AudioBrowserSource.local);
   EditorConfig _editorConfig =
       EditorConfig(enableVideoAspectFill: true);
-  DraftConfig _draftConfig =
-      DraftConfig.fromOption(DraftOption.askToSave);
+  DraftsConfig _draftsConfig =
+      DraftsConfig.fromOption(DraftsOption.askToSave);
   GifPickerConfig? _gifPickerConfig;
 
   FeaturesConfigBuilder setAiClipping(aiClipping) {
@@ -48,8 +48,8 @@ class FeaturesConfigBuilder {
     return this;
   }
 
-  FeaturesConfigBuilder setDraftConfig(draftConfig) {
-    _draftConfig = draftConfig;
+  FeaturesConfigBuilder setDraftsConfig(draftsConfig) {
+    _draftsConfig = draftsConfig;
     return this;
   }
 
@@ -63,7 +63,7 @@ class FeaturesConfigBuilder {
   }
 }
 
-enum AudioBrowserSource { soundstripe, local, mubert }
+enum AudioBrowserSource { soundstripe, local, mubert, banubaMusic }
 
 @immutable
 class AudioBrowser {
@@ -111,16 +111,16 @@ class EditorConfig {
   });
 }
 
-enum DraftOption { askToSave, closeOnSave, auto, disabled }
+enum DraftsOption { askToSave, closeOnSave, auto, disabled }
 
 @immutable
-class DraftConfig {
-  final DraftOption option;
+class DraftsConfig {
+  final DraftsOption option;
 
-  const DraftConfig._({required this.option});
+  const DraftsConfig._({required this.option});
 
-  factory DraftConfig.fromOption(DraftOption option) {
-    return DraftConfig._(option: option);
+  factory DraftsConfig.fromOption(DraftsOption option) {
+    return DraftsConfig._(option: option);
   }
 }
 

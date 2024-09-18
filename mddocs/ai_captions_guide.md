@@ -7,6 +7,8 @@ Over 80% of videos played on mobile devices don’t have sound turned on. This m
 [AWS Transcribe service](https://docs.aws.amazon.com/transcribe/) is used to generate captions.
 
 ## Supported languages
+
+- Arabic
 - English
 - Mandarin
 - Spanish

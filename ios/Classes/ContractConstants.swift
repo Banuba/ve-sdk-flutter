@@ -69,7 +69,7 @@ extension VeSdkFlutterPlugin {
             editorConfig: EditorConfig(
                 enableVideoAspectFill: true
             ),
-            draftConfig: DraftConfig(
+            draftsConfig: DraftsConfig(
                 option: "enable"
             ),
             gifPickerConfig: nil
@@ -85,6 +85,7 @@ extension VideoEditorConfig {
     static let featuresConfigAudioBrowserSourceSoundstripe = "soundstripe"
     static let featuresConfigAudioBrowserSourceMubert = "mubert"
     static let featuresConfigAudioBrowserSourceLocal = "local"
+    static let featuresConfigAudioBrowserSourceBanubaMusic = "banubaMusic"
 
     // Draft Configs
     static let featuresConfigDraftConfigOptionAskToSave = "askToSave"

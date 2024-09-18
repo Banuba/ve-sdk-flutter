@@ -153,7 +153,7 @@ class VideoEditorModule: VideoEditor {
 // MARK: - Export flow
 extension VideoEditorModule {
     func exportVideo() {
-        let progressView = ProgressViewController.makeViewController()
+        let progressView = createProgressViewController()
         
         progressView.cancelHandler = { [weak self] in
             self?.videoEditorSDK?.stopExport()
@@ -266,6 +266,12 @@ extension VideoEditorModule {
         
         return topController
     }
+    
+    func createProgressViewController() -> ProgressViewController {
+        let progressViewController = ProgressViewController.makeViewController()
+        progressViewController.message = NSLocalizedString("com.banuba.alert.progressView.exportingVideo", comment: "")
+        return progressViewController
+    }
 }
 
 // MARK: - BanubaVideoEditorSDKDelegate
@@ -291,16 +297,7 @@ extension VideoEditorConfig {
         
         print("\(VideoEditorConfig.featuresConfigTag): Add Features Config with params: \(featuresConfig)")
         
-        switch featuresConfig.audioBrowser.source {
-            case VideoEditorConfig.featuresConfigAudioBrowserSourceSoundstripe:
-                AudioBrowserConfig.shared.musicSource = .soundstripe
-            case VideoEditorConfig.featuresConfigAudioBrowserSourceLocal:
-                AudioBrowserConfig.shared.musicSource = .localStorageWithMyFiles
-            case VideoEditorConfig.featuresConfigAudioBrowserSourceMubert:
-                AudioBrowserConfig.shared.musicSource = .mubert
-            default:
-                AudioBrowserConfig.shared.musicSource = .allSources
-        }
+        AudioBrowserConfig.shared.musicSource = featuresConfig.audioBrowser.value()
         
         if featuresConfig.audioBrowser.source == VideoEditorConfig.featuresConfigAudioBrowserSourceMubert {
             guard let audioBrowserParams = featuresConfig.audioBrowser.params else { return }
@@ -325,17 +322,8 @@ extension VideoEditorConfig {
         }
 
         self.editorConfiguration.isVideoAspectFillEnabled = featuresConfig.editorConfig.enableVideoAspectFill
-
-        switch featuresConfig.draftConfig.option{
-            case VideoEditorConfig.featuresConfigDraftConfigOptionAuto:
-                self.featureConfiguration.draftsConfig = .enabledSaveToDraftsByDefault
-            case VideoEditorConfig.featuresConfigDraftConfigOptionСloseOnSave:
-                self.featureConfiguration.draftsConfig = .enabledAskIfSaveNotExport
-            case VideoEditorConfig.featuresConfigDraftConfigOptionDisabled:
-                self.featureConfiguration.draftsConfig = .disabled
-            default:
-                self.featureConfiguration.draftsConfig = .enabled
-        }
+        
+        self.featureConfiguration.draftsConfig = featuresConfig.draftsConfig.value()
         
         if let gifPickerConfig = featuresConfig.gifPickerConfig {
             self.gifPickerConfiguration.giphyAPIKey = gifPickerConfig.giphyApiKey

@@ -1,9 +1,7 @@
 package com.banuba.ve.sdk.flutter.plugin.ve_sdk_flutter
 
-import androidx.core.os.bundleOf
 import android.os.Bundle
 import com.banuba.sdk.veui.data.captions.CaptionsApiService
-import android.util.Log
 
 // Tag
 internal const val TAG = "VideoEditorPlugin"
@@ -42,6 +40,7 @@ internal const val FEATURES_CONFIG_AUDIO_BROWSER_PARAMS = "params"
 internal const val FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_LOCAL = "local"
 internal const val FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_MUBERT = "mubert"
 internal const val FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_SOUNDSTRIPE = "soundstripe"
+internal const val FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_BANUBA_MUSIC = "banubaMusic"
 
 internal const val FEATURES_CONFIG_AUDIO_BROWSER_PARAMS_MUBERT_LICENCE = "mubertLicence"
 internal const val FEATURES_CONFIG_AUDIO_BROWSER_PARAMS_MUBERT_TOKEN = "mubertToken"
@@ -49,13 +48,13 @@ internal const val FEATURES_CONFIG_AUDIO_BROWSER_PARAMS_MUBERT_TOKEN = "mubertTo
 internal const val FEATURES_CONFIG_EDITOR_CONFIG = "editorConfig"
 internal const val FEATURES_CONFIG_EDITOR_CONFIG_ENABLE_VIDEO_ASPECT_FILL = "enableVideoAspectFill"
 
-internal const val FEATURES_CONFIG_DRAFT_CONFIG = "draftConfig"
-internal const val FEATURES_CONFIG_DRAFT_CONFIG_OPTION = "option"
+internal const val FEATURES_CONFIG_DRAFTS_CONFIG = "draftsConfig"
+internal const val FEATURES_CONFIG_DRAFTS_CONFIG_OPTION = "option"
 
-internal const val FEATURES_CONFIG_DRAFT_CONFIG_ASK_TO_SAVE = "askToSave"
-internal const val FEATURES_CONFIG_DRAFT_CONFIG_CLOSE_ON_SAVE = "closeOnSave"
-internal const val FEATURES_CONFIG_DRAFT_CONFIG_AUTO = "auto"
-internal const val FEATURES_CONFIG_DRAFT_CONFIG_DISABLED = "disabled"
+internal const val FEATURES_CONFIG_DRAFTS_CONFIG_ASK_TO_SAVE = "askToSave"
+internal const val FEATURES_CONFIG_DRAFTS_CONFIG_CLOSE_ON_SAVE = "closeOnSave"
+internal const val FEATURES_CONFIG_DRAFTS_CONFIG_AUTO = "auto"
+internal const val FEATURES_CONFIG_DRAFTS_CONFIG_DISABLED = "disabled"
 
 internal const val FEATURES_CONFIG_GIF_PICKER_CONFIG = "gifPickerConfig"
 internal const val FEATURES_CONFIG_GIF_PICKER_CONFIG_API_KEY = "giphyApiKey"

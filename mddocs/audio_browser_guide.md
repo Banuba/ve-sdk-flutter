@@ -13,7 +13,9 @@ It supports 3 sources for audio content:
 
 2. Mubert - includes built in integration with Mubert API.
 
-3. My Library - includes audio content available on the user's device
+3. Banuba Music - includes built in integration with Banuba Music.
+
+4. My Library - includes audio content available on the user's device
 
 ## Usage
 
@@ -53,6 +55,23 @@ final config = FeaturesConfigBuilder()
             }
         )
     )
+    ...
+    .build();
+```
+
+### Banuba Music
+
+Over 35 GB of royalty-free tracks available from within the Video Editor SDK. Your users could check them out through an inbuilt music browser and legally include them in their content.
+
+> [!NOTE]
+> The feature is not activated by default.
+> Please contact Banuba representatives to know more about using this feature.
+
+Specify the instance of ```AudioBrowser``` in ```FeaturesConfig``` builder with Banuba Music source and params:
+
+```dart
+final config = FeaturesConfigBuilder()
+    .setAudioBrowser(AudioBrowser.fromSource(AudioBrowserSource.banubaMusic))
     ...
     .build();
 ```

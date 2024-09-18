@@ -28,5 +28,5 @@ Future<void> _startVideoEditorInCameraMode() async {
 2. [AI Clipping](ai_clipping_guide.md)
 3. [Audio Browser](audio_browser_guide.md)
 4. [Editor screen](editor_screen_guide.md)
-5. [Draft](draft_guide.md)
+5. [Drafts](drafts_guide.md)
 6. [Stickers](stickers_guide.md)

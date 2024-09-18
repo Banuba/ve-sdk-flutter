@@ -178,31 +178,37 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
     ): Boolean {
         Log.d(TAG, "onActivityResult: code = $resultCode, result = $resultCode, intent = $intent")
 
-        return if (requestCode == VIDEO_EDITOR_REQUEST_CODE) {
-            val data = if (resultCode == RESULT_OK) {
-                val exportResult =
-                    intent?.getParcelableExtra(EXTRA_EXPORTED_SUCCESS) as? ExportResult.Success
-                Log.d(TAG, "Received export result = $exportResult")
+        return try {
+            if (requestCode == VIDEO_EDITOR_REQUEST_CODE) {
+                val data = if (resultCode == RESULT_OK) {
+                    val exportResult =
+                        intent?.getParcelableExtra(EXTRA_EXPORTED_SUCCESS) as? ExportResult.Success
+                    Log.d(TAG, "Received export result = $exportResult")
 
-                if (exportResult == null) {
-                    this.channelResult?.error(
-                        ERR_MISSING_EXPORT_RESULT,
-                        ERR_MESSAGE_MISSING_EXPORT_RESULT,
-                        null
-                    )
-                    return false
+                    if (exportResult == null) {
+                        this.channelResult?.error(
+                            ERR_MISSING_EXPORT_RESULT,
+                            ERR_MESSAGE_MISSING_EXPORT_RESULT,
+                            null
+                        )
+                        return false
+                    }
+
+                    prepareVideoExportData(exportResult)
+                } else {
+                    Log.d(TAG, "No export result: the user closed video editor")
+                    null
                 }
-
-                prepareVideoExportData(exportResult)
+                this.channelResult?.success(data)
+                true
             } else {
-                Log.d(TAG, "No export result: the user closed video editor")
-                null
+                Log.e(TAG, "Unhandled request code = $requestCode")
+                false
             }
-            this.channelResult?.success(data)
-            true
-        } else {
-            Log.e(TAG, "Unhandled request code = $requestCode")
-            false
+        } finally {
+            Log.d(TAG, "Video Editor released")
+            videoEditorModule?.releaseVideoEditor()
+            videoEditorModule = null
         }
     }
 
