@@ -1,4 +1,5 @@
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
+import 'package:ve_sdk_flutter/export_param.dart';
 import 'package:ve_sdk_flutter/export_result.dart';
 import 've_sdk_flutter_method_channel.dart';
 import 'package:ve_sdk_flutter/features_config.dart';
@@ -26,7 +27,8 @@ abstract class VeSdkFlutterPlatform extends PlatformInterface {
 
   Future<ExportResult?> openCameraScreen(
       String token,
-      FeaturesConfig featuresConfig
+      FeaturesConfig featuresConfig,
+      {ExportParam? exportParam}
   ) {
       throw UnimplementedError('openCameraScreen() has not been implemented.');
   }
@@ -34,7 +36,8 @@ abstract class VeSdkFlutterPlatform extends PlatformInterface {
   Future<ExportResult?> openPipScreen(
       String token,
       FeaturesConfig featuresConfig,
-      String sourceVideoPath
+      String sourceVideoPath,
+      {ExportParam? exportParam}
   ) {
       throw UnimplementedError('openPipScreen() has not been implemented.');
   }
@@ -42,7 +45,8 @@ abstract class VeSdkFlutterPlatform extends PlatformInterface {
   Future<ExportResult?> openTrimmerScreen(
       String token,
       FeaturesConfig featuresConfig,
-      List<String> sourceVideoPathList
+      List<String> sourceVideoPathList,
+      {ExportParam? exportParam}
   ) {
       throw UnimplementedError('openTrimmerScreen() has not been implemented.');
   }

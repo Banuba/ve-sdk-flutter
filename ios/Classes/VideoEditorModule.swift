@@ -13,7 +13,7 @@ import VEExportSDK
 import Flutter
 
 protocol VideoEditor {
-    func initVideoEditor(token: String, featuresConfig: FeaturesConfig) -> Bool
+    func initVideoEditor(token: String, featuresConfig: FeaturesConfig, exportParam: ExportParam) -> Bool
     
     func openVideoEditorDefault(fromViewController controller: FlutterViewController, flutterResult: @escaping FlutterResult)
     
@@ -26,11 +26,13 @@ class VideoEditorModule: VideoEditor {
     
     private var videoEditorSDK: BanubaVideoEditor?
     private var flutterResult: FlutterResult?
+    private var currentController: FlutterViewController?
+    private var exportParam: ExportParam?
 
     // Use “true” if you want users could restore the last video editing session.
     private let restoreLastVideoEditingSession: Bool = false
 
-    func initVideoEditor(token: String, featuresConfig: FeaturesConfig) -> Bool {
+    func initVideoEditor(token: String, featuresConfig: FeaturesConfig, exportParam: ExportParam) -> Bool {
         guard videoEditorSDK == nil else {
             debugPrint("Video Editor SDK is already initialized")
             return true
@@ -53,6 +55,8 @@ class VideoEditorModule: VideoEditor {
             return false
         }
 
+        self.exportParam = exportParam
+
         videoEditorSDK?.delegate = self
         return true
     }
@@ -73,6 +77,7 @@ class VideoEditorModule: VideoEditor {
         fromViewController controller: FlutterViewController,
         flutterResult: @escaping FlutterResult
     ) {
+        self.currentController = controller
         self.flutterResult = flutterResult
         
         let config = VideoEditorLaunchConfig(
@@ -88,6 +93,7 @@ class VideoEditorModule: VideoEditor {
         videoURL: URL,
         flutterResult: @escaping FlutterResult
     ) {
+        self.currentController = controller
         self.flutterResult = flutterResult
         
         let pipLaunchConfig = VideoEditorLaunchConfig(
@@ -106,6 +112,7 @@ class VideoEditorModule: VideoEditor {
         videoSources: Array<URL>,
         flutterResult: @escaping FlutterResult
     ) {
+        self.currentController = controller
         self.flutterResult = flutterResult
         
         let trimmerLaunchConfig = VideoEditorLaunchConfig(
@@ -153,6 +160,12 @@ class VideoEditorModule: VideoEditor {
 // MARK: - Export flow
 extension VideoEditorModule {
     func exportVideo() {
+        
+        guard let exportParam, let currentController else {
+            print("❌ Export Config is not set")
+            return
+        }
+        
         let progressView = createProgressViewController()
         
         progressView.cancelHandler = { [weak self] in
@@ -161,39 +174,11 @@ extension VideoEditorModule {
         
         getTopViewController()?.present(progressView, animated: true)
         
-        let manager = FileManager.default
-        // File name
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH-mm-ss.SSS"
-        
-        let previewURL = manager.temporaryDirectory.appendingPathComponent("export_preview.png")
-        
-        // TODO handle multiple exported video files
-        let firstFileURL = manager.temporaryDirectory.appendingPathComponent("export_\(dateFormatter.string(from: Date())).mov")
-        if manager.fileExists(atPath: firstFileURL.path) {
-            try? manager.removeItem(at: firstFileURL)
-        }
-        
-        // Video configuration
-        let exportVideoConfigurations: [ExportVideoConfiguration] = [
-            ExportVideoConfiguration(
-                fileURL: firstFileURL,
-                quality: .auto,
-                useHEVCCodecIfPossible: true,
-                watermarkConfiguration: nil
-            )
-        ]
-        
-        // Set up export
-        let exportConfiguration = ExportConfiguration(
-            videoConfigurations: exportVideoConfigurations,
-            isCoverEnabled: true,
-            gifSettings: nil
-        )
-        
+        debugPrint("\(ExportParam.exportParamTag): Add Export Param with params: \(exportParam)")
+        let exportProvider = ExportProvider(exportParam: exportParam, controller: currentController)
+                
         videoEditorSDK?.export(
-            using: exportConfiguration,
+            using: exportProvider.createExportConfiguration(),
             exportProgress: { [weak progressView] progress in progressView?.updateProgressView(with: Float(progress)) }
         ) { [weak self] (error, coverImage) in
             // Export Callback
@@ -215,7 +200,13 @@ extension VideoEditorModule {
                     }
                     
                     // TODO 1. simplify method
-                    self?.completeExport(videoUrls: [firstFileURL], metaUrl: metadataUrl, previewUrl: previewURL, error: error, previewImage: coverImage?.coverImage)
+                    self?.completeExport(
+                        videoUrls: exportProvider.collectVideoUrls(),
+                        metaUrl: metadataUrl,
+                        previewUrl: exportProvider.createPreviewURL(),
+                        error: error,
+                        previewImage: coverImage?.coverImage
+                    )
                 }
             }
         }
@@ -276,6 +267,7 @@ extension VideoEditorModule {
 
 // MARK: - BanubaVideoEditorSDKDelegate
 extension VideoEditorModule: BanubaVideoEditorDelegate {
+    
     func videoEditorDidCancel(_ videoEditor: BanubaVideoEditor) {
         videoEditor.dismissVideoEditor(animated: true) {
             // remove strong reference to video editor sdk instance

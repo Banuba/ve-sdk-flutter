@@ -20,6 +20,7 @@ extension VeSdkFlutterPlugin {
     
     static let inputParamToken = "token"
     static let inputParamFeaturesConfig = "featuresConfig"
+    static let inputParamExportParam = "exportParam"
     static let inputParamScreen = "screen"
     static let inputParamVideoSources = "videoSources"
     
@@ -54,6 +55,8 @@ extension VeSdkFlutterPlugin {
     "Missing export result: video export has not been completed successfully. Please try again"
     static let errMessageMissingConfigParams =
     "❌ Missing or invalid config: \(inputParamFeaturesConfig)"
+    static let errMessageMissingExportParam =
+    "❌ Missing or invalid config: \(inputParamExportParam)"
     
     static let errMessageMissingHost = "Missing host ViewController to start video editor"
     
@@ -74,6 +77,22 @@ extension VeSdkFlutterPlugin {
             ),
             gifPickerConfig: nil
         )
+    }
+    
+    // Default Export Config
+    var defaultExportParams : ExportParam {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH-mm-ss.SSS"
+        
+        return ExportParam(exportedVideos: [
+            ExportedVideo(
+            fileName: "export_\(dateFormatter.string(from: Date()))",
+            videoResolution: "auto",
+            useHevcIfPossible: true
+        )
+        ],
+        watermark: nil)
+        
     }
 }
 
@@ -98,4 +117,26 @@ extension VideoEditorConfig {
     
     // Unknown params
     static let featuresConfigUnknownParams = "Undefined"
+}
+
+extension ExportParam {
+    // Tag
+    static let exportParamTag = "Export Param Tag"
+    
+    // Video Resolutions
+    static let exportedVideoVideoResolutionsHD720p = "hd_720p"
+    static let exportedVideoVideoResolutionsVGA360p = "vga_360p"
+    static let exportedVideoVideoResolutionsVGA480p = "vga_480p"
+    static let exportedVideoVideoResolutionsQHD540p = "qhd_540p"
+    static let exportedVideoVideoResolutionsFHD1080p = "fhd_1080p"
+    static let exportedVideoVideoResolutionsQHD1440p = "qhd_1440p"
+    static let exportedVideoVideoResolutionsUHD2160p = "uhd_2160p"
+    static let exportedVideoVideoResolutionsAuto = "auto"
+    static let exportedVideoVideoResolutionsOriginal = "original"
+    
+    // Watermark Alignment
+    static let exportParamWatermarkAlignmentTopLeft = "topLeft"
+    static let exportParamWatermarkAlignmentTopRight = "topRight"
+    static let exportParamWatermarkAlignmentBottomLeft = "bottomLeft"
+    static let exportParamWatermarkAlignmentBottomRight = "bottomRight"
 }

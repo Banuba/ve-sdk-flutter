@@ -61,6 +61,8 @@ extension DraftConfigSerializer on DraftsConfig {
 
 extension GifPickerConfigSerializer on GifPickerConfig {
   Map<String, dynamic> _serialize() {
-    return {'giphyApiKey': giphyApiKey};
+    return {
+      'giphyApiKey': giphyApiKey
+    };
   }
 }

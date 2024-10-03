@@ -2,8 +2,11 @@ package com.banuba.ve.sdk.flutter.plugin.ve_sdk_flutter
 
 import android.app.Application
 import androidx.fragment.app.Fragment
+import androidx.core.net.toUri
+import android.content.Context
 import com.banuba.sdk.effectplayer.adapter.BanubaEffectPlayerKoinModule
 import com.banuba.sdk.export.di.VeExportKoinModule
+import com.banuba.sdk.export.data.ExportParamsProvider
 import com.banuba.sdk.gallery.di.GalleryKoinModule
 import com.banuba.sdk.playback.di.VePlaybackSdkKoinModule
 import com.banuba.sdk.ve.di.VeSdkKoinModule
@@ -17,6 +20,7 @@ import com.banuba.sdk.core.ui.ContentFeatureProvider
 import com.banuba.sdk.playback.PlayerScaleType
 import com.banuba.sdk.core.data.autocut.AutoCutTrackLoader
 import com.banuba.sdk.ve.data.autocut.AutoCutConfig
+import com.banuba.sdk.ve.effects.watermark.WatermarkProvider
 import com.banuba.sdk.audiobrowser.soundstripe.AutoCutSoundstripeTrackLoader
 import com.banuba.sdk.core.domain.DraftConfig
 import com.banuba.sdk.veui.data.stickers.GifPickerConfigurations
@@ -34,7 +38,7 @@ import org.koin.core.context.stopKoin
 import org.koin.core.error.InstanceCreationException
 
 class VideoEditorModule {
-    internal fun initialize(application: Application, featuresConfig: FeaturesConfig) {
+    internal fun initialize(application: Application, featuresConfig: FeaturesConfig, exportParam: ExportParam?) {
         startKoin {
             androidContext(application)
             allowOverride(true)
@@ -56,7 +60,7 @@ class VideoEditorModule {
                 GalleryKoinModule().module,
 
                 // Sample integration module
-                SampleIntegrationVeKoinModule(featuresConfig).module,
+                SampleIntegrationVeKoinModule(featuresConfig, exportParam).module,
             )
         }
     }
@@ -84,7 +88,7 @@ class VideoEditorModule {
  * Some dependencies has no default implementations. It means that
  * these classes fully depends on your requirements
  */
-private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig) {
+private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, exportParam: ExportParam?) {
 
     val module = module {
         single<ArEffectsRepositoryProvider>(createdAtStart = true) {
@@ -98,6 +102,11 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig) {
             "Add $INPUT_PARAM_FEATURES_CONFIG with params: ${featuresConfig}"
         )
         this.applyFeaturesConfig(featuresConfig)
+        Log.d(
+            TAG_EXPORT_PARAM,
+            "add $INPUT_PARAM_EXPORT_PARAM with params: ${exportParam}"
+        )
+        this.applyExportConfig(exportParam)
     }
 
     private fun Module.applyFeaturesConfig(featuresConfig: FeaturesConfig) {
@@ -176,6 +185,29 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig) {
         } else {
             Log.w(TAG, "Missing Params in AudioBrowser")
             return
+        }
+    }
+
+    private fun Module.applyExportConfig(exportParam: ExportParam?) {
+        if (exportParam == null) {
+            Log.d(TAG, ERR_MESSAGE_MISSING_EXPORT_PARAM)
+        } else {
+            val watermarkImagePath = exportParam.watermark?.imagePath
+            if (watermarkImagePath != null) {
+                this.factory<WatermarkProvider> {
+                    CustomWatermarkProvider(get(), watermarkImagePath)
+                }
+            } else {
+                Log.d(TAG_EXPORT_PARAM, ERR_MESSAGE_MISSING_WATERMARK_IMAGE_PATH)
+            }
+
+            this.factory<ExportParamsProvider> {
+                CustomExportParamsProvider(
+                    exportDir = get(named("exportDir")),
+                    watermarkBuilder = get(),
+                    exportParam = exportParam
+                )
+            }
         }
     }
 }

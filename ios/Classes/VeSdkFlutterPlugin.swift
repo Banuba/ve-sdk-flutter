@@ -23,13 +23,15 @@ public class VeSdkFlutterPlugin: NSObject, FlutterPlugin {
         }
         
         let featuresConfig = parseFeatureConfig(args[VeSdkFlutterPlugin.inputParamFeaturesConfig] as? String)
+
+        let exportParam = parseExportParams(args[VeSdkFlutterPlugin.inputParamExportParam] as? String)
         
         guard let screen = args[VeSdkFlutterPlugin.inputParamScreen] as? String else {
             result(FlutterError(code: VeSdkFlutterPlugin.errInvalidParams, message: VeSdkFlutterPlugin.errMessageMissingScreen, details: nil))
             return
         }
         
-        if (!videoEditor.initVideoEditor(token: licenseToken, featuresConfig: featuresConfig)) {
+        if (!videoEditor.initVideoEditor(token: licenseToken, featuresConfig: featuresConfig, exportParam: exportParam)) {
             result(FlutterError(code: VeSdkFlutterPlugin.errSdkNotInitialized, message: VeSdkFlutterPlugin.errMessageSdkNotInitialized, details: nil))
             return
         }
