@@ -2,21 +2,20 @@ import Foundation
 import BanubaVideoEditorSDK
 import VideoEditor
 import VEExportSDK
-import Flutter
 
 struct ExportProvider {
     
     let exportParam: ExportParam
-    let controller: FlutterViewController
-    private var fileUrls: [String: URL]
+    let watermarkConfiguration: WatermarkConfiguration?
+    let fileUrls: [String: URL]
     
-    init(exportParam: ExportParam, controller: FlutterViewController) {
+    init(exportParam: ExportParam, watermarkConfiguration: WatermarkConfiguration?) {
         self.exportParam = exportParam
-        self.controller = controller
+        self.watermarkConfiguration = watermarkConfiguration
         self.fileUrls = Dictionary(uniqueKeysWithValues: exportParam.exportedVideos.map { ($0.fileName, ExportProvider.createFileUrl(exportedVideo: $0)) })
     }
     
-    public func createExportConfiguration() -> ExportConfiguration {
+    func provideExportConfiguration() -> ExportConfiguration {
         let exportVideoConfigurations = exportParam.exportedVideos.map {
             guard let fileUrl = fileUrls[$0.fileName] else {
                 fatalError("URL not found for file: \($0.fileName)")
@@ -25,7 +24,7 @@ struct ExportProvider {
                 fileURL: fileUrl,
                 quality: $0.qualityValue(),
                 useHEVCCodecIfPossible: $0.useHevcIfPossible ?? true,
-                watermarkConfiguration: exportParam.watermark?.watermarkConfigurationValue(controller: controller)
+                watermarkConfiguration: watermarkConfiguration
             )
         }
         
@@ -34,14 +33,6 @@ struct ExportProvider {
             isCoverEnabled: true,
             gifSettings: nil
         )
-    }
-    
-    public func collectVideoUrls() -> [URL] {
-        return Array(fileUrls.values)
-    }
-    
-    public func createPreviewURL() -> URL{
-        return FileManager.default.temporaryDirectory.appendingPathComponent("export_preview.png")
     }
     
     private static func createFileUrl(exportedVideo: ExportedVideo) -> URL {

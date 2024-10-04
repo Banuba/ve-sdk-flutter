@@ -175,10 +175,13 @@ extension VideoEditorModule {
         getTopViewController()?.present(progressView, animated: true)
         
         debugPrint("\(ExportParam.exportParamTag): Add Export Param with params: \(exportParam)")
-        let exportProvider = ExportProvider(exportParam: exportParam, controller: currentController)
+        
+        let watermarkConfiguration = exportParam.watermark?.watermarkConfigurationValue(controller: currentController)
+        
+        let exportProvider = ExportProvider(exportParam: exportParam, watermarkConfiguration: watermarkConfiguration)
                 
         videoEditorSDK?.export(
-            using: exportProvider.createExportConfiguration(),
+            using: exportProvider.provideExportConfiguration(),
             exportProgress: { [weak progressView] progress in progressView?.updateProgressView(with: Float(progress)) }
         ) { [weak self] (error, coverImage) in
             // Export Callback
@@ -201,9 +204,9 @@ extension VideoEditorModule {
                     
                     // TODO 1. simplify method
                     self?.completeExport(
-                        videoUrls: exportProvider.collectVideoUrls(),
+                        videoUrls: Array(exportProvider.fileUrls.values),
                         metaUrl: metadataUrl,
-                        previewUrl: exportProvider.createPreviewURL(),
+                        previewUrl: FileManager.default.temporaryDirectory.appendingPathComponent("export_preview.png"),
                         error: error,
                         previewImage: coverImage?.coverImage
                     )
