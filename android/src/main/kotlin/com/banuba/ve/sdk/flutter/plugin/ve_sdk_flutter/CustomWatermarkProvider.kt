@@ -12,15 +12,11 @@ import com.banuba.sdk.utils.ContextProvider.getAssets
 class CustomWatermarkProvider(private val context: Context, private val imagePath: String) : WatermarkProvider {
 
     override fun getWatermarkBitmap(): Bitmap? {
-        val assetManager: AssetManager = context.assets
         return try {
-            val inputStream = assetManager.open("flutter_assets/" + imagePath)
+            val inputStream = context.assets.open("flutter_assets/" + imagePath)
             val watermark = BitmapFactory.decodeStream(inputStream)
             inputStream.close()
-
-            println("### Watermark size from CustomWatermarkProvider: ${watermark.width} x ${watermark.height}")
-
-            scaledWatermark
+            watermark
         } catch (e: Exception) {
             println("Error opening asset: ${e.message}")
             null

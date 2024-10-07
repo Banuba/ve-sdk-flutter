@@ -13,7 +13,7 @@ import VEExportSDK
 import Flutter
 
 protocol VideoEditor {
-    func initVideoEditor(token: String, featuresConfig: FeaturesConfig, exportParam: ExportParam) -> Bool
+    func initVideoEditor(token: String, featuresConfig: FeaturesConfig, exportData: ExportData) -> Bool
     
     func openVideoEditorDefault(fromViewController controller: FlutterViewController, flutterResult: @escaping FlutterResult)
     
@@ -27,12 +27,12 @@ class VideoEditorModule: VideoEditor {
     private var videoEditorSDK: BanubaVideoEditor?
     private var flutterResult: FlutterResult?
     private var currentController: FlutterViewController?
-    private var exportParam: ExportParam?
+    private var exportData: ExportData?
 
     // Use “true” if you want users could restore the last video editing session.
     private let restoreLastVideoEditingSession: Bool = false
 
-    func initVideoEditor(token: String, featuresConfig: FeaturesConfig, exportParam: ExportParam) -> Bool {
+    func initVideoEditor(token: String, featuresConfig: FeaturesConfig, exportData: ExportData) -> Bool {
         guard videoEditorSDK == nil else {
             debugPrint("Video Editor SDK is already initialized")
             return true
@@ -55,7 +55,7 @@ class VideoEditorModule: VideoEditor {
             return false
         }
 
-        self.exportParam = exportParam
+        self.exportData = exportData
 
         videoEditorSDK?.delegate = self
         return true
@@ -161,7 +161,7 @@ class VideoEditorModule: VideoEditor {
 extension VideoEditorModule {
     func exportVideo() {
         
-        guard let exportParam, let currentController else {
+        guard let exportData, let currentController else {
             print("❌ Export Config is not set")
             return
         }
@@ -174,11 +174,11 @@ extension VideoEditorModule {
         
         getTopViewController()?.present(progressView, animated: true)
         
-        debugPrint("\(ExportParam.exportParamTag): Add Export Param with params: \(exportParam)")
+        debugPrint("Add Export Param with params: \(exportData)")
         
-        let watermarkConfiguration = exportParam.watermark?.watermarkConfigurationValue(controller: currentController)
+        let watermarkConfiguration = exportData.watermark?.watermarkConfigurationValue(controller: currentController)
         
-        let exportProvider = ExportProvider(exportParam: exportParam, watermarkConfiguration: watermarkConfiguration)
+        let exportProvider = ExportProvider(exportData: exportData, watermarkConfiguration: watermarkConfiguration)
                 
         videoEditorSDK?.export(
             using: exportProvider.provideExportConfiguration(),

@@ -17,7 +17,7 @@ import com.banuba.sdk.ve.ext.withWatermark
 internal class CustomExportParamsProvider(
     private val exportDir: Uri,
     private val watermarkBuilder: WatermarkBuilder,
-    private val exportParam: ExportParam
+    private val exportData: ExportData
 ) : ExportParamsProvider {
 
     override fun provideExportParams(
@@ -31,7 +31,7 @@ internal class CustomExportParamsProvider(
             mkdirs()
         }
 
-        val exportVideoList = exportParam.exportedVideos.map { exportedVideo ->
+        val exportVideoList = exportData.exportedVideos.map { exportedVideo ->
             ExportParams.Builder(exportedVideo.videoResolutionValue())
                 .effects(provideEffects(effects))
                 .fileName(exportedVideo.fileName)
@@ -47,10 +47,10 @@ internal class CustomExportParamsProvider(
     }
 
     private fun provideEffects(effects: Effects): Effects {
-        return if (exportParam.watermark == null){
+        return if (exportData.watermark == null){
             effects
         } else {
-            effects.withWatermark(watermarkBuilder, exportParam.watermark.watermarkAlignmentValue())
+            effects.withWatermark(watermarkBuilder, exportData.watermark.watermarkAlignmentValue())
         }
     }
 }

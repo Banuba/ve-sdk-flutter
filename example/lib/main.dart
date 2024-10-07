@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:ve_sdk_flutter/export_param.dart';
+import 'package:ve_sdk_flutter/export_data.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ve_sdk_flutter/export_result.dart';
@@ -49,12 +49,17 @@ class _HomePageState extends State<HomePage> {
         // ...
         .build();
 
-    // const exportParam = ExportParam(exportedVideos: [
+    // Export data example
+
+    // const exportData = ExportData(exportedVideos: [
     //   ExportedVideo(
     //       fileName: "export_HD",
-    //       videoResolution: VideoResolution.hd_720p
+    //       videoResolution: VideoResolution.hd720p
     //   )],
-    //     watermark: Watermark(imagePath: "assets/watermark.png")
+    //     watermark: Watermark(
+    //        imagePath: "assets/watermark.png",
+    //        alignment: WatermarkAlignment.topLeft
+    //     )
     // );
 
     try {

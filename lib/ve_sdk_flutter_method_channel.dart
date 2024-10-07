@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:ve_sdk_flutter/export_param.dart';
-import 'package:ve_sdk_flutter/export_param_serializer.dart';
+import 'package:ve_sdk_flutter/export_data.dart';
+import 'package:ve_sdk_flutter/export_data_serializer.dart';
 import 'package:ve_sdk_flutter/features_config.dart';
 import 'package:ve_sdk_flutter/features_config_serializer.dart';
 import 'package:ve_sdk_flutter/export_result.dart';
@@ -21,7 +21,7 @@ class MethodChannelVeSdkFlutter extends VeSdkFlutterPlatform {
   // Input params
   static const String _inputParamToken = 'token';
   static const String _inputParamFeaturesConfig = 'featuresConfig';
-  static const String _inputParamExportParam = 'exportParam';
+  static const String _inputParamExportData = 'exportData';
   static const String _inputParamScreen = 'screen';
   static const String _inputParamVideoSources = 'videoSources';
 
@@ -38,13 +38,13 @@ class MethodChannelVeSdkFlutter extends VeSdkFlutterPlatform {
   Future<ExportResult?> openCameraScreen(
       String token,
       FeaturesConfig featuresConfig,
-      {ExportParam? exportParam}
+      {ExportData? exportData}
       ) => _open(
       token,
       featuresConfig,
       _screenCamera,
       [],
-      exportParam: exportParam
+      exportData: exportData
   );
 
   @override
@@ -52,13 +52,13 @@ class MethodChannelVeSdkFlutter extends VeSdkFlutterPlatform {
       String token,
       FeaturesConfig featuresConfig,
       String sourceVideoPath,
-      {ExportParam? exportParam}
+      {ExportData? exportData}
       ) => _open(
       token,
       featuresConfig,
       _screenPip,
       [sourceVideoPath],
-      exportParam: exportParam
+      exportData: exportData
   );
 
   @override
@@ -66,13 +66,13 @@ class MethodChannelVeSdkFlutter extends VeSdkFlutterPlatform {
       String token,
       FeaturesConfig featuresConfig,
       List<String> sourceVideoPathList,
-      {ExportParam? exportParam}
+      {ExportData? exportData}
       ) => _open(
       token,
       featuresConfig,
       _screenTrimmer,
       sourceVideoPathList,
-      exportParam: exportParam
+      exportData: exportData
   );
 
   Future<ExportResult?> _open(
@@ -80,14 +80,14 @@ class MethodChannelVeSdkFlutter extends VeSdkFlutterPlatform {
       FeaturesConfig featuresConfig,
       String screen,
       List<String> sourceVideoPathList,
-      {ExportParam? exportParam}
+      {ExportData? exportData}
   ) async {
     final inputParams = {
       _inputParamToken: token,
       _inputParamFeaturesConfig: featuresConfig.serialize(),
       _inputParamScreen: screen,
       _inputParamVideoSources: sourceVideoPathList,
-      _inputParamExportParam: exportParam?.serialize()
+      _inputParamExportData: exportData?.serialize()
     };
 
     debugPrint('Start video editor with params = $inputParams');

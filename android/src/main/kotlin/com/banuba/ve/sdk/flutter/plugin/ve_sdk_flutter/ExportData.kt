@@ -4,14 +4,8 @@ import com.banuba.sdk.core.VideoResolution
 import com.banuba.sdk.ve.effects.watermark.WatermarkAlignment
 import com.banuba.sdk.core.ext.toPx
 
-internal data class ExportParam(
-    val exportedVideos: List<ExportedVideo> = listOf(
-        ExportedVideo(
-            fileName = "exported_video",
-            videoResolution = EXPORTED_VIDEOS_VIDEO_RESOLUTION_AUTO,
-            useHevcIfPossible = true
-        )
-    ),
+internal data class ExportData(
+    val exportedVideos: List<ExportedVideo> = listOf(defaultExportedVideo),
     val watermark: Watermark? = null,
 )
 
@@ -35,15 +29,25 @@ internal data class ExportedVideo(
     }
 }
 
+internal val defaultExportedVideo: ExportedVideo = ExportedVideo(
+    fileName = "export_${getCurrentTimestamp()}",
+    videoResolution = EXPORTED_VIDEOS_VIDEO_RESOLUTION_AUTO,
+    useHevcIfPossible = true
+)
+
 internal data class Watermark(
     val imagePath: String?,
     val watermarkAlignment: String?
 ) {
     internal fun watermarkAlignmentValue(): WatermarkAlignment {
         return when (this.watermarkAlignment) {
-            EXPORT_PARAMS_WATERMARK_ALIGNMENT_TOP_LEFT -> WatermarkAlignment.TopLeft(marginLeftPx = 16.toPx)
-            EXPORT_PARAMS_WATERMARK_ALIGNMENT_TOP_RIGHT -> WatermarkAlignment.TopRight(marginRightPx = 16.toPx)
-            EXPORT_PARAMS_WATERMARK_ALIGNMENT_BOTTOM_LEFT -> WatermarkAlignment.BottomLeft(
+            EXPORT_DATA_WATERMARK_ALIGNMENT_TOP_LEFT -> WatermarkAlignment.TopLeft(
+                marginLeftPx = 16.toPx
+            )
+            EXPORT_DATA_WATERMARK_ALIGNMENT_TOP_RIGHT -> WatermarkAlignment.TopRight(
+                marginRightPx = 16.toPx
+            )
+            EXPORT_DATA_WATERMARK_ALIGNMENT_BOTTOM_LEFT -> WatermarkAlignment.BottomLeft(
                 marginLeftPx = 16.toPx
             )
 

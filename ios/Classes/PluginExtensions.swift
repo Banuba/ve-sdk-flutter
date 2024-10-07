@@ -1,13 +1,5 @@
-//
-//  FeatureConfigParser.swift
-//  ve_sdk_flutter
-//
-//  Created by German Khodyrev on 6.08.24.
-//
-
-import Foundation
-
 extension VeSdkFlutterPlugin {
+    
     func parseFeatureConfig(_ rawConfigParams: String?) -> FeaturesConfig {
         guard let featuresConfigData = rawConfigParams?.data(using: .utf8) else {return emptyFeaturesConfig}
         do {
@@ -16,6 +8,17 @@ extension VeSdkFlutterPlugin {
         } catch {
             print(VeSdkFlutterPlugin.errMessageMissingConfigParams)
             return emptyFeaturesConfig
+        }
+    }
+    
+    func parseExportData(_ rawExportParams: String?) -> ExportData {
+        guard let exportParamsData = rawExportParams?.data(using: .utf8) else {return defaultExportData}
+        do {
+            let decodedExportParams = try JSONDecoder().decode(ExportData.self, from: exportParamsData)
+            return decodedExportParams
+        } catch {
+            print(VeSdkFlutterPlugin.errMessageMissingExportData)
+            return defaultExportData
         }
     }
 }

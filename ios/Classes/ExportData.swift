@@ -3,7 +3,7 @@ import VEExportSDK
 import VideoEditor
 import Flutter
 
-struct ExportParam: Codable {
+struct ExportData: Codable {
     let exportedVideos: [ExportedVideo]
     let watermark: Watermark? 
 }
@@ -15,21 +15,21 @@ struct ExportedVideo: Codable {
     
     public func qualityValue() -> ExportQuality {
         switch videoResolution {
-            case ExportParam.exportedVideoVideoResolutionsVGA360p:
+            case ExportData.exportedVideoVideoResolutionsVGA360p:
                 return .videoConfiguration(.init(resolution: .ld360, useHEVCCodecIfPossible: useHevcIfPossible ?? true))
-            case ExportParam.exportedVideoVideoResolutionsVGA480p:
+            case ExportData.exportedVideoVideoResolutionsVGA480p:
                 return .videoConfiguration(.init(resolution: .md480, useHEVCCodecIfPossible: useHevcIfPossible ?? true))
-            case ExportParam.exportedVideoVideoResolutionsQHD540p:
+            case ExportData.exportedVideoVideoResolutionsQHD540p:
                 return .videoConfiguration(.init(resolution: .md540, useHEVCCodecIfPossible: useHevcIfPossible ?? true))
-            case ExportParam.exportedVideoVideoResolutionsHD720p:
+            case ExportData.exportedVideoVideoResolutionsHD720p:
                 return .videoConfiguration(.init(resolution: .hd720, useHEVCCodecIfPossible: useHevcIfPossible ?? true))
-            case ExportParam.exportedVideoVideoResolutionsFHD1080p:
+            case ExportData.exportedVideoVideoResolutionsFHD1080p:
                 return .videoConfiguration(.init(resolution: .fullHd1080, useHEVCCodecIfPossible: useHevcIfPossible ?? true))
-            case ExportParam.exportedVideoVideoResolutionsQHD1440p:
+            case ExportData.exportedVideoVideoResolutionsQHD1440p:
                 return .videoConfiguration(.init(resolution: .qhd1440, useHEVCCodecIfPossible: useHevcIfPossible ?? true))
-            case ExportParam.exportedVideoVideoResolutionsUHD2160p:
+            case ExportData.exportedVideoVideoResolutionsUHD2160p:
                 return .videoConfiguration(.init(resolution: .ultraHd2160, useHEVCCodecIfPossible: useHevcIfPossible ?? true))
-            case ExportParam.exportedVideoVideoResolutionsOriginal:
+            case ExportData.exportedVideoVideoResolutionsOriginal:
                 return .videoConfiguration(.init(resolution: .original, useHEVCCodecIfPossible: useHevcIfPossible ?? true))
             default:
                 return .auto
@@ -60,11 +60,11 @@ struct Watermark: Codable {
     
     private func watermarkAligmentValue() -> WatermarkConfiguration.WatermarkPosition{
         switch watermarkAlignment {
-            case ExportParam.exportParamWatermarkAlignmentTopLeft:
+            case ExportData.exportDataWatermarkAlignmentTopLeft:
                 return .leftTop
-            case ExportParam.exportParamWatermarkAlignmentTopRight:
+            case ExportData.exportDataWatermarkAlignmentTopRight:
                 return .rightTop
-            case ExportParam.exportParamWatermarkAlignmentBottomLeft:
+            case ExportData.exportDataWatermarkAlignmentBottomLeft:
                 return .leftBottom
             default:
                 return .rightBottom

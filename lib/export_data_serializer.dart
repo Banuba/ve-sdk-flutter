@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'package:ve_sdk_flutter/export_param.dart';
+import 'package:ve_sdk_flutter/export_data.dart';
 
-extension ExportParamListSerializer on ExportParam {
+extension ExportDataListSerializer on ExportData {
   String serialize() {
     final Map<String, dynamic> configMap = {
       'exportedVideos': exportedVideos.map((e) => e._serialize()).toList(),
@@ -30,7 +30,7 @@ extension WatermarkSerializer on Watermark {
   Map<String, dynamic> _serialize() {
     final Map<String, dynamic> configMap = {
       'imagePath': imagePath,
-      'watermarkAlignment': watermarkAlignment?.name
+      'watermarkAlignment': alignment?.name
     };
 
     configMap.removeWhere((key, value) => value == null);

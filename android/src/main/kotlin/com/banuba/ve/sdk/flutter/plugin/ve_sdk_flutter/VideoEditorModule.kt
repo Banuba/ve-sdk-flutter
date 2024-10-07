@@ -38,7 +38,7 @@ import org.koin.core.context.stopKoin
 import org.koin.core.error.InstanceCreationException
 
 class VideoEditorModule {
-    internal fun initialize(application: Application, featuresConfig: FeaturesConfig, exportParam: ExportParam?) {
+    internal fun initialize(application: Application, featuresConfig: FeaturesConfig, exportData: ExportData?) {
         startKoin {
             androidContext(application)
             allowOverride(true)
@@ -60,7 +60,7 @@ class VideoEditorModule {
                 GalleryKoinModule().module,
 
                 // Sample integration module
-                SampleIntegrationVeKoinModule(featuresConfig, exportParam).module,
+                SampleIntegrationVeKoinModule(featuresConfig, exportData).module,
             )
         }
     }
@@ -88,7 +88,7 @@ class VideoEditorModule {
  * Some dependencies has no default implementations. It means that
  * these classes fully depends on your requirements
  */
-private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, exportParam: ExportParam?) {
+private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, exportData: ExportData?) {
 
     val module = module {
         single<ArEffectsRepositoryProvider>(createdAtStart = true) {
@@ -98,15 +98,12 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
             )
         }
         Log.d(
-            TAG_FEATURES_CONFIG,
+            TAG,
             "Add $INPUT_PARAM_FEATURES_CONFIG with params: ${featuresConfig}"
         )
         this.applyFeaturesConfig(featuresConfig)
-        Log.d(
-            TAG_EXPORT_PARAM,
-            "add $INPUT_PARAM_EXPORT_PARAM with params: ${exportParam}"
-        )
-        this.applyExportConfig(exportParam)
+
+        this.addExportData(exportData)
     }
 
     private fun Module.applyFeaturesConfig(featuresConfig: FeaturesConfig) {
@@ -188,24 +185,28 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
         }
     }
 
-    private fun Module.applyExportConfig(exportParam: ExportParam?) {
-        if (exportParam == null) {
-            Log.d(TAG, ERR_MESSAGE_MISSING_EXPORT_PARAM)
+    private fun Module.addExportData(exportData: ExportData?) {
+        if (exportData == null) {
+            Log.d(TAG, MESSAGE_MISSING_EXPORT_DATA)
         } else {
-            val watermarkImagePath = exportParam.watermark?.imagePath
+            Log.d(
+                TAG,
+                "add $INPUT_PARAM_EXPORT_DATA with params: ${exportData}"
+            )
+            val watermarkImagePath = exportData.watermark?.imagePath
             if (watermarkImagePath != null) {
                 this.factory<WatermarkProvider> {
                     CustomWatermarkProvider(get(), watermarkImagePath)
                 }
             } else {
-                Log.d(TAG_EXPORT_PARAM, ERR_MESSAGE_MISSING_WATERMARK_IMAGE_PATH)
+                Log.d(TAG, MESSAGE_MISSING_WATERMARK_IMAGE_PATH)
             }
 
             this.factory<ExportParamsProvider> {
                 CustomExportParamsProvider(
                     exportDir = get(named("exportDir")),
                     watermarkBuilder = get(),
-                    exportParam = exportParam
+                    exportData = exportData
                 )
             }
         }

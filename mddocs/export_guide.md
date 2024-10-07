@@ -44,10 +44,10 @@ The following table presents list of video resolution and bitrate values for cod
 
 You can create your own export flow to meet your requirements.
 
-Create a new instance of ```ExportParam``` to export single video with ```HD``` and ```auto``` quality: 
+Create a new instance of ```ExportData``` to export single video with ```HD``` and ```auto``` quality: 
 
 ```dart
-const exportParam = ExportParam(exportedVideos: [
+const exportData = ExportData(exportedVideos: [
   ExportedVideo(
       fileName: "export_hd_720p",
       videoResolution: VideoResolution.hd_720p
@@ -59,14 +59,14 @@ const exportParam = ExportParam(exportedVideos: [
 );
 ```
 
-Next, specify it in the [start method](../example/lib/main.dart#53) of the Video Editor:
+Next, specify it in the [start method](../example/lib/main.dart#67) of the Video Editor:
 
 ```diff
 try {
       dynamic exportResult = await _veSdkFlutterPlugin.openCameraScreen(
             _licenseToken, 
             config, 
-+           exportParam: exportParam
++           exportData: exportData
         );
       _handleExportResult(exportResult);
     } on PlatformException catch (e) {
@@ -87,7 +87,7 @@ You can specify ```H264(AVC_PROFILES)``` by setting ```false``` to ```useHevcIfP
 > ```H264(AVC_PROFILES)``` is recommended for low level devices
 
 ```diff
-const exportParam = ExportParam(exportedVideos: [
+const exportData = ExportData(exportedVideos: [
   ExportedVideo(
       fileName: "export_hd",
       videoResolution: VideoResolution.hd_720p,
@@ -100,10 +100,10 @@ const exportParam = ExportParam(exportedVideos: [
 
 Watermark is not added to exported video by default.
 
-Specify your watermark in the [pubspec.yaml](../example/pubspec.yaml#50) and provide it to the ```ExportParam``` instance:
+Specify your watermark in the [pubspec.yaml](../example/pubspec.yaml#50) and provide it to the ```ExportData``` instance:
 
 ```diff
-const exportParam = ExportParam(exportedVideos: [
+const exportData = ExportData(exportedVideos: [
   ExportedVideo(
       fileName: "export_hd",
       videoResolution: VideoResolution.hd_720p

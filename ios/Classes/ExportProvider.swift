@@ -5,18 +5,18 @@ import VEExportSDK
 
 struct ExportProvider {
     
-    let exportParam: ExportParam
+    let exportData: ExportData
     let watermarkConfiguration: WatermarkConfiguration?
     let fileUrls: [String: URL]
     
-    init(exportParam: ExportParam, watermarkConfiguration: WatermarkConfiguration?) {
-        self.exportParam = exportParam
+    init(exportData: ExportData, watermarkConfiguration: WatermarkConfiguration?) {
+        self.exportData = exportData
         self.watermarkConfiguration = watermarkConfiguration
-        self.fileUrls = Dictionary(uniqueKeysWithValues: exportParam.exportedVideos.map { ($0.fileName, ExportProvider.createFileUrl(exportedVideo: $0)) })
+        self.fileUrls = Dictionary(uniqueKeysWithValues: exportData.exportedVideos.map { ($0.fileName, ExportProvider.createFileUrl(exportedVideo: $0)) })
     }
     
     func provideExportConfiguration() -> ExportConfiguration {
-        let exportVideoConfigurations = exportParam.exportedVideos.map {
+        let exportVideoConfigurations = exportData.exportedVideos.map {
             guard let fileUrl = fileUrls[$0.fileName] else {
                 fatalError("URL not found for file: \($0.fileName)")
             }
