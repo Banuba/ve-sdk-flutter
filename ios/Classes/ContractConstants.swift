@@ -96,9 +96,6 @@ extension VeSdkFlutterPlugin {
 }
 
 extension VideoEditorConfig {
-    // Tag
-    static let featuresConfigTag = "Features Config"
-    
     // Features config params
     static let featuresConfigAudioBrowserSourceSoundstripe = "soundstripe"
     static let featuresConfigAudioBrowserSourceMubert = "mubert"

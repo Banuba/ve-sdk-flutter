@@ -290,7 +290,7 @@ extension VideoEditorModule: BanubaVideoEditorDelegate {
 extension VideoEditorConfig {
     mutating func applyFeatureConfig(_ featuresConfig: FeaturesConfig) {
         
-        print("\(VideoEditorConfig.featuresConfigTag): Add Features Config with params: \(featuresConfig)")
+        print("Add Features Config with params: \(featuresConfig)")
         
         AudioBrowserConfig.shared.musicSource = featuresConfig.audioBrowser.value()
         
