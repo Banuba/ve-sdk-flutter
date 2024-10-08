@@ -15,7 +15,7 @@ internal fun parseExportData(rawExportData: String?): ExportData? =
                 exportDataObject.extractWatermark()
             )
         } catch (e: JSONException) {
-            Log.d(TAG, "Missing Export Param", e)
+            Log.w(TAG, "Missing Export Param", e)
             null
         }
     }
@@ -38,7 +38,7 @@ internal fun JSONObject.extractExportedVideos(): List<ExportedVideo> {
         }
         exportedVideos
     } catch (e: JSONException) {
-        Log.d(TAG, "Missing Exported Video params", e)
+        Log.w(TAG, "Missing Exported Video params", e)
         defaultExportData.exportedVideos
     }
 }
@@ -48,11 +48,11 @@ private fun JSONObject.extractWatermark(): Watermark? {
         this.optJSONObject(EXPORT_DATA_WATERMARK)?.let { json ->
             Watermark(
                 imagePath = json.optString(EXPORT_DATA_WATERMARK_IMAGE_PATH),
-                watermarkAlignment = json.optString(EXPORT_DATA_WATERMARK_ALIGNMENT)
+                alignment = json.optString(EXPORT_DATA_WATERMARK_ALIGNMENT)
             )
         } ?: null
     } catch (e: JSONException) {
-        Log.w(TAG, "Missing Watermark params", e)
+        Log.d(TAG, "Missing Watermark params", e)
         null
     }
 }

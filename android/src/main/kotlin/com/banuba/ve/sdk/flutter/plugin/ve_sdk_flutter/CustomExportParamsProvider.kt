@@ -50,7 +50,7 @@ internal class CustomExportParamsProvider(
         return if (exportData.watermark == null){
             effects
         } else {
-            effects.withWatermark(watermarkBuilder, exportData.watermark.watermarkAlignmentValue())
+            effects.withWatermark(watermarkBuilder, exportData.watermark.alignmentValue())
         }
     }
 }

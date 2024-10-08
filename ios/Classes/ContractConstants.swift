@@ -61,7 +61,7 @@ extension VeSdkFlutterPlugin {
     static let errMessageMissingHost = "Missing host ViewController to start video editor"
     
     //Empty feature config
-    var emptyFeaturesConfig : FeaturesConfig {
+    var defaultFeaturesConfig : FeaturesConfig {
         return FeaturesConfig(
             aiCaptions: nil,
             aiClipping: nil,

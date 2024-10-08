@@ -3,7 +3,6 @@ package com.banuba.ve.sdk.flutter.plugin.ve_sdk_flutter
 import android.os.Bundle
 import com.banuba.sdk.veui.data.captions.CaptionsApiService
 import java.text.SimpleDateFormat
-import java.util.Date
 
 // Tag
 internal const val TAG = "VideoEditorPlugin"
@@ -80,7 +79,7 @@ internal const val EXPORTED_VIDEOS_VIDEO_RESOLUTION_ORIGINAL = "original"
 
 internal const val EXPORT_DATA_WATERMARK = "watermark"
 internal const val EXPORT_DATA_WATERMARK_IMAGE_PATH = "imagePath"
-internal const val EXPORT_DATA_WATERMARK_ALIGNMENT = "watermarkAlignment"
+internal const val EXPORT_DATA_WATERMARK_ALIGNMENT = "alignment"
 
 internal const val EXPORT_DATA_WATERMARK_ALIGNMENT_TOP_LEFT = "topLeft"
 internal const val EXPORT_DATA_WATERMARK_ALIGNMENT_TOP_RIGHT = "topRight"
@@ -150,14 +149,11 @@ internal fun prepareExtras(featuresConfig: FeaturesConfig): Bundle {
     return bundle
 }
 
+// Date time formatter
+val dateTimeFormatter = SimpleDateFormat("yyyy-MM-dd'T'HH-mm-ss.SSS")
+
 // Empty Feature Config
-internal val emptyFeaturesConfig = FeaturesConfig()
+internal val defaultFeaturesConfig = FeaturesConfig()
 internal val defaultExportData = ExportData()
 
-// Current Date
-internal fun getCurrentTimestamp(): String {
-    val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH-mm-ss.SSS")
-    val currentDate = Date()
-    return dateFormat.format(currentDate)
-}
 

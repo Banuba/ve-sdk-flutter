@@ -1,13 +1,13 @@
 extension VeSdkFlutterPlugin {
     
     func parseFeatureConfig(_ rawConfigParams: String?) -> FeaturesConfig {
-        guard let featuresConfigData = rawConfigParams?.data(using: .utf8) else {return emptyFeaturesConfig}
+        guard let featuresConfigData = rawConfigParams?.data(using: .utf8) else {return defaultFeaturesConfig}
         do {
             let decodedFeatureConfig = try JSONDecoder().decode(FeaturesConfig.self, from: featuresConfigData)
             return decodedFeatureConfig
         } catch {
             print(VeSdkFlutterPlugin.errMessageMissingConfigParams)
-            return emptyFeaturesConfig
+            return defaultFeaturesConfig
         }
     }
     

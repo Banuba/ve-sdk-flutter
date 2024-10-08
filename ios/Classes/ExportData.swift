@@ -39,7 +39,7 @@ struct ExportedVideo: Codable {
 
 struct Watermark: Codable {
     let imagePath: String?
-    let watermarkAlignment: String?
+    let alignment: String?
     
     public func watermarkConfigurationValue(controller: FlutterViewController) -> WatermarkConfiguration? {
         guard let imagePath = imagePath else {return nil}
@@ -59,7 +59,7 @@ struct Watermark: Codable {
     }
     
     private func watermarkAligmentValue() -> WatermarkConfiguration.WatermarkPosition{
-        switch watermarkAlignment {
+        switch alignment {
             case ExportData.exportDataWatermarkAlignmentTopLeft:
                 return .leftTop
             case ExportData.exportDataWatermarkAlignmentTopRight:

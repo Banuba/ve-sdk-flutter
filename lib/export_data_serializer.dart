@@ -30,7 +30,7 @@ extension WatermarkSerializer on Watermark {
   Map<String, dynamic> _serialize() {
     final Map<String, dynamic> configMap = {
       'imagePath': imagePath,
-      'watermarkAlignment': alignment?.name
+      'alignment': alignment?.name
     };
 
     configMap.removeWhere((key, value) => value == null);

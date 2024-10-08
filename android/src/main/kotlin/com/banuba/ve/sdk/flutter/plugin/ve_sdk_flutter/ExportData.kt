@@ -3,6 +3,7 @@ package com.banuba.ve.sdk.flutter.plugin.ve_sdk_flutter
 import com.banuba.sdk.core.VideoResolution
 import com.banuba.sdk.ve.effects.watermark.WatermarkAlignment
 import com.banuba.sdk.core.ext.toPx
+import java.util.Date
 
 internal data class ExportData(
     val exportedVideos: List<ExportedVideo> = listOf(defaultExportedVideo),
@@ -30,17 +31,17 @@ internal data class ExportedVideo(
 }
 
 internal val defaultExportedVideo: ExportedVideo = ExportedVideo(
-    fileName = "export_${getCurrentTimestamp()}",
+    fileName = "export_${dateTimeFormatter.format(Date())}",
     videoResolution = EXPORTED_VIDEOS_VIDEO_RESOLUTION_AUTO,
     useHevcIfPossible = true
 )
 
 internal data class Watermark(
     val imagePath: String?,
-    val watermarkAlignment: String?
+    val alignment: String?
 ) {
-    internal fun watermarkAlignmentValue(): WatermarkAlignment {
-        return when (this.watermarkAlignment) {
+    internal fun alignmentValue(): WatermarkAlignment {
+        return when (this.alignment) {
             EXPORT_DATA_WATERMARK_ALIGNMENT_TOP_LEFT -> WatermarkAlignment.TopLeft(
                 marginLeftPx = 16.toPx
             )
