@@ -13,7 +13,7 @@ import VEExportSDK
 import Flutter
 
 protocol VideoEditor {
-    func initVideoEditor(token: String, featuresConfig: FeaturesConfig) -> Bool
+    func initVideoEditor(token: String, featuresConfig: FeaturesConfig, exportData: ExportData) -> Bool
     
     func openVideoEditorDefault(fromViewController controller: FlutterViewController, flutterResult: @escaping FlutterResult)
     
@@ -26,11 +26,13 @@ class VideoEditorModule: VideoEditor {
     
     private var videoEditorSDK: BanubaVideoEditor?
     private var flutterResult: FlutterResult?
+    private var currentController: FlutterViewController?
+    private var exportData: ExportData?
 
     // Use “true” if you want users could restore the last video editing session.
     private let restoreLastVideoEditingSession: Bool = false
 
-    func initVideoEditor(token: String, featuresConfig: FeaturesConfig) -> Bool {
+    func initVideoEditor(token: String, featuresConfig: FeaturesConfig, exportData: ExportData) -> Bool {
         guard videoEditorSDK == nil else {
             debugPrint("Video Editor SDK is already initialized")
             return true
@@ -53,6 +55,8 @@ class VideoEditorModule: VideoEditor {
             return false
         }
 
+        self.exportData = exportData
+
         videoEditorSDK?.delegate = self
         return true
     }
@@ -73,6 +77,7 @@ class VideoEditorModule: VideoEditor {
         fromViewController controller: FlutterViewController,
         flutterResult: @escaping FlutterResult
     ) {
+        self.currentController = controller
         self.flutterResult = flutterResult
         
         let config = VideoEditorLaunchConfig(
@@ -88,6 +93,7 @@ class VideoEditorModule: VideoEditor {
         videoURL: URL,
         flutterResult: @escaping FlutterResult
     ) {
+        self.currentController = controller
         self.flutterResult = flutterResult
         
         let pipLaunchConfig = VideoEditorLaunchConfig(
@@ -106,6 +112,7 @@ class VideoEditorModule: VideoEditor {
         videoSources: Array<URL>,
         flutterResult: @escaping FlutterResult
     ) {
+        self.currentController = controller
         self.flutterResult = flutterResult
         
         let trimmerLaunchConfig = VideoEditorLaunchConfig(
@@ -153,6 +160,12 @@ class VideoEditorModule: VideoEditor {
 // MARK: - Export flow
 extension VideoEditorModule {
     func exportVideo() {
+        
+        guard let exportData, let currentController else {
+            print("❌ Export Config is not set")
+            return
+        }
+        
         let progressView = createProgressViewController()
         
         progressView.cancelHandler = { [weak self] in
@@ -161,39 +174,14 @@ extension VideoEditorModule {
         
         getTopViewController()?.present(progressView, animated: true)
         
-        let manager = FileManager.default
-        // File name
+        debugPrint("Add Export Param with params: \(exportData)")
         
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH-mm-ss.SSS"
+        let watermarkConfiguration = exportData.watermark?.watermarkConfigurationValue(controller: currentController)
         
-        let previewURL = manager.temporaryDirectory.appendingPathComponent("export_preview.png")
-        
-        // TODO handle multiple exported video files
-        let firstFileURL = manager.temporaryDirectory.appendingPathComponent("export_\(dateFormatter.string(from: Date())).mov")
-        if manager.fileExists(atPath: firstFileURL.path) {
-            try? manager.removeItem(at: firstFileURL)
-        }
-        
-        // Video configuration
-        let exportVideoConfigurations: [ExportVideoConfiguration] = [
-            ExportVideoConfiguration(
-                fileURL: firstFileURL,
-                quality: .auto,
-                useHEVCCodecIfPossible: true,
-                watermarkConfiguration: nil
-            )
-        ]
-        
-        // Set up export
-        let exportConfiguration = ExportConfiguration(
-            videoConfigurations: exportVideoConfigurations,
-            isCoverEnabled: true,
-            gifSettings: nil
-        )
-        
+        let exportProvider = ExportProvider(exportData: exportData, watermarkConfiguration: watermarkConfiguration)
+                
         videoEditorSDK?.export(
-            using: exportConfiguration,
+            using: exportProvider.provideExportConfiguration(),
             exportProgress: { [weak progressView] progress in progressView?.updateProgressView(with: Float(progress)) }
         ) { [weak self] (error, coverImage) in
             // Export Callback
@@ -215,7 +203,13 @@ extension VideoEditorModule {
                     }
                     
                     // TODO 1. simplify method
-                    self?.completeExport(videoUrls: [firstFileURL], metaUrl: metadataUrl, previewUrl: previewURL, error: error, previewImage: coverImage?.coverImage)
+                    self?.completeExport(
+                        videoUrls: Array(exportProvider.fileUrls.values),
+                        metaUrl: metadataUrl,
+                        previewUrl: FileManager.default.temporaryDirectory.appendingPathComponent("export_preview.png"),
+                        error: error,
+                        previewImage: coverImage?.coverImage
+                    )
                 }
             }
         }
@@ -276,6 +270,7 @@ extension VideoEditorModule {
 
 // MARK: - BanubaVideoEditorSDKDelegate
 extension VideoEditorModule: BanubaVideoEditorDelegate {
+    
     func videoEditorDidCancel(_ videoEditor: BanubaVideoEditor) {
         videoEditor.dismissVideoEditor(animated: true) {
             // remove strong reference to video editor sdk instance
@@ -295,7 +290,7 @@ extension VideoEditorModule: BanubaVideoEditorDelegate {
 extension VideoEditorConfig {
     mutating func applyFeatureConfig(_ featuresConfig: FeaturesConfig) {
         
-        print("\(VideoEditorConfig.featuresConfigTag): Add Features Config with params: \(featuresConfig)")
+        print("Add Features Config with params: \(featuresConfig)")
         
         AudioBrowserConfig.shared.musicSource = featuresConfig.audioBrowser.value()
         

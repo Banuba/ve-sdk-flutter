@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:ve_sdk_flutter/export_data.dart';
+import 'package:ve_sdk_flutter/export_data_serializer.dart';
 import 'package:ve_sdk_flutter/features_config.dart';
 import 'package:ve_sdk_flutter/features_config_serializer.dart';
 import 'package:ve_sdk_flutter/export_result.dart';
@@ -19,6 +21,7 @@ class MethodChannelVeSdkFlutter extends VeSdkFlutterPlatform {
   // Input params
   static const String _inputParamToken = 'token';
   static const String _inputParamFeaturesConfig = 'featuresConfig';
+  static const String _inputParamExportData = 'exportData';
   static const String _inputParamScreen = 'screen';
   static const String _inputParamVideoSources = 'videoSources';
 
@@ -34,50 +37,58 @@ class MethodChannelVeSdkFlutter extends VeSdkFlutterPlatform {
   @override
   Future<ExportResult?> openCameraScreen(
       String token,
-      FeaturesConfig featuresConfig
-  ) => _open(
+      FeaturesConfig featuresConfig,
+      {ExportData? exportData}
+      ) => _open(
       token,
       featuresConfig,
       _screenCamera,
-      []
+      [],
+      exportData: exportData
   );
 
   @override
   Future<ExportResult?> openPipScreen(
       String token,
       FeaturesConfig featuresConfig,
-      String sourceVideoPath
-  ) => _open(
+      String sourceVideoPath,
+      {ExportData? exportData}
+      ) => _open(
       token,
       featuresConfig,
       _screenPip,
-      [sourceVideoPath]
+      [sourceVideoPath],
+      exportData: exportData
   );
 
   @override
   Future<ExportResult?> openTrimmerScreen(
       String token,
       FeaturesConfig featuresConfig,
-      List<String> sourceVideoPathList
-  ) => _open(
+      List<String> sourceVideoPathList,
+      {ExportData? exportData}
+      ) => _open(
       token,
       featuresConfig,
       _screenTrimmer,
-      sourceVideoPathList
+      sourceVideoPathList,
+      exportData: exportData
   );
 
   Future<ExportResult?> _open(
       String token,
       FeaturesConfig featuresConfig,
       String screen,
-      List<String> sourceVideoPathList
+      List<String> sourceVideoPathList,
+      {ExportData? exportData}
   ) async {
-      final inputParams = {
-        _inputParamToken: token,
-        _inputParamFeaturesConfig: featuresConfig.serialize(),
-        _inputParamScreen: screen,
-        _inputParamVideoSources: sourceVideoPathList
-      };
+    final inputParams = {
+      _inputParamToken: token,
+      _inputParamFeaturesConfig: featuresConfig.serialize(),
+      _inputParamScreen: screen,
+      _inputParamVideoSources: sourceVideoPathList,
+      _inputParamExportData: exportData?.serialize()
+    };
 
     debugPrint('Start video editor with params = $inputParams');
 

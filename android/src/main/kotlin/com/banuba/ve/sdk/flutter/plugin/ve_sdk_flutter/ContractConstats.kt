@@ -2,11 +2,10 @@ package com.banuba.ve.sdk.flutter.plugin.ve_sdk_flutter
 
 import android.os.Bundle
 import com.banuba.sdk.veui.data.captions.CaptionsApiService
+import java.text.SimpleDateFormat
 
 // Tag
 internal const val TAG = "VideoEditorPlugin"
-
-internal const val TAG_FEATURES_CONFIG = "FeaturesConfig"
 
 // Method channel
 internal const val CHANNEL = "ve_sdk_flutter"
@@ -15,6 +14,7 @@ internal const val METHOD_START = "startVideoEditor"
 // Input params
 internal const val INPUT_PARAM_TOKEN = "token"
 internal const val INPUT_PARAM_FEATURES_CONFIG = "featuresConfig"
+internal const val INPUT_PARAM_EXPORT_DATA = "exportData"
 internal const val INPUT_PARAM_SCREEN = "screen"
 internal const val INPUT_PARAM_VIDEO_SOURCES = "videoSources"
 
@@ -58,6 +58,33 @@ internal const val FEATURES_CONFIG_DRAFTS_CONFIG_DISABLED = "disabled"
 
 internal const val FEATURES_CONFIG_GIF_PICKER_CONFIG = "gifPickerConfig"
 internal const val FEATURES_CONFIG_GIF_PICKER_CONFIG_API_KEY = "giphyApiKey"
+
+internal const val EXPORT_DATA_EXPORTED_VIDEOS = "exportedVideos"
+
+// Exported video params
+internal const val EXPORTED_VIDEOS_FILE_NAME = "fileName"
+
+internal const val EXPORTED_VIDEOS_HEVC_CODEC = "useHevcIfPossible"
+
+internal const val EXPORTED_VIDEOS_VIDEO_RESOLUTION = "videoResolution"
+internal const val EXPORTED_VIDEOS_VIDEO_RESOLUTION_VGA360p = "vga360p"
+internal const val EXPORTED_VIDEOS_VIDEO_RESOLUTION_VGA480p = "vga480p"
+internal const val EXPORTED_VIDEOS_VIDEO_RESOLUTION_QHD540p = "qhd540p"
+internal const val EXPORTED_VIDEOS_VIDEO_RESOLUTION_HD720p = "hd720p"
+internal const val EXPORTED_VIDEOS_VIDEO_RESOLUTION_FHD1080p = "fhd1080p"
+internal const val EXPORTED_VIDEOS_VIDEO_RESOLUTION_QHD1440p = "qhd1440p"
+internal const val EXPORTED_VIDEOS_VIDEO_RESOLUTION_UHD2160p = "uhd2160p"
+internal const val EXPORTED_VIDEOS_VIDEO_RESOLUTION_AUTO = "auto"
+internal const val EXPORTED_VIDEOS_VIDEO_RESOLUTION_ORIGINAL = "original"
+
+internal const val EXPORT_DATA_WATERMARK = "watermark"
+internal const val EXPORT_DATA_WATERMARK_IMAGE_PATH = "imagePath"
+internal const val EXPORT_DATA_WATERMARK_ALIGNMENT = "alignment"
+
+internal const val EXPORT_DATA_WATERMARK_ALIGNMENT_TOP_LEFT = "topLeft"
+internal const val EXPORT_DATA_WATERMARK_ALIGNMENT_TOP_RIGHT = "topRight"
+internal const val EXPORT_DATA_WATERMARK_ALIGNMENT_BOTTOM_LEFT = "bottomLeft"
+internal const val EXPORT_DATA_WATERMARK_ALIGNMENT_BOTTOM_RIGHT = "bottomRight"
 
 // Screens
 internal const val SCREEN_CAMERA = "camera"
@@ -105,7 +132,13 @@ internal const val ERR_MESSAGE_MISSING_HOST = "Missing host Activity to start vi
 internal const val ERR_MESSAGE_INVALID_CONFIG =
     "Missing or invalid config params, will use default config. Input params: $INPUT_PARAM_FEATURES_CONFIG"
 
-//Prepare Extras from AiCaptions
+internal const val MESSAGE_MISSING_EXPORT_DATA =
+    "Export data is not set. Default implementation will be used. Input export config: $INPUT_PARAM_EXPORT_DATA"
+
+internal const val MESSAGE_MISSING_WATERMARK_IMAGE_PATH =
+    "Watermark image is no set. Watermark will not be used."
+
+// Prepare Extras from AiCaptions
 internal fun prepareExtras(featuresConfig: FeaturesConfig): Bundle {
     val bundle = Bundle()
     featuresConfig.aiCaptions?.let { params ->
@@ -116,5 +149,9 @@ internal fun prepareExtras(featuresConfig: FeaturesConfig): Bundle {
     return bundle
 }
 
-//Empty Feature Config
-internal val emptyFeaturesConfig = FeaturesConfig()
+// Date time formatter
+val dateTimeFormatter = SimpleDateFormat("yyyy-MM-dd'T'HH-mm-ss.SSS")
+
+// Empty Feature Config
+internal val defaultFeaturesConfig = FeaturesConfig()
+internal val defaultExportData = ExportData()

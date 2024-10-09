@@ -4,7 +4,7 @@
 
 Create instance of the ```FeaturesConfig``` to apply various Video Editor configurations. 
 
-Pass the ```FeaturesConfig``` instance to any Video Editor [start method](../example/lib/main.dart#L43-L112). For example:
+Pass the ```FeaturesConfig``` instance to any Video Editor [start method](../example/lib/main.dart#L43-L124). For example:
 
 ```dart
 Future<void> _startVideoEditorInCameraMode() async {

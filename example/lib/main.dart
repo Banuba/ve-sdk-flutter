@@ -1,6 +1,6 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:ve_sdk_flutter/export_data.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ve_sdk_flutter/export_result.dart';
@@ -41,16 +41,29 @@ class _HomePageState extends State<HomePage> {
   String _errorMessage = '';
 
   Future<void> _startVideoEditorInCameraMode() async {
-
     // Specify your Config params in the builder below
 
     final config = FeaturesConfigBuilder()
-      // .setAiCaptions(...)
-      // ...
-      .build();
+        // .setAiCaptions(...)
+        // ...
+        .build();
+
+    // Export data example
+
+    // const exportData = ExportData(exportedVideos: [
+    //   ExportedVideo(
+    //       fileName: "export_HD",
+    //       videoResolution: VideoResolution.hd720p
+    //   )],
+    //     watermark: Watermark(
+    //        imagePath: "assets/watermark.png",
+    //        alignment: WatermarkAlignment.topLeft
+    //     )
+    // );
+
     try {
-      dynamic exportResult =
-          await _veSdkFlutterPlugin.openCameraScreen(_licenseToken, config);
+      dynamic exportResult = await _veSdkFlutterPlugin
+          .openCameraScreen(_licenseToken, config);
       _handleExportResult(exportResult);
     } on PlatformException catch (e) {
       _handlePlatformException(e);
@@ -242,3 +255,4 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+

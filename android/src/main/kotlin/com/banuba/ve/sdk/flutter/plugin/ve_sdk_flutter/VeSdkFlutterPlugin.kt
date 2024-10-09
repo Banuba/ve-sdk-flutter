@@ -65,6 +65,8 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
 
         val featuresConfig = parseFeaturesConfig(call.argument<String>(INPUT_PARAM_FEATURES_CONFIG))
 
+        val exportData = parseExportData(call.argument<String>(INPUT_PARAM_EXPORT_DATA))
+
         val screen = call.argument<String>(INPUT_PARAM_SCREEN)
         if (screen.isNullOrEmpty()) {
             channelResult?.error(ERR_INVALID_PARAMS, ERR_MESSAGE_MISSING_SCREEN, null)
@@ -73,7 +75,7 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
 
         when (methodName) {
             METHOD_START -> {
-                initialize(licenseToken, featuresConfig) { activity ->
+                initialize(licenseToken, featuresConfig, exportData) { activity ->
                     val intent = when (screen) {
                         SCREEN_CAMERA -> {
                             Log.d(TAG, "Start video editor from camera screen")
@@ -228,6 +230,7 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
     private fun initialize(
         token: String,
         featuresConfig: FeaturesConfig,
+        exportData: ExportData?,
         block: (Activity) -> Unit
     ) {
         val activity = currentActivity
@@ -253,7 +256,7 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
         if (videoEditorModule == null) {
             // Initialize video editor sdk dependencies
             videoEditorModule = VideoEditorModule().apply {
-                initialize(activity.application, featuresConfig)
+                initialize(activity.application, featuresConfig, exportData)
             }
         }
 
