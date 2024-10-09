@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:ve_sdk_flutter/export_data.dart';
 import 'package:flutter/services.dart';

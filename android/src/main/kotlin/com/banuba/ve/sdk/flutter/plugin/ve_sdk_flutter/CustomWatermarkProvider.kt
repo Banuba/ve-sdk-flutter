@@ -18,7 +18,7 @@ class CustomWatermarkProvider(private val context: Context, private val imagePat
             inputStream.close()
             watermark
         } catch (e: Exception) {
-            Log.w(TAG, "Error opening asset: ${e.message}")
+            Log.w(TAG, "Error opening asset", e)
             null
         }
     }

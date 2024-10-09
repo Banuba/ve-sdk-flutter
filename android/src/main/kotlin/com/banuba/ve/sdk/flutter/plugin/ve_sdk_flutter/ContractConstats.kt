@@ -155,5 +155,3 @@ val dateTimeFormatter = SimpleDateFormat("yyyy-MM-dd'T'HH-mm-ss.SSS")
 // Empty Feature Config
 internal val defaultFeaturesConfig = FeaturesConfig()
 internal val defaultExportData = ExportData()
-
-

@@ -2,7 +2,6 @@ package com.banuba.ve.sdk.flutter.plugin.ve_sdk_flutter
 
 import android.app.Activity
 import android.app.Activity.RESULT_OK
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.util.Log

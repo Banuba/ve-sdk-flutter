@@ -2,8 +2,6 @@ package com.banuba.ve.sdk.flutter.plugin.ve_sdk_flutter
 
 import android.app.Application
 import androidx.fragment.app.Fragment
-import androidx.core.net.toUri
-import android.content.Context
 import com.banuba.sdk.effectplayer.adapter.BanubaEffectPlayerKoinModule
 import com.banuba.sdk.export.di.VeExportKoinModule
 import com.banuba.sdk.export.data.ExportParamsProvider
