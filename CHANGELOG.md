@@ -8,10 +8,10 @@ Initial version of Banuba Video Editor SDK Flutter plugin
 - [Face AR](https://www.banuba.com/facear-sdk/face-filters) is enabled by default. Beautification mask is added.
 
 ## 0.0.2
-Update doc
+- Update doc
 
 ## 0.0.3
-Migrate Android to https://docs.flutter.dev/release/breaking-changes/flutter-gradle-plugin-apply
+- Migrate Android to https://docs.flutter.dev/release/breaking-changes/flutter-gradle-plugin-apply
 
 ## 0.1.0
 - Supports Video Editor Android 1.36.4
@@ -30,3 +30,6 @@ Migrate Android to https://docs.flutter.dev/release/breaking-changes/flutter-gra
 
 ## 0.5.0 
 - Minor fixes
+
+## 0.6.0
+- Introduce ```ExportData``` for implementing export flow

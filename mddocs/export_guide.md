@@ -8,7 +8,7 @@ Refer to our main docs [Android](https://docs.banuba.com/ve-pe-sdk/docs/android/
 
 ## Implement export flow
 
-> [!INFO]
+> [!NOTE]
 > Default implementation exports single video file with auto quality(based on device hardware capabilities).
 
 Create a new instance of ```ExportData``` to export 2 videos with ```HD``` and ```auto``` qualities: 
