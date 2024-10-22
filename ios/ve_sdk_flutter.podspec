@@ -19,7 +19,7 @@ A new Flutter project.
   s.dependency 'Flutter'
   s.platform = :ios, '15.0'
 
-  sdk_version = '1.37.0'
+  sdk_version = '1.38.0'
 
   s.dependency 'BanubaARCloudSDK', sdk_version #optional
   s.dependency 'BanubaVideoEditorSDK', sdk_version
