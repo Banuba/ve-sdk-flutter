@@ -1,6 +1,6 @@
 name: ve_sdk_flutter
 description: Banuba Video Editor Flutter plugin.
-version: 0.6.0
+version: 0.7.0
 homepage: https://github.com/Banuba/ve-sdk-flutter
 
 environment:
