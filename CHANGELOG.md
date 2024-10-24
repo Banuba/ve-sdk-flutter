@@ -33,3 +33,6 @@ Initial version of Banuba Video Editor SDK Flutter plugin
 
 ## 0.6.0
 - Introduce ```ExportData``` for implementing export flow
+
+## 0.7.0
+- Supports Video Editor SDK 1.38.0
