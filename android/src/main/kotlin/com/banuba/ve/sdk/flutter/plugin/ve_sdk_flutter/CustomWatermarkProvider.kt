@@ -7,7 +7,6 @@ import android.content.res.AssetFileDescriptor
 import android.content.res.AssetManager
 import android.util.Log
 import com.banuba.sdk.ve.effects.watermark.WatermarkProvider
-import com.banuba.sdk.utils.ContextProvider.getAssets
 
 class CustomWatermarkProvider(private val context: Context, private val imagePath: String) : WatermarkProvider {
 

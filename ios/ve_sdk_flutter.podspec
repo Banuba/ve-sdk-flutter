@@ -21,10 +21,12 @@ A new Flutter project.
 
   sdk_version = '1.39.0'
 
+  support_face_ar = ENV['SUPPORT_FACE_AR'] == 'true' || ENV['SUPPORT_FACE_AR'].nil?
+
   s.dependency 'BanubaARCloudSDK', sdk_version #optional
   s.dependency 'BanubaVideoEditorSDK', sdk_version
   s.dependency 'BanubaAudioBrowserSDK', sdk_version #optional
-  s.dependency 'BanubaSDK', sdk_version #optional
+  s.dependency 'BanubaSDK', sdk_version if support_face_ar
   s.dependency 'BanubaSDKSimple', sdk_version
   s.dependency 'BanubaSDKServicing', sdk_version
   s.dependency 'VideoEditor', sdk_version

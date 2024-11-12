@@ -5,6 +5,8 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-parcelize'
 
+def supportFaceAr = project.hasProperty('supportFaceAr') ? project.supportFaceAr.toBoolean() : true
+
 android {
     namespace = "com.banuba.ve.sdk.flutter.plugin.ve_sdk_flutter"
 
@@ -23,6 +25,10 @@ android {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     defaultConfig {
         minSdkVersion 23
         targetSdkVersion 34
@@ -31,6 +37,8 @@ android {
 
         versionCode 1
         versionName "1.0"
+
+        buildConfigField "boolean", "SUPPORT_FACE_AR", "${supportFaceAr}"
     }
 
     packagingOptions {
@@ -138,9 +146,12 @@ dependencies {
     implementation "com.banuba.sdk:ve-ui-sdk:${banubaSdkVersion}"
     implementation "com.banuba.sdk:ve-gallery-sdk:${banubaSdkVersion}"
     implementation "com.banuba.sdk:ve-effects-sdk:${banubaSdkVersion}"
-    implementation "com.banuba.sdk:effect-player-adapter:${banubaSdkVersion}"
     implementation "com.banuba.sdk:ar-cloud:${banubaSdkVersion}"
     implementation "com.banuba.sdk:ve-audio-browser-sdk:${banubaSdkVersion}"
     implementation "com.banuba.sdk:ve-export-sdk:${banubaSdkVersion}"
     implementation "com.banuba.sdk:ve-playback-sdk:${banubaSdkVersion}"
+
+    if (supportFaceAr){
+        implementation "com.banuba.sdk:effect-player-adapter:${banubaSdkVersion}"
+    }
 }
