@@ -82,24 +82,24 @@ Copy the ```ColorEffectsPreview``` folder from [example's asset catalog](../exam
 
 ### Android
 
-Set the ```supportFaceAr``` flag to the [gradle.properties](../example/android/gradle.properties#L4):
+Set the ```enableFaceAr``` flag to the [gradle.properties](../example/android/gradle.properties#L4):
 
 ```diff
 org.gradle.jvmargs=-Xmx4096M
 android.useAndroidX=true
 android.enableJetifier=true
-+ supportFaceAr=false
++ enableFaceAr=false
 ```
 
 ### IOS
 
-Set the environment ```SUPPORT_FACE_AR``` flag the the [PodFile](../example/ios/Podfile#L10):
+Set the environment ```ENABLE_FACE_AR``` flag the the [PodFile](../example/ios/Podfile#L10):
 
 ```diff
 ...
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
 
-+ ENV['SUPPORT_FACE_AR'] = 'false'
++ ENV['ENABLE_FACE_AR'] = 'false'
 
 project 'Runner', {
   'Debug' => :debug,

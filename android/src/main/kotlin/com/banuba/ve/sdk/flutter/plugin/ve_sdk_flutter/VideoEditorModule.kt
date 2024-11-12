@@ -54,7 +54,7 @@ class VideoEditorModule {
                 SampleIntegrationVeKoinModule(featuresConfig, exportData).module,
             )
 
-            if (BuildConfig.SUPPORT_FACE_AR) {
+            if (BuildConfig.ENABLE_FACE_AR) {
                 Log.d(TAG, "Effect Player is added")
                 try {
                     val effectPlayerInstance = Class.forName("com.banuba.sdk.effectplayer.adapter.BanubaEffectPlayerKoinModule")
