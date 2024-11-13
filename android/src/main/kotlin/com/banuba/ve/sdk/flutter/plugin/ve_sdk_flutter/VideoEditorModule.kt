@@ -2,7 +2,6 @@ package com.banuba.ve.sdk.flutter.plugin.ve_sdk_flutter
 
 import android.app.Application
 import androidx.fragment.app.Fragment
-import com.banuba.sdk.effectplayer.adapter.BanubaEffectPlayerKoinModule
 import com.banuba.sdk.export.di.VeExportKoinModule
 import com.banuba.sdk.export.data.ExportParamsProvider
 import com.banuba.sdk.gallery.di.GalleryKoinModule
@@ -43,24 +42,38 @@ class VideoEditorModule {
             allowOverride(true)
 
             // IMPORTANT! order of modules is required
-            modules(
+            val modulesList = mutableListOf (
                 VeSdkKoinModule().module,
                 VeExportKoinModule().module,
                 VePlaybackSdkKoinModule().module,
-
                 AudioBrowserKoinModule().module,
-
-                // IMPORTANT! ArCloudKoinModule should be set before TokenStorageKoinModule to get effects from the cloud
                 ArCloudKoinModule().module,
-
                 VeUiSdkKoinModule().module,
                 VeFlowKoinModule().module,
-                BanubaEffectPlayerKoinModule().module,
                 GalleryKoinModule().module,
-
-                // Sample integration module
                 SampleIntegrationVeKoinModule(featuresConfig, exportData).module,
             )
+
+            if (BuildConfig.ENABLE_FACE_AR) {
+                Log.d(TAG, "Effect Player is added")
+                try {
+                    val effectPlayerInstance = Class.forName("com.banuba.sdk.effectplayer.adapter.BanubaEffectPlayerKoinModule")
+                        .getDeclaredConstructor()
+                        .newInstance()
+                    val module = effectPlayerInstance.javaClass.getDeclaredField("module")
+                        .apply {
+                            isAccessible = true
+                        }
+                        .get(effectPlayerInstance) as? Module
+                    module?.let {
+                        modulesList.add(it)
+                    }
+                } catch (e: Exception) {
+                    Log.w(TAG, "Error while adding the Effect Player Module: ${e.message}")
+                }
+            }
+
+            modules(modulesList)
         }
     }
 

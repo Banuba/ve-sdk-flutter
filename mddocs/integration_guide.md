@@ -78,6 +78,37 @@ Keep in mind that ```drawable-xxxhdpi``` contains files with the highest resolut
 
 Copy the ```ColorEffectsPreview``` folder from [example's asset catalog](../example/ios/Runner/Assets.xcassets) to your app's asset catalog.
 
+## Disable Face AR SDK
+
+### Android
+
+Set the ```ENABLE_FACE_AR``` flag to the [gradle.properties](../example/android/gradle.properties#L4):
+
+```diff
+org.gradle.jvmargs=-Xmx4096M
+android.useAndroidX=true
+android.enableJetifier=true
++ ENABLE_FACE_AR=false
+```
+
+### IOS
+
+Set the environment ```ENABLE_FACE_AR``` flag the the [PodFile](../example/ios/Podfile#L10):
+
+```diff
+...
+ENV['COCOAPODS_DISABLE_STATS'] = 'true'
+
++ ENV['ENABLE_FACE_AR'] = 'false'
+
+project 'Runner', {
+  'Debug' => :debug,
+  'Profile' => :release,
+  'Release' => :release,
+}
+...
+```
+
 ## Limit processor architectures on Android
 Banuba Video Editor on Android supports the following processor architectures - ```arm64-v8a```, ```armeabi-v7a```, ```x86-64```.
 Please keep in mind that each architecture adds extra MBs to your app.
