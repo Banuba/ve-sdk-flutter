@@ -40,3 +40,6 @@ Initial version of Banuba Video Editor SDK Flutter plugin
 ## 0.8.0
 - Supports Video Editor SDK 1.39.0
 - Supports ```AI Clipping``` with ```Banuba Music```
+
+## 0.9.0
+- Supports control of the Face AR Feature
