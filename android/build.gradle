@@ -5,7 +5,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-parcelize'
 
-def enableFaceAr = project.hasProperty("enableFaceAr") ? project.enableFaceAr.toBoolean() : true
+def ENABLE_FACE_AR = project.hasProperty("ENABLE_FACE_AR") ? project.ENABLE_FACE_AR.toBoolean() : true
 
 android {
     namespace = "com.banuba.ve.sdk.flutter.plugin.ve_sdk_flutter"
@@ -38,7 +38,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        buildConfigField "boolean", "ENABLE_FACE_AR", "${enableFaceAr}"
+        buildConfigField "boolean", "ENABLE_FACE_AR", "${ENABLE_FACE_AR}"
     }
 
     packagingOptions {
@@ -151,7 +151,7 @@ dependencies {
     implementation "com.banuba.sdk:ve-export-sdk:${banubaSdkVersion}"
     implementation "com.banuba.sdk:ve-playback-sdk:${banubaSdkVersion}"
 
-    if (enableFaceAr){
+    if (ENABLE_FACE_AR){
         implementation "com.banuba.sdk:effect-player-adapter:${banubaSdkVersion}"
     }
 }

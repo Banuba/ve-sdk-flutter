@@ -82,13 +82,13 @@ Copy the ```ColorEffectsPreview``` folder from [example's asset catalog](../exam
 
 ### Android
 
-Set the ```enableFaceAr``` flag to the [gradle.properties](../example/android/gradle.properties#L4):
+Set the ```ENABLE_FACE_AR``` flag to the [gradle.properties](../example/android/gradle.properties#L4):
 
 ```diff
 org.gradle.jvmargs=-Xmx4096M
 android.useAndroidX=true
 android.enableJetifier=true
-+ enableFaceAr=false
++ ENABLE_FACE_AR=false
 ```
 
 ### IOS
