@@ -3,8 +3,8 @@ package com.banuba.ve.sdk.flutter.plugin.ve_sdk_flutter
 import com.banuba.sdk.core.data.TrackData
 import androidx.fragment.app.Fragment
 import com.banuba.sdk.audiobrowser.domain.AudioBrowserMusicProvider
-import com.banuba.sdk.audiobrowser.soundstripe.SoundstripeProvider
-import com.banuba.sdk.audiobrowser.feedfm.BanubaMusicProvider
+import com.banuba.sdk.audiobrowser.domain.SoundstripeProvider
+import com.banuba.sdk.core.ui.SimpleMusicTrackProvider
 import com.banuba.sdk.core.ui.ContentFeatureProvider
 import com.banuba.sdk.core.domain.DraftConfig
 import org.json.JSONObject
@@ -16,6 +16,7 @@ internal data class FeaturesConfig(
     val editorConfig: EditorConfig = defaultEditorConfig,
     val draftsConfig: DraftsConfig = defaultDraftsConfig,
     val gifPickerConfig: GifPickerConfig? = null,
+    val experimentalEnableNewUI: Boolean = false
 )
 
 internal data class AiClipping(
@@ -36,7 +37,7 @@ internal data class AudioBrowser(
     internal fun value(): ContentFeatureProvider<TrackData, Fragment> {
         return when (this.source) {
             FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_SOUNDSTRIPE -> SoundstripeProvider()
-            FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_BANUBA_MUSIC -> BanubaMusicProvider()
+            FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_DISABLED -> SimpleMusicTrackProvider()
             else -> {
                 AudioBrowserMusicProvider()
             }

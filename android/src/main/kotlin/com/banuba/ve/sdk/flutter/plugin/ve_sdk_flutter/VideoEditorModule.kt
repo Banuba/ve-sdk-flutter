@@ -17,12 +17,14 @@ import com.banuba.sdk.core.ui.ContentFeatureProvider
 import com.banuba.sdk.playback.PlayerScaleType
 import com.banuba.sdk.core.data.autocut.AutoCutTrackLoader
 import com.banuba.sdk.ve.data.autocut.AutoCutConfig
+import com.banuba.sdk.audiobrowser.autocut.AutoCutTrackLoaderSoundstripe
 import com.banuba.sdk.ve.effects.watermark.WatermarkProvider
-import com.banuba.sdk.audiobrowser.soundstripe.AutoCutSoundstripeTrackLoader
-import com.banuba.sdk.audiobrowser.feedfm.AutoCutBanubaTrackLoader
+import com.banuba.sdk.audiobrowser.domain.SoundstripeProvider
 import com.banuba.sdk.core.domain.DraftConfig
 import com.banuba.sdk.veui.data.stickers.GifPickerConfigurations
 import com.banuba.sdk.audiobrowser.data.MubertApiConfig
+import com.banuba.sdk.veui.data.music.MusicEditorConfig
+import com.banuba.sdk.cameraui.data.CameraConfig
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import org.koin.core.qualifier.named
@@ -125,6 +127,11 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
             featuresConfig.audioBrowser.value()
         }
 
+        when (featuresConfig.audioBrowser.source){
+            FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_MUBERT -> this.addMubertParams(featuresConfig)
+            FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_DISABLED -> this.applyDisabledMusicConfig(featuresConfig)
+        }
+
         if (featuresConfig.audioBrowser.source == FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_MUBERT) {
             this.addMubertParams(featuresConfig)
         }
@@ -137,18 +144,9 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
                 )
             }
             this.single<AutoCutTrackLoader> {
-                when (featuresConfig.audioBrowser.source) {
-                    FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_BANUBA_MUSIC -> {
-                        AutoCutBanubaTrackLoader(
-                            contentProvider = get()
-                        )
-                    }
-                    else -> {
-                        AutoCutSoundstripeTrackLoader(
-                            soundstripeApi = get()
-                        )
-                    }
-                }
+                AutoCutTrackLoaderSoundstripe(
+                    soundstripeApi = get()
+                )
             }
         }
 
@@ -203,6 +201,16 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
         } else {
             Log.w(TAG, "Missing Params in AudioBrowser")
             return
+        }
+    }
+
+    private fun Module.applyDisabledMusicConfig(featuresConfig: FeaturesConfig) {
+        this.single<MusicEditorConfig>{
+            MusicEditorConfig(supportsExternalMusic = false)
+        }
+
+        this.single <CameraConfig>{
+            CameraConfig(supportsExternalMusic = false)
         }
     }
 

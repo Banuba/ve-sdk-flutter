@@ -16,7 +16,8 @@ internal fun parseFeaturesConfig(rawConfigParams: String?): FeaturesConfig =
                 featuresConfigObject.extractAudioBrowser(),
                 featuresConfigObject.extractEditorConfig(),
                 featuresConfigObject.extractDraftsConfig(),
-                featuresConfigObject.extractGifPickerConfig()
+                featuresConfigObject.extractGifPickerConfig(),
+                featuresConfigObject.extractEnableNewUI(),
             )
         } catch (e: JSONException) {
             defaultFeaturesConfig
@@ -102,4 +103,8 @@ private fun JSONObject.extractGifPickerConfig(): GifPickerConfig? {
         Log.w(TAG, "Missing Gif Picker Config params", e)
         null
     }
+}
+
+private fun JSONObject.extractEnableNewUI(): Boolean {
+    return this.optBoolean(FEATURES_CONFIG_EXPERIMENTAL_ENABLE_NEW_UI)
 }

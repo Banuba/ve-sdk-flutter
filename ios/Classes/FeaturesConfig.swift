@@ -9,6 +9,7 @@ struct FeaturesConfig: Codable {
     let editorConfig: EditorConfig
     let draftsConfig: DraftsConfig
     let gifPickerConfig: GifPickerConfig?
+    let experimentalEnableNewUI: Bool
 }
 
 struct AiClipping: Codable {
@@ -32,8 +33,6 @@ struct AudioBrowser: Codable {
                 return .soundstripe
             case VideoEditorConfig.featuresConfigAudioBrowserSourceLocal:
                 return .localStorageWithMyFiles
-            case VideoEditorConfig.featuresConfigAudioBrowserSourceBanubaMusic:
-                return .banubaMusic
             default:
                 return .allSources
         }

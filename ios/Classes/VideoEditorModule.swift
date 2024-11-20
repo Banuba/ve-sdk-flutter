@@ -47,6 +47,7 @@ class VideoEditorModule: VideoEditor {
 
         videoEditorSDK = BanubaVideoEditor(
             token: token,
+            arguments: ["ENABLE_NEW_UI" : featuresConfig.experimentalEnableNewUI],
             configuration: config,
             externalViewControllerFactory: provideCustomViewFactory(featuresConfig: featuresConfig)
         )
@@ -292,7 +293,15 @@ extension VideoEditorConfig {
         
         print("Add Features Config with params: \(featuresConfig)")
         
-        AudioBrowserConfig.shared.musicSource = featuresConfig.audioBrowser.value()
+        if featuresConfig.audioBrowser.source != VideoEditorConfig.featuresConfigAudioBrowserSourceDisabled {
+            AudioBrowserConfig.shared.musicSource = featuresConfig.audioBrowser.value()
+        }
+        
+        switch featuresConfig.audioBrowser.source {
+            case VideoEditorConfig.featuresConfigAudioBrowserSourceMubert: addMubertParams(featuresConfig)
+            case VideoEditorConfig.featuresConfigAudioBrowserSourceDisabled: applyDisabledMusicConfig(featuresConfig)
+            default: return
+        }
         
         if featuresConfig.audioBrowser.source == VideoEditorConfig.featuresConfigAudioBrowserSourceMubert {
             guard let audioBrowserParams = featuresConfig.audioBrowser.params else { return }
@@ -304,6 +313,11 @@ extension VideoEditorConfig {
             )
         }
         
+        if featuresConfig.experimentalEnableNewUI {
+            self.videoEditorViewConfiguration.timelineConfiguration.isAddAudioEnabled = false
+            self.combinedGalleryConfiguration.visibleTabsInGallery = GalleryMediaType.allCases
+        }
+        
         if let aiCaptions = featuresConfig.aiCaptions {
             self.captionsConfiguration.captionsUploadUrl = aiCaptions.uploadUrl
             self.captionsConfiguration.captionsTranscribeUrl = aiCaptions.transcribeUrl
@@ -313,13 +327,7 @@ extension VideoEditorConfig {
             
         if let aiClipping = featuresConfig.aiClipping, let audioTracksUrl = URL(string: aiClipping.audioTracksUrl) {
             self.autoCutConfiguration.embeddingsDownloadUrl = aiClipping.audioDataUrl
-            self.autoCutConfiguration.musicProvider = 
-                switch featuresConfig.audioBrowser.value() {
-                    case .banubaMusic:
-                        .banubaMusic(tracksURL: audioTracksUrl)
-                    default:
-                        .soundstripe(tracksURL: audioTracksUrl)
-                }
+            self.autoCutConfiguration.musicProvider = .soundstripe(tracksURL: audioTracksUrl)
         }
         
         self.editorConfiguration.isVideoAspectFillEnabled = featuresConfig.editorConfig.enableVideoAspectFill
@@ -338,5 +346,19 @@ extension VideoEditorConfig {
         featureConfiguration.supportsTrimRecordedVideo = true
         featureConfiguration.isMuteCameraAudioEnabled = true
         self.updateFeatureConfiguration(featureConfiguration: featureConfiguration)
+    }
+    
+    private func addMubertParams(_ featuresConfig: FeaturesConfig){
+        guard let audioBrowserParams = featuresConfig.audioBrowser.params else { return }
+        guard let mubertLicence = audioBrowserParams.mubertLicence, let mubertToken = audioBrowserParams.mubertToken else { return }
+    
+        BanubaAudioBrowser.setMubertKeys(
+            license: mubertLicence,
+            token: mubertToken
+        )
+    }
+    
+    private mutating func applyDisabledMusicConfig(_ featuresConfig: FeaturesConfig){
+        self.recorderConfiguration.additionalEffectsButtons = self.recorderConfiguration.additionalEffectsButtons.filter{$0.identifier != .sound}
     }
 }
