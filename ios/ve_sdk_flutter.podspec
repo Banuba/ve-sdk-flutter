@@ -19,14 +19,19 @@ A new Flutter project.
   s.dependency 'Flutter'
   s.platform = :ios, '15.0'
 
-  sdk_version = '0.40.0'
+  sdk_version = '0.40.1'
 
   ENABLE_FACE_AR = ENV['ENABLE_FACE_AR'] == 'true' || ENV['ENABLE_FACE_AR'].nil?
 
   s.dependency 'BanubaARCloudSDK', sdk_version #optional
   s.dependency 'BanubaVideoEditorSDK', sdk_version
   s.dependency 'BanubaAudioBrowserSDK', sdk_version #optional
-  s.dependency 'BanubaSDK', sdk_version if ENABLE_FACE_AR
+  if ENABLE_FACE_AR
+      puts "!!! BANUBA FACE AR IS ENABLED !!!"
+      s.dependency 'BanubaSDK', sdk_version
+  else
+    puts "!!! BANUBA FACE AR IS DISABLED !!!"
+  end
   s.dependency 'BanubaSDKSimple', sdk_version
   s.dependency 'BanubaSDKServicing', sdk_version
   s.dependency 'VideoEditor', sdk_version

@@ -114,6 +114,9 @@ extension VideoEditorConfig {
     
     // Unknown params
     static let featuresConfigUnknownParams = "Undefined"
+
+    // New UI Config
+    static let featuresConfigEnableNewUI = "ENABLE_NEW_UI"
 }
 
 extension ExportData {    

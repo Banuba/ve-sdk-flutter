@@ -47,7 +47,7 @@ class VideoEditorModule: VideoEditor {
 
         videoEditorSDK = BanubaVideoEditor(
             token: token,
-            arguments: ["ENABLE_NEW_UI" : featuresConfig.experimentalEnableNewUI],
+            arguments: [VideoEditorConfig.featuresConfigEnableNewUI : featuresConfig.experimentalEnableNewUI],
             configuration: config,
             externalViewControllerFactory: provideCustomViewFactory(featuresConfig: featuresConfig)
         )

@@ -25,6 +25,7 @@ internal const val EXPORTED_META = "exportedMeta"
 
 // New UI Config
 internal const val FEATURES_CONFIG_EXPERIMENTAL_ENABLE_NEW_UI = "experimentalEnableNewUI"
+internal const val FEATURES_CONFIG_EXTRA_USE_NEW_UI = "EXTRA_USE_NEW_UI"
 
 // Features config params
 internal const val FEATURES_CONFIG_AI_CAPTIONS = "aiCaptions"
@@ -149,7 +150,7 @@ internal fun prepareExtras(featuresConfig: FeaturesConfig): Bundle {
         bundle.putString(CaptionsApiService.ARG_CAPTIONS_TRANSCRIBE_URL, params.transcribeUrl)
         bundle.putString(CaptionsApiService.ARG_API_KEY, params.apiKey)
     }
-    bundle.putBoolean("EXTRA_USE_NEW_UI", featuresConfig.experimentalEnableNewUI)
+    bundle.putBoolean(FEATURES_CONFIG_EXTRA_USE_NEW_UI, featuresConfig.experimentalEnableNewUI)
     return bundle
 }
 
