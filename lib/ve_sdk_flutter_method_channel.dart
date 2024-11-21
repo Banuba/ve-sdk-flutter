@@ -83,7 +83,7 @@ class MethodChannelVeSdkFlutter extends VeSdkFlutterPlatform {
       {ExportData? exportData}
   ) async {
     if (featuresConfig.experimentalEnableNewUI && screen == _screenTrimmer){
-      debugPrint("Starting the Video Editor from the $screen is unavailable for the New UI");
+      debugPrint("New UI is not available from Trimmer screen");
       return null;
     }
     final inputParams = {
