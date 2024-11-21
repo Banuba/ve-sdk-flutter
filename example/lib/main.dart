@@ -44,6 +44,8 @@ class _HomePageState extends State<HomePage> {
     // Specify your Config params in the builder below
 
     final config = FeaturesConfigBuilder()
+        .setExperimentalEnableNewUI(true)
+        .setAudioBrowser(AudioBrowser.fromSource(AudioBrowserSource.disabled))
         // .setAiCaptions(...)
         // ...
         .build();
@@ -75,9 +77,12 @@ class _HomePageState extends State<HomePage> {
     // Specify your Config params in the builder below
 
     final config = FeaturesConfigBuilder()
-      // .setAudioBrowser(...)
-      // ...
-      .build();
+        .setExperimentalEnableNewUI(true)
+        .setAudioBrowser(AudioBrowser.fromSource(AudioBrowserSource.disabled))
+        // .setAudioBrowser(...)
+        // ...
+        .build();
+
     final ImagePicker picker = ImagePicker();
     final videoFile = await picker.pickVideo(source: ImageSource.gallery);
 
