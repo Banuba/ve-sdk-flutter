@@ -18,7 +18,7 @@ dependencies:
     sdk: flutter
   image_picker: ^0.8.6
 
-  ve_sdk_flutter: ^0.7.1
+  ve_sdk_flutter: ^0.7.2
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

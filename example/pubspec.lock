@@ -353,10 +353,10 @@ packages:
     dependency: "direct main"
     description:
       name: ve_sdk_flutter
-      sha256: "25a107227cd4421e6045fadd837bb8fc8766211fc07b867914d6b67d3d2490c3"
+      sha256: "4dc6f548109d5f95538d0291236b04de8db0a2aa4ba3a26c77578fa272d1c61e"
       url: "https://pub.dev"
     source: hosted
-    version: "0.7.1"
+    version: "0.7.2"
   vector_math:
     dependency: transitive
     description:
