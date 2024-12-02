@@ -23,6 +23,10 @@ internal const val EXPORTED_VIDEO_SOURCES = "exportedVideoSources"
 internal const val EXPORTED_PREVIEW = "exportedPreview"
 internal const val EXPORTED_META = "exportedMeta"
 
+// New UI Config
+internal const val FEATURES_CONFIG_EXPERIMENTAL_ENABLE_NEW_UI = "experimentalEnableNewUI"
+internal const val FEATURES_CONFIG_EXTRA_USE_NEW_UI = "EXTRA_USE_NEW_UI"
+
 // Features config params
 internal const val FEATURES_CONFIG_AI_CAPTIONS = "aiCaptions"
 internal const val FEATURES_CONFIG_AI_CAPTIONS_UPLOAD_URL = "uploadUrl"
@@ -40,7 +44,7 @@ internal const val FEATURES_CONFIG_AUDIO_BROWSER_PARAMS = "params"
 internal const val FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_LOCAL = "local"
 internal const val FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_MUBERT = "mubert"
 internal const val FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_SOUNDSTRIPE = "soundstripe"
-internal const val FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_BANUBA_MUSIC = "banubaMusic"
+internal const val FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_DISABLED = "disabled"
 
 internal const val FEATURES_CONFIG_AUDIO_BROWSER_PARAMS_MUBERT_LICENCE = "mubertLicence"
 internal const val FEATURES_CONFIG_AUDIO_BROWSER_PARAMS_MUBERT_TOKEN = "mubertToken"
@@ -146,6 +150,7 @@ internal fun prepareExtras(featuresConfig: FeaturesConfig): Bundle {
         bundle.putString(CaptionsApiService.ARG_CAPTIONS_TRANSCRIBE_URL, params.transcribeUrl)
         bundle.putString(CaptionsApiService.ARG_API_KEY, params.apiKey)
     }
+    bundle.putBoolean(FEATURES_CONFIG_EXTRA_USE_NEW_UI, featuresConfig.experimentalEnableNewUI)
     return bundle
 }
 

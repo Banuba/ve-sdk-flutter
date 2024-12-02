@@ -75,7 +75,8 @@ extension VeSdkFlutterPlugin {
             draftsConfig: DraftsConfig(
                 option: "enable"
             ),
-            gifPickerConfig: nil
+            gifPickerConfig: nil,
+            experimentalEnableNewUI: false
         )
     }
     
@@ -100,7 +101,7 @@ extension VideoEditorConfig {
     static let featuresConfigAudioBrowserSourceSoundstripe = "soundstripe"
     static let featuresConfigAudioBrowserSourceMubert = "mubert"
     static let featuresConfigAudioBrowserSourceLocal = "local"
-    static let featuresConfigAudioBrowserSourceBanubaMusic = "banubaMusic"
+    static let featuresConfigAudioBrowserSourceDisabled = "disabled"
 
     // Draft Configs
     static let featuresConfigDraftConfigOptionAskToSave = "askToSave"
@@ -113,6 +114,9 @@ extension VideoEditorConfig {
     
     // Unknown params
     static let featuresConfigUnknownParams = "Undefined"
+
+    // New UI Config
+    static let featuresConfigEnableNewUI = "ENABLE_NEW_UI"
 }
 
 extension ExportData {    

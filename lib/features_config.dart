@@ -7,6 +7,7 @@ class FeaturesConfig {
   final EditorConfig editorConfig;
   final DraftsConfig draftsConfig;
   final GifPickerConfig? gifPickerConfig;
+  final bool experimentalEnableNewUI;
 
   FeaturesConfig._builder(FeaturesConfigBuilder builder)
       : aiClipping = builder._aiClipping,
@@ -14,7 +15,8 @@ class FeaturesConfig {
         audioBrowser = builder._audioBrowser,
         editorConfig = builder._editorConfig,
         draftsConfig = builder._draftsConfig,
-        gifPickerConfig = builder._gifPickerConfig;
+        gifPickerConfig = builder._gifPickerConfig,
+        experimentalEnableNewUI = builder._experimentalEnableNewUI;
 }
 
 class FeaturesConfigBuilder {
@@ -27,6 +29,7 @@ class FeaturesConfigBuilder {
   DraftsConfig _draftsConfig =
       DraftsConfig.fromOption(DraftsOption.askToSave);
   GifPickerConfig? _gifPickerConfig;
+  bool _experimentalEnableNewUI = false;
 
   FeaturesConfigBuilder setAiClipping(aiClipping) {
     _aiClipping = aiClipping;
@@ -58,12 +61,17 @@ class FeaturesConfigBuilder {
     return this;
   }
 
+  FeaturesConfigBuilder setExperimentalEnableNewUI(experimentalEnableNewUI) {
+    _experimentalEnableNewUI = experimentalEnableNewUI;
+    return this;
+  }
+
   FeaturesConfig build() {
     return FeaturesConfig._builder(this);
   }
 }
 
-enum AudioBrowserSource { soundstripe, local, mubert, banubaMusic }
+enum AudioBrowserSource { soundstripe, local, mubert, disabled }
 
 @immutable
 class AudioBrowser {
