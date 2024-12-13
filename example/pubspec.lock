@@ -280,6 +280,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.9.0"
+  pe_sdk_flutter:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: "migrate-to-android-1.2.9-ios-1.2.5"
+      resolved-ref: "50881112208688acbfc4babc2bdad153f7d000ad"
+      url: "https://github.com/Banuba/pe-sdk-flutter.git"
+    source: git
+    version: "0.0.1"
   plugin_platform_interface:
     dependency: transitive
     description:
@@ -381,5 +390,5 @@ packages:
     source: hosted
     version: "0.5.1"
 sdks:
-  dart: ">=3.3.0 <4.0.0"
+  dart: ">=3.4.4 <4.0.0"
   flutter: ">=3.18.0-18.0.pre.54"

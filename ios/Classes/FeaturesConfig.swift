@@ -9,6 +9,7 @@ struct FeaturesConfig: Codable {
     let editorConfig: EditorConfig
     let draftsConfig: DraftsConfig
     let gifPickerConfig: GifPickerConfig?
+    let isEditPhotoInPE: Bool
 }
 
 struct AiClipping: Codable {

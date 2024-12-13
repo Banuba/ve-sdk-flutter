@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:ve_sdk_flutter/export_data.dart';
+import 'package:pe_sdk_flutter/pe_sdk_flutter.dart';
+import 'package:pe_sdk_flutter/export_result.dart' as pe;
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ve_sdk_flutter/export_result.dart';
@@ -38,12 +40,51 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _veSdkFlutterPlugin = VeSdkFlutter();
+  final _peSdkFlutterPlugin = PeSdkFlutter();
   String _errorMessage = '';
+  String _startMessage = '';
+
+  Future<void> _startPhotoEditorFromGallery() async {
+    try {
+      final exportResult =
+      await _peSdkFlutterPlugin.openGalleryScreen(_licenseToken);
+      _handlePhotoExportResult(exportResult);
+    } on PlatformException catch (e) {
+      _handlePlatformException(e);
+    }
+  }
+
+  Future<void> _startPhotoEditorFormEditor(String imagePath) async {
+    try {
+      final exportResult = await _peSdkFlutterPlugin.openEditorScreen(_licenseToken, imagePath);
+      _handlePhotoExportResult(exportResult);
+    } on PlatformException catch (e) {
+      _handlePlatformException(e);
+    }
+  }
+
+  void _handlePhotoExportResult(pe.ExportResult? result) {
+    if (result == null) {
+      debugPrint(
+          'No export result! The user has closed photo editor before export');
+      return;
+    }
+    debugPrint('Exported photo file = ${result.photoSource}');
+  }
+
+  void _handlePlatformException(PlatformException exception) {
+    debugPrint("Error: code = ${exception.code}, message = $_errorMessage");
+    setState(() {
+      _errorMessage = exception.message ?? 'unknown error';
+      _startMessage = 'See the logs or try again';
+    });
+  }
 
   Future<void> _startVideoEditorInCameraMode() async {
     // Specify your Config params in the builder below
 
     final config = FeaturesConfigBuilder()
+        .setSupportOpenPhotosFromVeToPE(true)
         // .setAiCaptions(...)
         // ...
         .build();
@@ -123,28 +164,31 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  void _handleExportResult(ExportResult? result) {
+  Future<void> _handleExportResult(ExportResult? result) async {
     if (result == null) {
       debugPrint('No export result! The user has closed video editor before export');
       return;
     }
 
-    // The list of exported video file paths
     debugPrint('Exported video files = ${result.videoSources}');
-
-    // Preview as a image file taken by the user. Null - when preview screen is disabled.
     debugPrint('Exported preview file = ${result.previewFilePath}');
-
-    // Meta file where you can find short data used in exported video
     debugPrint('Exported meta file = ${result.metaFilePath}');
+
+    var imagePath = await updatePath(result.previewFilePath!);
+    debugPrint('Exported preview file = ${imagePath}');
+    if (imagePath != null) {
+      await _startPhotoEditorFormEditor(imagePath);
+    } else {
+      debugPrint('Preview image file does not exist: $imagePath');
+    }
   }
 
-  void _handlePlatformException(PlatformException exception) {
-    _errorMessage = exception.message ?? 'unknown error';
-    // You can find error codes 'package:ve_sdk_flutter/errors.dart';
-    debugPrint("Error: code = ${exception.code}, message = $_errorMessage");
-
-    setState(() {});
+  String updatePath(String filePath) {
+    debugPrint("normalizePath: ${filePath}");
+    if (filePath.startsWith('file://')) {
+      return filePath.replaceFirst('file://', '');
+    }
+    return filePath;
   }
 
   @override
@@ -245,6 +289,25 @@ class _HomePageState extends State<HomePage> {
                         fontSize: 14.0,
                       ),
                     ),
+                  ),
+                  Padding(
+                      padding: EdgeInsets.all(20.0),
+                      child:ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: Colors.white,
+                            backgroundColor: Colors.blueAccent,
+                            shadowColor: Colors.blueGrey,
+                            elevation: 10,
+                            fixedSize: const Size(300, 50),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                          ),
+                          onPressed: () =>
+                              _startPhotoEditorFromGallery(),
+                          child:
+                          Text("Start Photo Editor From Gallery")
+                      )
                   ),
                 ],
               ),

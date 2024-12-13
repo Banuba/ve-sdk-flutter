@@ -16,7 +16,8 @@ internal fun parseFeaturesConfig(rawConfigParams: String?): FeaturesConfig =
                 featuresConfigObject.extractAudioBrowser(),
                 featuresConfigObject.extractEditorConfig(),
                 featuresConfigObject.extractDraftsConfig(),
-                featuresConfigObject.extractGifPickerConfig()
+                featuresConfigObject.extractGifPickerConfig(),
+                featuresConfigObject.optBoolean(FEATURES_CONFIG_IS_EDIT_PHOTO_IN_PE)
             )
         } catch (e: JSONException) {
             defaultFeaturesConfig

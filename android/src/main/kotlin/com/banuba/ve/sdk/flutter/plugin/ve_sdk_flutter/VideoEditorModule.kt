@@ -34,6 +34,20 @@ import com.banuba.sdk.ve.ext.VideoEditorUtils.getKoin
 import org.json.JSONException
 import org.koin.core.context.stopKoin
 import org.koin.core.error.InstanceCreationException
+import com.banuba.sdk.core.domain.MediaNavigationProcessor
+import com.banuba.sdk.export.data.ExportResult
+import com.banuba.sdk.ve.flow.VideoCreationActivity
+import com.banuba.sdk.export.data.ExportSessionHelper
+import com.banuba.sdk.ve.flow.session.FlowExportSessionHelper
+
+import android.content.Context
+import android.app.Activity
+import android.net.Uri
+import android.os.Bundle
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.util.Date
 
 class VideoEditorModule {
     internal fun initialize(application: Application, featuresConfig: FeaturesConfig, exportData: ExportData?) {
@@ -154,7 +168,7 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
 
         if (!featuresConfig.editorConfig.enableVideoAspectFill) {
             factory<PlayerScaleType>(named("editorVideoScaleType")) {
-                    PlayerScaleType.CENTER_INSIDE
+                PlayerScaleType.CENTER_INSIDE
             }
         }
 
@@ -167,6 +181,43 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
                 GifPickerConfigurations(
                     giphyApiKey = params.giphyApiKey
                 )
+            }
+        }
+
+        if (featuresConfig.isEditPhotoInPE){
+
+            this.single<ExportSessionHelper> {
+                FlowExportSessionHelper(
+                    draftManager = get()
+                )
+            }
+
+            this.single<MediaNavigationProcessor> {
+                object : MediaNavigationProcessor {
+                    override fun process(activity: Activity, mediaList: List<Uri>): Boolean {
+                        val pngs = mediaList.filter { media ->
+                            media.path?.let { path ->
+                                path.contains(".png") || path.contains("external/images")
+                            } ?: false
+                        }
+                        val cachedImage = saveImageToCache(activity, pngs.first())
+                        return if (pngs.isEmpty()) {
+                            true
+                        } else {
+                            val sessionKoin = getKoin().getOrNull<ExportSessionHelper>()
+                            sessionKoin?.cleanSessionData()
+                            (activity as? VideoCreationActivity)?.closeWithResult(
+                                ExportResult.Success(
+                                    emptyList(),
+                                    cachedImage!!,
+                                    Uri.EMPTY,
+                                    Bundle()
+                                )
+                            )
+                            false
+                        }
+                    }
+                }
             }
         }
     }
@@ -231,5 +282,22 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
                 )
             }
         }
+    }
+
+    fun saveImageToCache(context: Context, uri: Uri): Uri? {
+        try {
+            val contentResolver = context.contentResolver
+            val cacheFile = File(context.cacheDir, "${dateTimeFormatter.format(Date())}.png")
+
+            contentResolver.openInputStream(uri)?.use { inputStream ->
+                FileOutputStream(cacheFile).use { outputStream ->
+                    inputStream.copyTo(outputStream)
+                }
+            }
+            return Uri.fromFile(cacheFile)
+        } catch (e: IOException) {
+            Log.w(TAG, "Failed to cache an image: ${e.printStackTrace()}")
+        }
+        return null
     }
 }

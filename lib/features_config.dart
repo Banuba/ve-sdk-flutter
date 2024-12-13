@@ -7,6 +7,7 @@ class FeaturesConfig {
   final EditorConfig editorConfig;
   final DraftsConfig draftsConfig;
   final GifPickerConfig? gifPickerConfig;
+  final bool isEditPhotoInPE;
 
   FeaturesConfig._builder(FeaturesConfigBuilder builder)
       : aiClipping = builder._aiClipping,
@@ -14,7 +15,8 @@ class FeaturesConfig {
         audioBrowser = builder._audioBrowser,
         editorConfig = builder._editorConfig,
         draftsConfig = builder._draftsConfig,
-        gifPickerConfig = builder._gifPickerConfig;
+        gifPickerConfig = builder._gifPickerConfig,
+        isEditPhotoInPE = builder._isEditPhotoInPE;
 }
 
 class FeaturesConfigBuilder {
@@ -27,6 +29,7 @@ class FeaturesConfigBuilder {
   DraftsConfig _draftsConfig =
       DraftsConfig.fromOption(DraftsOption.askToSave);
   GifPickerConfig? _gifPickerConfig;
+  bool _isEditPhotoInPE = false;
 
   FeaturesConfigBuilder setAiClipping(aiClipping) {
     _aiClipping = aiClipping;
@@ -55,6 +58,11 @@ class FeaturesConfigBuilder {
 
   FeaturesConfigBuilder setGifPickerConfig(gifPickerConfig) {
     _gifPickerConfig = gifPickerConfig;
+    return this;
+  }
+
+  FeaturesConfigBuilder setSupportOpenPhotosFromVeToPE(isEditPhotoInPE) {
+    _isEditPhotoInPE = isEditPhotoInPE;
     return this;
   }
 
