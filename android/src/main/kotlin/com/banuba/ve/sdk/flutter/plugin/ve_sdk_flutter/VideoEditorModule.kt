@@ -200,16 +200,16 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
                                 path.contains(".png") || path.contains("external/images")
                             } ?: false
                         }
-                        val cachedImage = saveImageToCache(activity, pngs.first())
                         return if (pngs.isEmpty()) {
                             true
                         } else {
+                            val savedImage = saveImageToCache(activity, pngs.first())
                             val sessionKoin = getKoin().getOrNull<ExportSessionHelper>()
                             sessionKoin?.cleanSessionData()
                             (activity as? VideoCreationActivity)?.closeWithResult(
                                 ExportResult.Success(
                                     emptyList(),
-                                    cachedImage!!,
+                                    savedImage,
                                     Uri.EMPTY,
                                     Bundle()
                                 )
@@ -284,7 +284,7 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
         }
     }
 
-    fun saveImageToCache(context: Context, uri: Uri): Uri? {
+    fun saveImageToCache(context: Context, uri: Uri): Uri {
         try {
             val contentResolver = context.contentResolver
             val cacheFile = File(context.cacheDir, "${dateTimeFormatter.format(Date())}.png")
@@ -298,6 +298,6 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
         } catch (e: IOException) {
             Log.w(TAG, "Failed to cache an image: ${e.printStackTrace()}")
         }
-        return null
+        return Uri.EMPTY
     }
 }

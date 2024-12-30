@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:ve_sdk_flutter/export_data.dart';
 import 'package:pe_sdk_flutter/pe_sdk_flutter.dart';
 import 'package:pe_sdk_flutter/export_result.dart' as pe;
 import 'package:flutter/services.dart';
@@ -42,17 +41,6 @@ class _HomePageState extends State<HomePage> {
   final _veSdkFlutterPlugin = VeSdkFlutter();
   final _peSdkFlutterPlugin = PeSdkFlutter();
   String _errorMessage = '';
-  String _startMessage = '';
-
-  Future<void> _startPhotoEditorFromGallery() async {
-    try {
-      final exportResult =
-      await _peSdkFlutterPlugin.openGalleryScreen(_licenseToken);
-      _handlePhotoExportResult(exportResult);
-    } on PlatformException catch (e) {
-      _handlePlatformException(e);
-    }
-  }
 
   Future<void> _startPhotoEditorFormEditor(String imagePath) async {
     try {
@@ -76,7 +64,6 @@ class _HomePageState extends State<HomePage> {
     debugPrint("Error: code = ${exception.code}, message = $_errorMessage");
     setState(() {
       _errorMessage = exception.message ?? 'unknown error';
-      _startMessage = 'See the logs or try again';
     });
   }
 
@@ -174,21 +161,19 @@ class _HomePageState extends State<HomePage> {
     debugPrint('Exported preview file = ${result.previewFilePath}');
     debugPrint('Exported meta file = ${result.metaFilePath}');
 
-    var imagePath = await updatePath(result.previewFilePath!);
-    debugPrint('Exported preview file = ${imagePath}');
-    if (imagePath != null) {
-      await _startPhotoEditorFormEditor(imagePath);
-    } else {
-      debugPrint('Preview image file does not exist: $imagePath');
-    }
-  }
+    var imagePath = result.previewFilePath;
 
-  String updatePath(String filePath) {
-    debugPrint("normalizePath: ${filePath}");
-    if (filePath.startsWith('file://')) {
-      return filePath.replaceFirst('file://', '');
+    if (imagePath == null || imagePath.isEmpty){
+      debugPrint('Preview image file does not exist: $imagePath');
+      return;
     }
-    return filePath;
+
+    if (result.metaFilePath == "") {
+      await _startPhotoEditorFormEditor(imagePath.startsWith('file://')
+          ? imagePath.replaceFirst('file://', '')
+          : imagePath
+      );
+    }
   }
 
   @override
@@ -289,25 +274,6 @@ class _HomePageState extends State<HomePage> {
                         fontSize: 14.0,
                       ),
                     ),
-                  ),
-                  Padding(
-                      padding: EdgeInsets.all(20.0),
-                      child:ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            foregroundColor: Colors.white,
-                            backgroundColor: Colors.blueAccent,
-                            shadowColor: Colors.blueGrey,
-                            elevation: 10,
-                            fixedSize: const Size(300, 50),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                          ),
-                          onPressed: () =>
-                              _startPhotoEditorFromGallery(),
-                          child:
-                          Text("Start Photo Editor From Gallery")
-                      )
                   ),
                 ],
               ),
