@@ -44,8 +44,8 @@ class _HomePageState extends State<HomePage> {
     // Specify your Config params in the builder below
 
     final config = FeaturesConfigBuilder()
-    // .setAiCaptions(...)
-    // ...
+        // .setAiCaptions(...)
+        // ...
         .build();
 
     // Export data example
@@ -75,9 +75,9 @@ class _HomePageState extends State<HomePage> {
     // Specify your Config params in the builder below
 
     final config = FeaturesConfigBuilder()
-    // .setAudioBrowser(...)
-    // ...
-        .build();
+      // .setAudioBrowser(...)
+      // ...
+      .build();
     final ImagePicker picker = ImagePicker();
     final videoFile = await picker.pickVideo(source: ImageSource.gallery);
 
@@ -101,9 +101,9 @@ class _HomePageState extends State<HomePage> {
     // Specify your Config params in the builder below
 
     final config = FeaturesConfigBuilder()
-    // .setDraftConfig(...)
-    //...
-        .build();
+      // .setDraftConfig(...)
+      //...
+      .build();
     final ImagePicker picker = ImagePicker();
     final videoFiles = await picker.pickMultipleMedia(imageQuality: 3);
 
@@ -255,3 +255,4 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+
