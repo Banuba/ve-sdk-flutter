@@ -10,7 +10,7 @@ extension FeatureConfigSerializer on FeaturesConfig {
       'editorConfig': editorConfig._serialize(),
       'draftsConfig': draftsConfig._serialize(),
       'gifPickerConfig': gifPickerConfig?._serialize(),
-      'isEditPhotoInPE': isEditPhotoInPE
+      'processPictureExternally': processPictureExternally
     };
     return jsonEncode(configMap);
   }

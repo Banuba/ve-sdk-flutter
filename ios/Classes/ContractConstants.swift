@@ -76,7 +76,7 @@ extension VeSdkFlutterPlugin {
                 option: "enable"
             ),
             gifPickerConfig: nil,
-            isEditPhotoInPE: false
+            processPictureExternally: false
         )
     }
     

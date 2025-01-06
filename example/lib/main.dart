@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:pe_sdk_flutter/pe_sdk_flutter.dart';
-import 'package:pe_sdk_flutter/export_result.dart' as pe;
+import 'package:ve_sdk_flutter/export_data.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ve_sdk_flutter/export_result.dart';
@@ -39,41 +38,14 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _veSdkFlutterPlugin = VeSdkFlutter();
-  final _peSdkFlutterPlugin = PeSdkFlutter();
   String _errorMessage = '';
-
-  Future<void> _startPhotoEditorFormEditor(String imagePath) async {
-    try {
-      final exportResult = await _peSdkFlutterPlugin.openEditorScreen(_licenseToken, imagePath);
-      _handlePhotoExportResult(exportResult);
-    } on PlatformException catch (e) {
-      _handlePlatformException(e);
-    }
-  }
-
-  void _handlePhotoExportResult(pe.ExportResult? result) {
-    if (result == null) {
-      debugPrint(
-          'No export result! The user has closed photo editor before export');
-      return;
-    }
-    debugPrint('Exported photo file = ${result.photoSource}');
-  }
-
-  void _handlePlatformException(PlatformException exception) {
-    debugPrint("Error: code = ${exception.code}, message = $_errorMessage");
-    setState(() {
-      _errorMessage = exception.message ?? 'unknown error';
-    });
-  }
 
   Future<void> _startVideoEditorInCameraMode() async {
     // Specify your Config params in the builder below
 
     final config = FeaturesConfigBuilder()
-        .setSupportOpenPhotosFromVeToPE(true)
-        // .setAiCaptions(...)
-        // ...
+    // .setAiCaptions(...)
+    // ...
         .build();
 
     // Export data example
@@ -103,9 +75,9 @@ class _HomePageState extends State<HomePage> {
     // Specify your Config params in the builder below
 
     final config = FeaturesConfigBuilder()
-      // .setAudioBrowser(...)
-      // ...
-      .build();
+    // .setAudioBrowser(...)
+    // ...
+        .build();
     final ImagePicker picker = ImagePicker();
     final videoFile = await picker.pickVideo(source: ImageSource.gallery);
 
@@ -129,9 +101,9 @@ class _HomePageState extends State<HomePage> {
     // Specify your Config params in the builder below
 
     final config = FeaturesConfigBuilder()
-      // .setDraftConfig(...)
-      //...
-      .build();
+    // .setDraftConfig(...)
+    //...
+        .build();
     final ImagePicker picker = ImagePicker();
     final videoFiles = await picker.pickMultipleMedia(imageQuality: 3);
 
@@ -151,29 +123,28 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Future<void> _handleExportResult(ExportResult? result) async {
+  void _handleExportResult(ExportResult? result) {
     if (result == null) {
       debugPrint('No export result! The user has closed video editor before export');
       return;
     }
 
+    // The list of exported video file paths
     debugPrint('Exported video files = ${result.videoSources}');
+
+    // Preview as a image file taken by the user. Null - when preview screen is disabled.
     debugPrint('Exported preview file = ${result.previewFilePath}');
+
+    // Meta file where you can find short data used in exported video
     debugPrint('Exported meta file = ${result.metaFilePath}');
+  }
 
-    var imagePath = result.previewFilePath;
+  void _handlePlatformException(PlatformException exception) {
+    _errorMessage = exception.message ?? 'unknown error';
+    // You can find error codes 'package:ve_sdk_flutter/errors.dart';
+    debugPrint("Error: code = ${exception.code}, message = $_errorMessage");
 
-    if (imagePath == null || imagePath.isEmpty){
-      debugPrint('Preview image file does not exist: $imagePath');
-      return;
-    }
-
-    if (result.metaFilePath == "") {
-      await _startPhotoEditorFormEditor(imagePath.startsWith('file://')
-          ? imagePath.replaceFirst('file://', '')
-          : imagePath
-      );
-    }
+    setState(() {});
   }
 
   @override
@@ -284,4 +255,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-

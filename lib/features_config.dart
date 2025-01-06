@@ -7,7 +7,7 @@ class FeaturesConfig {
   final EditorConfig editorConfig;
   final DraftsConfig draftsConfig;
   final GifPickerConfig? gifPickerConfig;
-  final bool isEditPhotoInPE;
+  final bool processPictureExternally;
 
   FeaturesConfig._builder(FeaturesConfigBuilder builder)
       : aiClipping = builder._aiClipping,
@@ -16,7 +16,7 @@ class FeaturesConfig {
         editorConfig = builder._editorConfig,
         draftsConfig = builder._draftsConfig,
         gifPickerConfig = builder._gifPickerConfig,
-        isEditPhotoInPE = builder._isEditPhotoInPE;
+        processPictureExternally = builder._processPictureExternally;
 }
 
 class FeaturesConfigBuilder {
@@ -29,7 +29,7 @@ class FeaturesConfigBuilder {
   DraftsConfig _draftsConfig =
       DraftsConfig.fromOption(DraftsOption.askToSave);
   GifPickerConfig? _gifPickerConfig;
-  bool _isEditPhotoInPE = false;
+  bool _processPictureExternally = false;
 
   FeaturesConfigBuilder setAiClipping(aiClipping) {
     _aiClipping = aiClipping;
@@ -61,8 +61,8 @@ class FeaturesConfigBuilder {
     return this;
   }
 
-  FeaturesConfigBuilder setSupportOpenPhotosFromVeToPE(isEditPhotoInPE) {
-    _isEditPhotoInPE = isEditPhotoInPE;
+  FeaturesConfigBuilder setProcessPictureExternally(processPictureExternally) {
+    _processPictureExternally = processPictureExternally;
     return this;
   }
 

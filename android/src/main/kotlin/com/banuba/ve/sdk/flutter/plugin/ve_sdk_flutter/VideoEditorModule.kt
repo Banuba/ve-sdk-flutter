@@ -184,14 +184,13 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
             }
         }
 
-        if (featuresConfig.isEditPhotoInPE){
+        this.single<ExportSessionHelper> {
+            FlowExportSessionHelper(
+                draftManager = get()
+            )
+        }
 
-            this.single<ExportSessionHelper> {
-                FlowExportSessionHelper(
-                    draftManager = get()
-                )
-            }
-
+        if (featuresConfig.processPictureExternally){
             this.single<MediaNavigationProcessor> {
                 object : MediaNavigationProcessor {
                     override fun process(activity: Activity, mediaList: List<Uri>): Boolean {
@@ -203,6 +202,7 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
                         return if (pngs.isEmpty()) {
                             true
                         } else {
+                            // Cache image before clearing sessing
                             val savedImage = saveImageToCache(activity, pngs.first())
                             val sessionKoin = getKoin().getOrNull<ExportSessionHelper>()
                             sessionKoin?.cleanSessionData()
