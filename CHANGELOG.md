@@ -43,3 +43,6 @@ Initial version of Banuba Video Editor SDK Flutter plugin
 
 ## 0.9.0
 - Supports control of the Face AR Feature
+
+## 0.10.0
+- Supports processing picture externally
