@@ -293,7 +293,6 @@ extension VideoEditorModule: BanubaVideoEditorDelegate {
             return true
         }
         if featuresConfig.processPictureExternally {
-            print("\(featuresConfig.processPictureExternally)")
             guard let jpegURL = urls.first(where: { $0.pathExtension.lowercased() == "jpeg" }),
                   let imageData = try? Data(contentsOf: jpegURL),
                   !imageData.isEmpty,
