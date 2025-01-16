@@ -28,6 +28,7 @@ class VideoEditorModule: VideoEditor {
     private var flutterResult: FlutterResult?
     private var currentController: FlutterViewController?
     private var exportData: ExportData?
+    private var featuresConfig: FeaturesConfig?
 
     // Use “true” if you want users could restore the last video editing session.
     private let restoreLastVideoEditingSession: Bool = false
@@ -39,7 +40,9 @@ class VideoEditorModule: VideoEditor {
         }
         
         var config = VideoEditorConfig()
-        
+
+        self.featuresConfig = featuresConfig
+
         config.applyFeatureConfig(featuresConfig)
 
         let lutsPath = Bundle(for: VideoEditorModule.self).bundleURL.appendingPathComponent("luts", isDirectory: true)
@@ -283,6 +286,42 @@ extension VideoEditorModule: BanubaVideoEditorDelegate {
     
     func videoEditorDone(_ videoEditor: BanubaVideoEditor) {
         exportVideo()
+    }
+
+    func videoEditor(_ videoEditor: BanubaVideoEditor, shouldProcessMediaUrls urls: [URL]) -> Bool {
+        guard let featuresConfig else {
+            return true
+        }
+        if featuresConfig.processPictureExternally {
+            guard let jpegURL = urls.first(where: { $0.pathExtension.lowercased() == "jpeg" }),
+                  let imageData = try? Data(contentsOf: jpegURL),
+                  !imageData.isEmpty,
+                  let resultImage = UIImage(data: imageData) else {
+                return true
+            }
+
+            videoEditor.dismissVideoEditor(animated: true) {
+                DispatchQueue.main.async { [weak self] in
+                    guard let self else { return }
+                    // Calling clearSessionData() also removes any files stored in urls array
+                    self.videoEditorSDK?.clearSessionData()
+
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "yyyy-MM-dd'T'HH-mm-ss.SSS"
+
+                    self.completeExport(
+                        videoUrls: [],
+                        metaUrl: nil,
+                        previewUrl: FileManager.default.temporaryDirectory.appendingPathComponent("\(dateFormatter.string(from: Date())).png"),
+                        error: nil,
+                        previewImage: resultImage
+                    )
+                }
+            }
+            return false
+        } else {
+            return true
+        }
     }
 }
 

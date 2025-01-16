@@ -9,7 +9,8 @@ extension FeatureConfigSerializer on FeaturesConfig {
       'audioBrowser': audioBrowser._serialize(),
       'editorConfig': editorConfig._serialize(),
       'draftsConfig': draftsConfig._serialize(),
-      'gifPickerConfig': gifPickerConfig?._serialize()
+      'gifPickerConfig': gifPickerConfig?._serialize(),
+      'processPictureExternally': processPictureExternally
     };
     return jsonEncode(configMap);
   }
