@@ -369,6 +369,8 @@ extension VideoEditorConfig {
             self.gifPickerConfiguration.giphyAPIKey = gifPickerConfig.giphyApiKey
         }
 
+        self.videoDurationConfiguration = featuresConfig.videoDurationConfig.value()
+
         // Make customization here
         
         AudioBrowserConfig.shared.setPrimaryColor(#colorLiteral(red: 0.2350233793, green: 0.7372031212, blue: 0.7565478683, alpha: 1))

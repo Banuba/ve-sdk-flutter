@@ -21,6 +21,8 @@ import com.banuba.sdk.ve.effects.watermark.WatermarkProvider
 import com.banuba.sdk.audiobrowser.soundstripe.AutoCutSoundstripeTrackLoader
 import com.banuba.sdk.audiobrowser.feedfm.AutoCutBanubaTrackLoader
 import com.banuba.sdk.core.domain.DraftConfig
+import com.banuba.sdk.cameraui.data.CameraConfig
+import com.banuba.sdk.veui.data.EditorConfig
 import com.banuba.sdk.veui.data.stickers.GifPickerConfigurations
 import com.banuba.sdk.audiobrowser.data.MubertApiConfig
 import org.koin.android.ext.koin.androidContext
@@ -182,6 +184,20 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
                     giphyApiKey = params.giphyApiKey
                 )
             }
+        }
+
+        single<CameraConfig> {
+            CameraConfig(
+                maxRecordedTotalVideoDurationMs = featuresConfig.videoDurationConfig.maxTotalVideoDuration,
+                videoDurations = featuresConfig.videoDurationConfig.videoDurations,
+                supportsVideoDurationSwitcher = featuresConfig.videoDurationConfig.videoDurations.size != 1
+            )
+        }
+
+        single <EditorConfig>{
+            EditorConfig(
+                maxTotalVideoDurationMs = featuresConfig.videoDurationConfig.maxTotalVideoDuration,
+            )
         }
 
         this.single<ExportSessionHelper> {

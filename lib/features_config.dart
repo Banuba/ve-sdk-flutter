@@ -1,3 +1,5 @@
+import 'dart:core';
+
 import 'package:flutter/material.dart';
 
 class FeaturesConfig {
@@ -7,6 +9,7 @@ class FeaturesConfig {
   final EditorConfig editorConfig;
   final DraftsConfig draftsConfig;
   final GifPickerConfig? gifPickerConfig;
+  final VideoDurationConfig videoDurationConfig;
   final bool processPictureExternally;
 
   FeaturesConfig._builder(FeaturesConfigBuilder builder)
@@ -16,6 +19,7 @@ class FeaturesConfig {
         editorConfig = builder._editorConfig,
         draftsConfig = builder._draftsConfig,
         gifPickerConfig = builder._gifPickerConfig,
+        videoDurationConfig = builder._videoDurationConfig,
         processPictureExternally = builder._processPictureExternally;
 }
 
@@ -29,6 +33,7 @@ class FeaturesConfigBuilder {
   DraftsConfig _draftsConfig =
       DraftsConfig.fromOption(DraftsOption.askToSave);
   GifPickerConfig? _gifPickerConfig;
+  VideoDurationConfig _videoDurationConfig = VideoDurationConfig();
   bool _processPictureExternally = false;
 
   FeaturesConfigBuilder setAiClipping(aiClipping) {
@@ -58,6 +63,11 @@ class FeaturesConfigBuilder {
 
   FeaturesConfigBuilder setGifPickerConfig(gifPickerConfig) {
     _gifPickerConfig = gifPickerConfig;
+    return this;
+  }
+
+  FeaturesConfigBuilder setVideoDurationConfig(videoDurationConfig) {
+    _videoDurationConfig = videoDurationConfig;
     return this;
   }
 
@@ -137,4 +147,19 @@ class GifPickerConfig {
   final String giphyApiKey;
 
   const GifPickerConfig({required this.giphyApiKey});
+}
+
+@immutable
+class VideoDurationConfig {
+  /// Max Total Video Duration for Camera and Editor Screens
+  final double? maxTotalVideoDuration;
+  /// The video maximum durations
+  /// Default list is [maxTotalVideoDuration, 60.0, 30.0, 15.0]
+  /// If the list contains only one value the selector will not be displayed
+  final List<double>? videoDurations;
+
+  const VideoDurationConfig({
+    this.maxTotalVideoDuration = 120.0,
+    this.videoDurations = const [60.0, 30.0, 15.0]
+  });
 }

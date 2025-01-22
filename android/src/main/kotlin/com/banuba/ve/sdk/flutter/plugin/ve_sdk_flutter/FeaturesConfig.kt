@@ -16,6 +16,7 @@ internal data class FeaturesConfig(
     val editorConfig: EditorConfig = defaultEditorConfig,
     val draftsConfig: DraftsConfig = defaultDraftsConfig,
     val gifPickerConfig: GifPickerConfig? = null,
+    val videoDurationConfig: VideoDurationConfig = defaultVideoDurationConfig,
     val processPictureExternally: Boolean = false
 )
 
@@ -77,4 +78,14 @@ internal val defaultDraftsConfig = DraftsConfig(
 
 internal data class GifPickerConfig(
     val giphyApiKey: String
+)
+
+internal data class VideoDurationConfig(
+    val maxTotalVideoDuration: Long,
+    val videoDurations: List<Long>,
+)
+
+internal val defaultVideoDurationConfig = VideoDurationConfig(
+    maxTotalVideoDuration = 120000,
+    videoDurations = listOf(60000, 30000, 15000),
 )

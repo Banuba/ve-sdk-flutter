@@ -9,6 +9,7 @@ struct FeaturesConfig: Codable {
     let editorConfig: EditorConfig
     let draftsConfig: DraftsConfig
     let gifPickerConfig: GifPickerConfig?
+    let videoDurationConfig: VideoDurationConfig
     let processPictureExternally: Bool
 }
 
@@ -71,3 +72,19 @@ struct GifPickerConfig: Codable {
     let giphyApiKey: String
 }
 
+struct VideoDurationConfig: Codable {
+    let maxTotalVideoDuration: TimeInterval
+    let videoDurations: [TimeInterval]
+
+    public func value() -> VideoEditorDurationConfig {
+        return VideoEditorDurationConfig(
+            maximumVideoDuration: maxTotalVideoDuration,
+            videoDurations: videoDurations,
+            minimumDurationFromCamera: 3.0,
+            minimumDurationFromGallery: 0.3,
+            minimumVideoDuration: 1.0,
+            minimumTrimmedPartDuration: 0.3,
+            slideshowDuration: 3.0
+        )
+    }
+}

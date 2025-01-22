@@ -76,6 +76,10 @@ extension VeSdkFlutterPlugin {
                 option: "enable"
             ),
             gifPickerConfig: nil,
+            videoDurationConfig: VideoDurationConfig(
+                maxTotalVideoDuration: 120.0,
+                videoDurations: [60.0, 30.0, 15.0]
+            ),
             processPictureExternally: false
         )
     }
