@@ -152,6 +152,9 @@ dependencies {
     implementation "com.banuba.sdk:ve-playback-sdk:${banubaSdkVersion}"
 
     if (ENABLE_FACE_AR){
+        print("!!! BANUBA FACE AR IS ENABLED !!!")
         implementation "com.banuba.sdk:effect-player-adapter:${banubaSdkVersion}"
+    } else {
+        print("!!! BANUBA FACE AR IS DISABLED !!!")
     }
 }

@@ -1,6 +1,5 @@
 import Foundation
-import VEExportSDK
-import VideoEditor
+import BanubaVideoEditorCore
 import Flutter
 
 struct ExportData: Codable {

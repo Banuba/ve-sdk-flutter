@@ -80,6 +80,7 @@ extension VeSdkFlutterPlugin {
                 maxTotalVideoDuration: 120.0,
                 videoDurations: [60.0, 30.0, 15.0]
             ),
+            enableNewUI: false,
             processPictureExternally: false
         )
     }
@@ -106,6 +107,7 @@ extension VideoEditorConfig {
     static let featuresConfigAudioBrowserSourceMubert = "mubert"
     static let featuresConfigAudioBrowserSourceLocal = "local"
     static let featuresConfigAudioBrowserSourceBanubaMusic = "banubaMusic"
+    static let featuresConfigAudioBrowserSourceDisabled = "disabled"
 
     // Draft Configs
     static let featuresConfigDraftConfigOptionAskToSave = "askToSave"
@@ -115,7 +117,10 @@ extension VideoEditorConfig {
     
     //Editor Configs
     static let featuresConfigEnableVideoAspectFill = "enableVideoAspectFill"
-    
+
+    // Enable New UI
+    static let featuresConfigEnableNewUI = "ENABLE_NEW_UI"
+
     // Unknown params
     static let featuresConfigUnknownParams = "Undefined"
 }

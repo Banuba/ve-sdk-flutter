@@ -11,6 +11,7 @@ extension FeatureConfigSerializer on FeaturesConfig {
       'draftsConfig': draftsConfig._serialize(),
       'gifPickerConfig': gifPickerConfig?._serialize(),
       'videoDurationConfig': videoDurationConfig._serialize(),
+      'enableNewUI': enableNewUI,
       'processPictureExternally': processPictureExternally
     };
     return jsonEncode(configMap);

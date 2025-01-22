@@ -10,6 +10,7 @@ struct FeaturesConfig: Codable {
     let draftsConfig: DraftsConfig
     let gifPickerConfig: GifPickerConfig?
     let videoDurationConfig: VideoDurationConfig
+    let enableNewUI: Bool
     let processPictureExternally: Bool
 }
 

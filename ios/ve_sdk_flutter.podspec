@@ -26,19 +26,14 @@ A new Flutter project.
   s.dependency 'BanubaARCloudSDK', sdk_version #optional
   s.dependency 'BanubaVideoEditorSDK', sdk_version
   s.dependency 'BanubaAudioBrowserSDK', sdk_version #optional
-  s.dependency 'BanubaSDK', sdk_version if ENABLE_FACE_AR
+  if ENABLE_FACE_AR
+      puts "!!! BANUBA FACE AR IS ENABLED !!!"
+      s.dependency 'BanubaSDK', sdk_version
+  else
+    puts "!!! BANUBA FACE AR IS DISABLED !!!"
+  end
   s.dependency 'BanubaSDKSimple', sdk_version
-  s.dependency 'BanubaSDKServicing', sdk_version
-  s.dependency 'VideoEditor', sdk_version
-  s.dependency 'BanubaUtilities', sdk_version
-  s.dependency 'BanubaVideoEditorGallerySDK', sdk_version #optional
-  s.dependency 'BanubaLicenseServicingSDK', sdk_version
-
-  s.dependency 'BNBLicenseUtils', sdk_version
-
-  s.dependency 'VEExportSDK', sdk_version
-  s.dependency 'VEEffectsSDK', sdk_version
-  s.dependency 'VEPlaybackSDK', sdk_version
+  s.dependency 'BanubaVideoEditorCore', sdk_version
 
   # Flutter.framework does not contain a i386 slice.
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }

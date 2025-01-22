@@ -1,5 +1,3 @@
-import 'dart:core';
-
 import 'package:flutter/material.dart';
 
 class FeaturesConfig {
@@ -10,6 +8,7 @@ class FeaturesConfig {
   final DraftsConfig draftsConfig;
   final GifPickerConfig? gifPickerConfig;
   final VideoDurationConfig videoDurationConfig;
+  final bool enableNewUI;
   final bool processPictureExternally;
 
   FeaturesConfig._builder(FeaturesConfigBuilder builder)
@@ -20,6 +19,7 @@ class FeaturesConfig {
         draftsConfig = builder._draftsConfig,
         gifPickerConfig = builder._gifPickerConfig,
         videoDurationConfig = builder._videoDurationConfig,
+        enableNewUI = builder._enableNewUI,
         processPictureExternally = builder._processPictureExternally;
 }
 
@@ -33,6 +33,7 @@ class FeaturesConfigBuilder {
   DraftsConfig _draftsConfig =
       DraftsConfig.fromOption(DraftsOption.askToSave);
   GifPickerConfig? _gifPickerConfig;
+  bool _enableNewUI = false;
   VideoDurationConfig _videoDurationConfig = VideoDurationConfig();
   bool _processPictureExternally = false;
 
@@ -71,6 +72,11 @@ class FeaturesConfigBuilder {
     return this;
   }
 
+  FeaturesConfigBuilder setEnableNewUI(enableNewUI) {
+    _enableNewUI = enableNewUI;
+    return this;
+  }
+
   FeaturesConfigBuilder setProcessPictureExternally(processPictureExternally) {
     _processPictureExternally = processPictureExternally;
     return this;
@@ -81,7 +87,7 @@ class FeaturesConfigBuilder {
   }
 }
 
-enum AudioBrowserSource { soundstripe, local, mubert, banubaMusic }
+enum AudioBrowserSource { soundstripe, local, mubert, banubaMusic, disabled }
 
 @immutable
 class AudioBrowser {
