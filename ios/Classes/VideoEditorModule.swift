@@ -342,7 +342,7 @@ extension VideoEditorConfig {
         }
         
         if featuresConfig.enableNewUI {
-            self.combinedGalleryConfiguration.visibleTabsInGallery = GalleryMediaType.allCases
+            self.combinedGalleryConfiguration.visibleTabsInGallery = [GalleryMediaType.video, GalleryMediaType.photo]
         }
         
         if let aiCaptions = featuresConfig.aiCaptions {
