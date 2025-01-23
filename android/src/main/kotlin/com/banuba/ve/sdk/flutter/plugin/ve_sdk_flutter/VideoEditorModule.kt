@@ -21,8 +21,11 @@ import com.banuba.sdk.ve.effects.watermark.WatermarkProvider
 import com.banuba.sdk.audiobrowser.soundstripe.AutoCutSoundstripeTrackLoader
 import com.banuba.sdk.audiobrowser.feedfm.AutoCutBanubaTrackLoader
 import com.banuba.sdk.core.domain.DraftConfig
+import com.banuba.sdk.cameraui.data.CameraConfig
+import com.banuba.sdk.veui.data.EditorConfig
 import com.banuba.sdk.veui.data.stickers.GifPickerConfigurations
 import com.banuba.sdk.audiobrowser.data.MubertApiConfig
+import com.banuba.sdk.veui.data.music.MusicEditorConfig
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import org.koin.core.qualifier.named
@@ -139,6 +142,11 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
             featuresConfig.audioBrowser.value()
         }
 
+        when (featuresConfig.audioBrowser.source){
+            FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_MUBERT -> this.addMubertParams(featuresConfig)
+            FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_DISABLED -> this.applyDisabledMusicConfig(featuresConfig)
+        }
+
         if (featuresConfig.audioBrowser.source == FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_MUBERT) {
             this.addMubertParams(featuresConfig)
         }
@@ -182,6 +190,20 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
                     giphyApiKey = params.giphyApiKey
                 )
             }
+        }
+
+        single<CameraConfig> {
+            CameraConfig(
+                maxRecordedTotalVideoDurationMs = featuresConfig.videoDurationConfig.maxTotalVideoDuration,
+                videoDurations = featuresConfig.videoDurationConfig.videoDurations,
+                supportsExternalMusic = featuresConfig.audioBrowser.source != FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_DISABLED
+            )
+        }
+
+        single <EditorConfig>{
+            EditorConfig(
+                maxTotalVideoDurationMs = featuresConfig.videoDurationConfig.maxTotalVideoDuration,
+            )
         }
 
         this.single<ExportSessionHelper> {
@@ -254,6 +276,12 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
         } else {
             Log.w(TAG, "Missing Params in AudioBrowser")
             return
+        }
+    }
+
+    private fun Module.applyDisabledMusicConfig(featuresConfig: FeaturesConfig) {
+        this.single<MusicEditorConfig>{
+            MusicEditorConfig(supportsExternalMusic = false)
         }
     }
 

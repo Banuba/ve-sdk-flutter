@@ -8,8 +8,7 @@
 import Foundation
 import BanubaVideoEditorSDK
 import BanubaAudioBrowserSDK
-import VideoEditor
-import VEExportSDK
+import BanubaVideoEditorCore
 import Flutter
 
 protocol VideoEditor {
@@ -50,6 +49,7 @@ class VideoEditorModule: VideoEditor {
 
         videoEditorSDK = BanubaVideoEditor(
             token: token,
+            arguments: [.useEditorV2 : featuresConfig.enableNewUI],
             configuration: config,
             externalViewControllerFactory: provideCustomViewFactory(featuresConfig: featuresConfig)
         )
@@ -331,16 +331,18 @@ extension VideoEditorConfig {
         
         print("Add Features Config with params: \(featuresConfig)")
         
-        AudioBrowserConfig.shared.musicSource = featuresConfig.audioBrowser.value()
-        
+        if featuresConfig.audioBrowser.source != VideoEditorConfig.featuresConfigAudioBrowserSourceDisabled {
+            AudioBrowserConfig.shared.musicSource = featuresConfig.audioBrowser.value()
+        } else {
+            applyDisabledMusicConfig()
+        }
+
         if featuresConfig.audioBrowser.source == VideoEditorConfig.featuresConfigAudioBrowserSourceMubert {
-            guard let audioBrowserParams = featuresConfig.audioBrowser.params else { return }
-            guard let mubertLicence = audioBrowserParams.mubertLicence, let mubertToken = audioBrowserParams.mubertToken else { return }
-            
-            BanubaAudioBrowser.setMubertKeys(
-                license: mubertLicence,
-                token: mubertToken
-            )
+            addMubertParams(featuresConfig)
+        }
+        
+        if featuresConfig.enableNewUI {
+            self.combinedGalleryConfiguration.visibleTabsInGallery = [GalleryMediaType.video, GalleryMediaType.photo]
         }
         
         if let aiCaptions = featuresConfig.aiCaptions {
@@ -369,6 +371,8 @@ extension VideoEditorConfig {
             self.gifPickerConfiguration.giphyAPIKey = gifPickerConfig.giphyApiKey
         }
 
+        self.videoDurationConfiguration = featuresConfig.videoDurationConfig.value()
+
         // Make customization here
         
         AudioBrowserConfig.shared.setPrimaryColor(#colorLiteral(red: 0.2350233793, green: 0.7372031212, blue: 0.7565478683, alpha: 1))
@@ -377,5 +381,22 @@ extension VideoEditorConfig {
         featureConfiguration.supportsTrimRecordedVideo = true
         featureConfiguration.isMuteCameraAudioEnabled = true
         self.updateFeatureConfiguration(featureConfiguration: featureConfiguration)
+    }
+    
+    private func addMubertParams(_ featuresConfig: FeaturesConfig){
+        guard let audioBrowserParams = featuresConfig.audioBrowser.params else { return }
+        guard let mubertLicence = audioBrowserParams.mubertLicence, let mubertToken = audioBrowserParams.mubertToken else { return }
+    
+        BanubaAudioBrowser.setMubertKeys(
+            license: mubertLicence,
+            token: mubertToken
+        )
+    }
+    
+    private mutating func applyDisabledMusicConfig(){
+        self.recorderConfiguration.additionalEffectsButtons = self.recorderConfiguration.additionalEffectsButtons.filter{$0.identifier != .sound}
+        self.musicEditorConfiguration.mainMusicViewControllerConfig.editButtons = self.musicEditorConfiguration.mainMusicViewControllerConfig.editButtons
+            .filter({$0.type != .track})
+        self.videoEditorViewConfiguration.timelineConfiguration.isAddAudioEnabled = false
     }
 }

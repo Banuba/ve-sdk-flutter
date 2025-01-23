@@ -10,6 +10,8 @@ extension FeatureConfigSerializer on FeaturesConfig {
       'editorConfig': editorConfig._serialize(),
       'draftsConfig': draftsConfig._serialize(),
       'gifPickerConfig': gifPickerConfig?._serialize(),
+      'videoDurationConfig': videoDurationConfig._serialize(),
+      'enableNewUI': enableEditorV2,
       'processPictureExternally': processPictureExternally
     };
     return jsonEncode(configMap);
@@ -64,6 +66,15 @@ extension GifPickerConfigSerializer on GifPickerConfig {
   Map<String, dynamic> _serialize() {
     return {
       'giphyApiKey': giphyApiKey
+    };
+  }
+}
+
+extension VideoDurationConfigSerializer on VideoDurationConfig {
+  Map<String, dynamic> _serialize() {
+    return {
+      'maxTotalVideoDuration': maxTotalVideoDuration,
+      'videoDurations': videoDurations
     };
   }
 }

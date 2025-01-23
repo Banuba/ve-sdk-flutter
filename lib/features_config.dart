@@ -7,6 +7,8 @@ class FeaturesConfig {
   final EditorConfig editorConfig;
   final DraftsConfig draftsConfig;
   final GifPickerConfig? gifPickerConfig;
+  final VideoDurationConfig videoDurationConfig;
+  final bool enableEditorV2;
   final bool processPictureExternally;
 
   FeaturesConfig._builder(FeaturesConfigBuilder builder)
@@ -16,6 +18,8 @@ class FeaturesConfig {
         editorConfig = builder._editorConfig,
         draftsConfig = builder._draftsConfig,
         gifPickerConfig = builder._gifPickerConfig,
+        videoDurationConfig = builder._videoDurationConfig,
+        enableEditorV2 = builder._enableEditorV2,
         processPictureExternally = builder._processPictureExternally;
 }
 
@@ -29,6 +33,8 @@ class FeaturesConfigBuilder {
   DraftsConfig _draftsConfig =
       DraftsConfig.fromOption(DraftsOption.askToSave);
   GifPickerConfig? _gifPickerConfig;
+  bool _enableEditorV2 = false;
+  VideoDurationConfig _videoDurationConfig = VideoDurationConfig();
   bool _processPictureExternally = false;
 
   FeaturesConfigBuilder setAiClipping(aiClipping) {
@@ -61,6 +67,16 @@ class FeaturesConfigBuilder {
     return this;
   }
 
+  FeaturesConfigBuilder setVideoDurationConfig(videoDurationConfig) {
+    _videoDurationConfig = videoDurationConfig;
+    return this;
+  }
+
+  FeaturesConfigBuilder enableEditorV2(enableEditorV2) {
+    _enableEditorV2 = enableEditorV2;
+    return this;
+  }
+
   FeaturesConfigBuilder setProcessPictureExternally(processPictureExternally) {
     _processPictureExternally = processPictureExternally;
     return this;
@@ -71,7 +87,7 @@ class FeaturesConfigBuilder {
   }
 }
 
-enum AudioBrowserSource { soundstripe, local, mubert, banubaMusic }
+enum AudioBrowserSource { soundstripe, local, mubert, banubaMusic, disabled }
 
 @immutable
 class AudioBrowser {
@@ -137,4 +153,19 @@ class GifPickerConfig {
   final String giphyApiKey;
 
   const GifPickerConfig({required this.giphyApiKey});
+}
+
+@immutable
+class VideoDurationConfig {
+  /// Max Total Video Duration for Camera and Editor Screens
+  final double? maxTotalVideoDuration;
+  /// The video maximum durations
+  /// Default list is [maxTotalVideoDuration, 60.0, 30.0, 15.0]
+  /// If the list contains only one value the selector will not be displayed
+  final List<double>? videoDurations;
+
+  const VideoDurationConfig({
+    this.maxTotalVideoDuration = 120.0,
+    this.videoDurations = const [60.0, 30.0, 15.0]
+  });
 }

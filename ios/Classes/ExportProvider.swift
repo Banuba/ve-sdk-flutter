@@ -1,7 +1,6 @@
 import Foundation
 import BanubaVideoEditorSDK
-import VideoEditor
-import VEExportSDK
+import BanubaVideoEditorCore
 
 struct ExportProvider {
     
