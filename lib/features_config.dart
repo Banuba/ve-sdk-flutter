@@ -8,7 +8,7 @@ class FeaturesConfig {
   final DraftsConfig draftsConfig;
   final GifPickerConfig? gifPickerConfig;
   final VideoDurationConfig videoDurationConfig;
-  final bool enableNewUI;
+  final bool enableEditorV2;
   final bool processPictureExternally;
 
   FeaturesConfig._builder(FeaturesConfigBuilder builder)
@@ -19,7 +19,7 @@ class FeaturesConfig {
         draftsConfig = builder._draftsConfig,
         gifPickerConfig = builder._gifPickerConfig,
         videoDurationConfig = builder._videoDurationConfig,
-        enableNewUI = builder._enableNewUI,
+        enableEditorV2 = builder._enableEditorV2,
         processPictureExternally = builder._processPictureExternally;
 }
 
@@ -33,7 +33,7 @@ class FeaturesConfigBuilder {
   DraftsConfig _draftsConfig =
       DraftsConfig.fromOption(DraftsOption.askToSave);
   GifPickerConfig? _gifPickerConfig;
-  bool _enableNewUI = false;
+  bool _enableEditorV2 = false;
   VideoDurationConfig _videoDurationConfig = VideoDurationConfig();
   bool _processPictureExternally = false;
 
@@ -72,8 +72,8 @@ class FeaturesConfigBuilder {
     return this;
   }
 
-  FeaturesConfigBuilder setEnableNewUI(enableNewUI) {
-    _enableNewUI = enableNewUI;
+  FeaturesConfigBuilder enableEditorV2(enableEditorV2) {
+    _enableEditorV2 = enableEditorV2;
     return this;
   }
 
