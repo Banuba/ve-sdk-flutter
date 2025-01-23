@@ -118,9 +118,6 @@ extension VideoEditorConfig {
     //Editor Configs
     static let featuresConfigEnableVideoAspectFill = "enableVideoAspectFill"
 
-    // Enable New UI
-    static let featuresConfigEnableNewUI = "ENABLE_NEW_UI"
-
     // Unknown params
     static let featuresConfigUnknownParams = "Undefined"
 }
