@@ -18,7 +18,7 @@ internal data class FeaturesConfig(
     val draftsConfig: DraftsConfig = defaultDraftsConfig,
     val gifPickerConfig: GifPickerConfig? = null,
     val videoDurationConfig: VideoDurationConfig = defaultVideoDurationConfig,
-    val enableNewUI: Boolean = false,
+    val enableEditorV2: Boolean = false,
     val processPictureExternally: Boolean = false
 )
 

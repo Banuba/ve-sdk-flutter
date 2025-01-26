@@ -23,10 +23,6 @@ internal const val EXPORTED_VIDEO_SOURCES = "exportedVideoSources"
 internal const val EXPORTED_PREVIEW = "exportedPreview"
 internal const val EXPORTED_META = "exportedMeta"
 
-// New UI Config
-internal const val FEATURES_CONFIG_ENABLE_NEW_UI = "enableNewUI"
-internal const val FEATURES_CONFIG_EXTRA_USE_EDITOR_V2 = "EXTRA_USE_EDITOR_V2"
-
 // Features config params
 internal const val FEATURES_CONFIG_AI_CAPTIONS = "aiCaptions"
 internal const val FEATURES_CONFIG_AI_CAPTIONS_UPLOAD_URL = "uploadUrl"
@@ -67,6 +63,10 @@ internal const val FEATURES_CONFIG_GIF_PICKER_CONFIG_API_KEY = "giphyApiKey"
 internal const val FEATURES_CONFIG_VIDEO_DURATION_CONFIG = "videoDurationConfig"
 internal const val FEATURES_CONFIG_VIDEO_DURATION_CONFIG_MAX_TOTAL_VIDEO_DURATION = "maxTotalVideoDuration"
 internal const val FEATURES_CONFIG_VIDEO_DURATION_CONFIG_VIDEO_DURATIONS = "videoDurations"
+
+// New UI Config
+internal const val FEATURES_CONFIG_ENABLE_EDITOR_V2 = "enableEditorV2"
+internal const val FEATURES_CONFIG_EXTRA_USE_EDITOR_V2 = "EXTRA_USE_EDITOR_V2"
 
 internal const val FEATURES_CONFIG_PROCESS_PICTURE_EXTERNALLY = "processPictureExternally"
 
@@ -157,7 +157,7 @@ internal fun prepareExtras(featuresConfig: FeaturesConfig): Bundle {
         bundle.putString(CaptionsApiService.ARG_CAPTIONS_TRANSCRIBE_URL, params.transcribeUrl)
         bundle.putString(CaptionsApiService.ARG_API_KEY, params.apiKey)
     }
-    bundle.putBoolean(FEATURES_CONFIG_EXTRA_USE_EDITOR_V2, featuresConfig.enableNewUI)
+    bundle.putBoolean(FEATURES_CONFIG_EXTRA_USE_EDITOR_V2, featuresConfig.enableEditorV2)
     return bundle
 }
 

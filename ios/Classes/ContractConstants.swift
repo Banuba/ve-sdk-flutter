@@ -80,7 +80,7 @@ extension VeSdkFlutterPlugin {
                 maxTotalVideoDuration: 120.0,
                 videoDurations: [60.0, 30.0, 15.0]
             ),
-            enableNewUI: false,
+            enableEditorV2: false,
             processPictureExternally: false
         )
     }

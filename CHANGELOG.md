@@ -46,3 +46,8 @@ Initial version of Banuba Video Editor SDK Flutter plugin
 
 ## 0.10.0
 - Supports processing picture externally
+
+## 0.11.0
+- Supports Video Editor SDK 1.40.0
+- Introduce Video Duration Config
+- Introduce Editor V2
