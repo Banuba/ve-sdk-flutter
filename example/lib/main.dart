@@ -44,10 +44,6 @@ class _HomePageState extends State<HomePage> {
     // Specify your Config params in the builder below
 
     final config = FeaturesConfigBuilder()
-        .setVideoDurationConfig(VideoDurationConfig(
-              maxTotalVideoDuration: 180.0,
-              videoDurations: [180.0, 120.0, 60.0]
-          ))
         // .setAiCaptions(...)
         // ...
         .build();
