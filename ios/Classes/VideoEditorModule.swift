@@ -49,7 +49,7 @@ class VideoEditorModule: VideoEditor {
 
         videoEditorSDK = BanubaVideoEditor(
             token: token,
-            arguments: [.useEditorV2 : featuresConfig.enableNewUI],
+            arguments: [.useEditorV2 : featuresConfig.enableEditorV2],
             configuration: config,
             externalViewControllerFactory: provideCustomViewFactory(featuresConfig: featuresConfig)
         )
@@ -341,7 +341,7 @@ extension VideoEditorConfig {
             addMubertParams(featuresConfig)
         }
         
-        if featuresConfig.enableNewUI {
+        if featuresConfig.enableEditorV2 {
             self.combinedGalleryConfiguration.visibleTabsInGallery = [GalleryMediaType.video, GalleryMediaType.photo]
         }
         

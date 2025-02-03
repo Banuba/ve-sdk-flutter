@@ -18,7 +18,7 @@ internal fun parseFeaturesConfig(rawConfigParams: String?): FeaturesConfig =
                 featuresConfigObject.extractDraftsConfig(),
                 featuresConfigObject.extractGifPickerConfig(),
                 featuresConfigObject.extractVideoDurationConfig(),
-                featuresConfigObject.optBoolean(FEATURES_CONFIG_ENABLE_NEW_UI),
+                featuresConfigObject.optBoolean(FEATURES_CONFIG_ENABLE_EDITOR_V2),
                 featuresConfigObject.optBoolean(FEATURES_CONFIG_PROCESS_PICTURE_EXTERNALLY)
             )
         } catch (e: JSONException) {
