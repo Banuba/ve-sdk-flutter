@@ -5,7 +5,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 've_sdk_flutter'
-  s.version          = '0.12.0'
+  s.version          = '0.13.0'
   s.summary          = 'A new Flutter project.'
   s.description      = <<-DESC
 A new Flutter project.
@@ -19,7 +19,7 @@ A new Flutter project.
   s.dependency 'Flutter'
   s.platform = :ios, '15.0'
 
-  sdk_version = '1.40.1'
+  sdk_version = '1.40.2'
 
   ENABLE_FACE_AR = ENV['ENABLE_FACE_AR'] == 'true' || ENV['ENABLE_FACE_AR'].nil?
 
