@@ -22,6 +22,7 @@ internal const val INPUT_PARAM_VIDEO_SOURCES = "videoSources"
 internal const val EXPORTED_VIDEO_SOURCES = "exportedVideoSources"
 internal const val EXPORTED_PREVIEW = "exportedPreview"
 internal const val EXPORTED_META = "exportedMeta"
+internal const val EXPORTED_MUSIC_META = "exportedMusicMeta"
 
 // Features config params
 internal const val FEATURES_CONFIG_AI_CAPTIONS = "aiCaptions"

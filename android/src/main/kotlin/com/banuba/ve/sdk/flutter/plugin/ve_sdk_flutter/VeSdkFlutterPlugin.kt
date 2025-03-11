@@ -21,9 +21,11 @@ import io.flutter.plugin.common.PluginRegistry.ActivityResultListener
 import java.io.File
 import android.os.Bundle
 import org.json.JSONObject
+import org.json.JSONArray
 import org.json.JSONException
 import androidx.core.os.bundleOf
 import com.banuba.sdk.veui.data.captions.CaptionsApiService
+import com.banuba.sdk.ve.flow.export.ExportBundleHelper
 
 class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, ActivityResultListener {
     companion object {
@@ -222,9 +224,26 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
         val data = mapOf(
             EXPORTED_VIDEO_SOURCES to videoSources,
             EXPORTED_PREVIEW to previewPath,
-            EXPORTED_META to result.metaUri.toString()
+            EXPORTED_META to result.metaUri.toString(),
+            EXPORTED_MUSIC_META to serializeAudioMetaFile(result)
         )
         return data
+    }
+
+    private fun serializeAudioMetaFile(result: ExportResult.Success): String? {
+        val musicEffects = ExportBundleHelper.getExportedMusicEffect(result.additionalExportData)
+
+        if (musicEffects.isEmpty()) return null
+
+        val jsonArray = JSONArray().apply {
+            for (effect in musicEffects) {
+                put(JSONObject().apply {
+                    put("title", effect.title)
+                    put("url", effect.uri.toString())
+                })
+            }
+        }
+        return jsonArray.toString()
     }
 
     private fun initialize(
