@@ -31,7 +31,7 @@ extension VeSdkFlutterPlugin {
     static let argExportedVideoSources = "exportedVideoSources"
     static let argExportedPreview = "exportedPreview"
     static let argExportedMeta = "exportedMeta"
-    static let argExportedMusicMeta = "exportedMusicMeta"
+    static let argExportedAudioMeta = "exportedAudioMeta"
 
     static let errMessageSdkNotInitialized = """
         Failed to initialize SDK!!!

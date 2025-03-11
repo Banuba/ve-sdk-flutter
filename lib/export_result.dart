@@ -1,4 +1,4 @@
-import 'package:ve_sdk_flutter/music_meta_adapter.dart';
+import 'package:ve_sdk_flutter/audio_meta_adapter.dart';
 
 /// Represents data exported with Video Editor SDK. Contains a number of exported video files,
 /// preview file and meta.
@@ -6,10 +6,10 @@ class ExportResult {
   List<String> videoSources;
   String? previewFilePath;
   String? metaFilePath;
-  List<MusicMetadata>? musicMetaData;
+  List<AudioMetadata>? audioMetadata;
 
   ExportResult(
-      {required this.videoSources, required this.previewFilePath, required this.metaFilePath, required this.musicMetaData});
+      {required this.videoSources, required this.previewFilePath, required this.metaFilePath, required this.audioMetadata});
 
   @override
   bool operator ==(Object other) =>
@@ -19,13 +19,13 @@ class ExportResult {
           videoSources == other.videoSources &&
           previewFilePath == other.previewFilePath &&
           metaFilePath == other.metaFilePath &&
-          musicMetaData == other.musicMetaData;
+          audioMetadata == other.audioMetadata;
 
   @override
-  int get hashCode => videoSources.hashCode ^ previewFilePath.hashCode ^ metaFilePath.hashCode ^ musicMetaData.hashCode;
+  int get hashCode => videoSources.hashCode ^ previewFilePath.hashCode ^ metaFilePath.hashCode ^ audioMetadata.hashCode;
 
   @override
   String toString() {
-    return 'ExportResult{videoSources: $videoSources, previewFilePath: $previewFilePath, metaFilePath: $metaFilePath, musicMetaData: $musicMetaData}';
+    return 'ExportResult{videoSources: $videoSources, previewFilePath: $previewFilePath, metaFilePath: $metaFilePath, audioMetaData: $audioMetadata}';
   }
 }
