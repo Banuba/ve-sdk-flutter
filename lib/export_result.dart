@@ -6,10 +6,10 @@ class ExportResult {
   List<String> videoSources;
   String? previewFilePath;
   String? metaFilePath;
-  List<AudioMetadata>? audioMetadata;
+  List<AudioMetadata>? audioMeta;
 
   ExportResult(
-      {required this.videoSources, required this.previewFilePath, required this.metaFilePath, required this.audioMetadata});
+      {required this.videoSources, required this.previewFilePath, required this.metaFilePath, required this.audioMeta});
 
   @override
   bool operator ==(Object other) =>
@@ -19,13 +19,13 @@ class ExportResult {
           videoSources == other.videoSources &&
           previewFilePath == other.previewFilePath &&
           metaFilePath == other.metaFilePath &&
-          audioMetadata == other.audioMetadata;
+          audioMeta == other.audioMeta;
 
   @override
-  int get hashCode => videoSources.hashCode ^ previewFilePath.hashCode ^ metaFilePath.hashCode ^ audioMetadata.hashCode;
+  int get hashCode => videoSources.hashCode ^ previewFilePath.hashCode ^ metaFilePath.hashCode ^ audioMeta.hashCode;
 
   @override
   String toString() {
-    return 'ExportResult{videoSources: $videoSources, previewFilePath: $previewFilePath, metaFilePath: $metaFilePath, audioMetaData: $audioMetadata}';
+    return 'ExportResult{videoSources: $videoSources, previewFilePath: $previewFilePath, metaFilePath: $metaFilePath, audioMeta: $audioMeta}';
   }
 }

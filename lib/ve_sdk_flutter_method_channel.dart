@@ -118,7 +118,7 @@ class MethodChannelVeSdkFlutter extends VeSdkFlutterPlatform {
           videoSources: videoSources,
           previewFilePath: previewFilePath,
           metaFilePath: metaFilePath,
-          audioMetadata: AudioMetadata.parseAudioMetadata(audioMetaJson));
+          audioMeta: AudioMetadata.parseAudioMetadata(audioMetaJson));
     }
   }
 }
