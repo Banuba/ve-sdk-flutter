@@ -225,21 +225,22 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
             EXPORTED_VIDEO_SOURCES to videoSources,
             EXPORTED_PREVIEW to previewPath,
             EXPORTED_META to result.metaUri.toString(),
-            EXPORTED_AUDIO_META to serializeMusicEffects(result)
+            EXPORTED_AUDIO_META to serializeAudioEffects(result)
         )
         return data
     }
 
-    private fun serializeMusicEffects(result: ExportResult.Success): String? {
-        val musicEffects = ExportBundleHelper.getExportedMusicEffect(result.additionalExportData)
+    private fun serializeAudioEffects(result: ExportResult.Success): String? {
+        val audioEffects = ExportBundleHelper.getExportedMusicEffect(result.additionalExportData)
 
-        if (musicEffects.isEmpty()) return null
+        if (audioEffects.isEmpty()) return null
 
         val jsonArray = JSONArray().apply {
-            for (effect in musicEffects) {
+            for (effect in audioEffects) {
                 put(JSONObject().apply {
                     put("title", effect.title)
                     put("url", effect.uri.toString())
+                    put("type", effect.type)
                 })
             }
         }
