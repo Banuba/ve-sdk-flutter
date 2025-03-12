@@ -3,15 +3,15 @@ import 'dart:convert';
 enum AudioType { track, voice }
 
 class AudioMetadata {
-  final String? title;
-  final String? audioUrl;
+  final String title;
+  final String audioUrl;
   final AudioType? type;
 
   AudioMetadata({required this.title, required this.audioUrl, required this.type});
 
-  static List<AudioMetadata>? parseAudioMetadata(String? jsonString) {
+  static List<AudioMetadata> parseAudioMetadata(String? jsonString) {
     if (jsonString == null) {
-      return null;
+      return [];
     }
     List<dynamic> jsonData = jsonDecode(jsonString);
 
@@ -24,8 +24,8 @@ class AudioMetadata {
       }
 
       return AudioMetadata(
-        title: item["title"],
-        audioUrl: item["url"],
+        title: item["title"] ?? "",
+        audioUrl: item["url"] ?? "",
         type: type
       );
     }).toList();

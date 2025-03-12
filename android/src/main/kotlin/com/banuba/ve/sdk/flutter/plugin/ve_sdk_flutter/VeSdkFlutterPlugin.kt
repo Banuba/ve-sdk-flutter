@@ -225,12 +225,12 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
             EXPORTED_VIDEO_SOURCES to videoSources,
             EXPORTED_PREVIEW to previewPath,
             EXPORTED_META to result.metaUri.toString(),
-            EXPORTED_AUDIO_META to serializeAudioEffects(result)
+            EXPORTED_AUDIO_META to serializeExportedAudioMeta(result)
         )
         return data
     }
 
-    private fun serializeAudioEffects(result: ExportResult.Success): String? {
+    private fun serializeExportedAudioMeta(result: ExportResult.Success): String? {
         val audioEffects = ExportBundleHelper.getExportedMusicEffect(result.additionalExportData)
 
         if (audioEffects.isEmpty()) return null
