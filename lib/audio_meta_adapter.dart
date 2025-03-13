@@ -5,7 +5,7 @@ enum AudioType { track, voice }
 class AudioMetadata {
   final String title;
   final String audioUrl;
-  final AudioType? type;
+  final AudioType type;
 
   AudioMetadata({required this.title, required this.audioUrl, required this.type});
 
@@ -16,7 +16,7 @@ class AudioMetadata {
     List<dynamic> jsonData = jsonDecode(jsonString);
 
     return jsonData.map((item) {
-      AudioType? type;
+      AudioType type = AudioType.track;
       if (item.containsKey("isAudioRecord")) {
         type = (item["isAudioRecord"] == true) ? AudioType.voice : AudioType.track;
       } else if (item.containsKey("type")) {
