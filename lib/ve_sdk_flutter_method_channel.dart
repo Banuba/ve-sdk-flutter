@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:ve_sdk_flutter/audio_meta_adapter.dart';
 import 'package:ve_sdk_flutter/export_data.dart';
 import 'package:ve_sdk_flutter/export_data_serializer.dart';
 import 'package:ve_sdk_flutter/features_config.dart';
@@ -29,6 +30,7 @@ class MethodChannelVeSdkFlutter extends VeSdkFlutterPlatform {
   static const String _exportedVideoSources = 'exportedVideoSources';
   static const String _exportedPreview = 'exportedPreview';
   static const String _exportedMeta = 'exportedMeta';
+  static const String _exportedAudioMeta = 'exportedAudioMeta';
 
   /// The method channel used to interact with the native platform.
   @visibleForTesting
@@ -111,10 +113,12 @@ class MethodChannelVeSdkFlutter extends VeSdkFlutterPlatform {
 
       String? metaFilePath = exportedData[_exportedMeta];
       String? previewFilePath = exportedData[_exportedPreview];
+      String? audioMetaJson = exportedData[_exportedAudioMeta];
       return ExportResult(
           videoSources: videoSources,
           previewFilePath: previewFilePath,
-          metaFilePath: metaFilePath);
+          metaFilePath: metaFilePath,
+          audioMeta: AudioMetadata.parseAudioMetadata(audioMetaJson));
     }
   }
 }

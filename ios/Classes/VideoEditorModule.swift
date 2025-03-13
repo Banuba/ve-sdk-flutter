@@ -204,11 +204,18 @@ extension VideoEditorModule {
                             print("Error during metadata saving: \(error)")
                         }
                     }
-                    
+
+                    var audioMetaJSON: String?
+                    if let jsonData = try? JSONEncoder().encode(self?.videoEditorSDK?.musicMetadata?.tracks),
+                       let jsonString = String(data: jsonData, encoding: .utf8) {
+                        audioMetaJSON = jsonString.replacingOccurrences(of: "\\/", with: "/")
+                    }
+
                     // TODO 1. simplify method
                     self?.completeExport(
                         videoUrls: Array(exportProvider.fileUrls.values),
                         metaUrl: metadataUrl,
+                        audioMetaJSON: audioMetaJSON,
                         previewUrl: FileManager.default.temporaryDirectory.appendingPathComponent("export_preview.png"),
                         error: error,
                         previewImage: coverImage?.coverImage
@@ -218,11 +225,20 @@ extension VideoEditorModule {
         }
     }
     
-    private func completeExport(videoUrls: [URL], metaUrl: URL?, previewUrl: URL, error: Error?, previewImage: UIImage?) {
+    private func completeExport(
+        videoUrls: [URL],
+        metaUrl: URL?,
+        audioMetaJSON: String?,
+        previewUrl: URL,
+        error: Error?,
+        previewImage: UIImage?
+    ) {
         videoEditorSDK?.dismissVideoEditor(animated: true) {
             let success = error == nil
             if success {
-                print("Video exported successfully: video sources = \(videoUrls)), meta = \(metaUrl)), preview = \(previewUrl))")
+                print(
+                    "Video exported successfully: video sources = \(videoUrls)), meta = \(String(describing: metaUrl))), audio metadata = \(String(describing: audioMetaJSON)) preview = \(previewUrl))"
+                )
                 
                 let previewImageData = previewImage?.pngData()
                 
@@ -232,7 +248,8 @@ extension VideoEditorModule {
                 let data = [
                     VeSdkFlutterPlugin.argExportedVideoSources: videoUrls.compactMap { $0.path },
                     VeSdkFlutterPlugin.argExportedPreview: previewUrl.path,
-                    VeSdkFlutterPlugin.argExportedMeta: metaUrl?.path
+                    VeSdkFlutterPlugin.argExportedMeta: metaUrl?.path,
+                    VeSdkFlutterPlugin.argExportedAudioMeta: audioMetaJSON
                 ]
                 self.flutterResult?(data)
             } else {
@@ -312,6 +329,7 @@ extension VideoEditorModule: BanubaVideoEditorDelegate {
                     self.completeExport(
                         videoUrls: [],
                         metaUrl: nil,
+                        audioMetaJSON: nil,
                         previewUrl: FileManager.default.temporaryDirectory.appendingPathComponent("\(dateFormatter.string(from: Date())).png"),
                         error: nil,
                         previewImage: resultImage
