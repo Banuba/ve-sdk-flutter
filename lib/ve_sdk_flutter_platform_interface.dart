@@ -50,4 +50,12 @@ abstract class VeSdkFlutterPlatform extends PlatformInterface {
   ) {
       throw UnimplementedError('openTrimmerScreen() has not been implemented.');
   }
+
+  Future<ExportResult?> openAiClippingScreen(
+      String token,
+      FeaturesConfig featuresConfig,
+      {ExportData? exportData}
+      ) {
+    throw UnimplementedError('openAiClippingScreen() has not been implemented.');
+  }
 }

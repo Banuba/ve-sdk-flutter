@@ -15,11 +15,12 @@ import com.banuba.sdk.arcloud.data.source.ArEffectsRepositoryProvider
 import com.banuba.sdk.core.data.TrackData
 import com.banuba.sdk.core.ui.ContentFeatureProvider
 import com.banuba.sdk.playback.PlayerScaleType
-import com.banuba.sdk.core.data.autocut.AutoCutTrackLoader
-import com.banuba.sdk.ve.data.autocut.AutoCutConfig
 import com.banuba.sdk.ve.effects.watermark.WatermarkProvider
-import com.banuba.sdk.audiobrowser.soundstripe.AutoCutSoundstripeTrackLoader
-import com.banuba.sdk.audiobrowser.feedfm.AutoCutBanubaTrackLoader
+import com.banuba.sdk.core.data.autocut.AutoCutTrackLoader
+import com.banuba.sdk.audiobrowser.domain.AiClippingRecommendedSoundProvider
+import com.banuba.sdk.audiobrowser.feedfm.AiClippingBanubaMusicTrackLoader
+import com.banuba.sdk.audiobrowser.soundstripe.AiClippingSoundstripeTrackLoader
+import com.banuba.sdk.ve.data.aiclipping.AiClippingConfig
 import com.banuba.sdk.core.domain.DraftConfig
 import com.banuba.sdk.cameraui.data.CameraConfig
 import com.banuba.sdk.veui.data.EditorConfig
@@ -152,21 +153,28 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
         }
 
         featuresConfig.aiClipping?.let { params ->
-            this.single<AutoCutConfig> {
-                AutoCutConfig(
+            factory {
+                AiClippingConfig(
                     audioDataUrl = params.audioDataUrl,
                     audioTracksUrl = params.audioTracksUrl
                 )
             }
+
+            factory<ContentFeatureProvider<TrackData, Fragment>>(
+                named("recommendedSoundsMusicTrackProvider")
+            ) {
+                AiClippingRecommendedSoundProvider()
+            }
+
             this.single<AutoCutTrackLoader> {
                 when (featuresConfig.audioBrowser.source) {
                     FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_BANUBA_MUSIC -> {
-                        AutoCutBanubaTrackLoader(
+                        AiClippingBanubaMusicTrackLoader(
                             contentProvider = get()
                         )
                     }
                     else -> {
-                        AutoCutSoundstripeTrackLoader(
+                        AiClippingSoundstripeTrackLoader(
                             soundstripeApi = get()
                         )
                     }
