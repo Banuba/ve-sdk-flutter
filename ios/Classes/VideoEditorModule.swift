@@ -128,7 +128,22 @@ class VideoEditorModule: VideoEditor {
         
         checkLicenseAndStartVideoEditor(with: trimmerLaunchConfig, flutterResult: flutterResult)
     }
-    
+
+    func openVideoEditorAiClipping(
+        fromViewController controller: FlutterViewController,
+        flutterResult: @escaping FlutterResult
+    ) {
+        self.currentController = controller
+        self.flutterResult = flutterResult
+
+        let config = VideoEditorLaunchConfig(
+            entryPoint: .aiClipping,
+            hostController: controller,
+            animated: true
+        )
+        checkLicenseAndStartVideoEditor(with: config, flutterResult: flutterResult)
+    }
+
     func checkLicenseAndStartVideoEditor(with config: VideoEditorLaunchConfig, flutterResult: @escaping FlutterResult) {
         if videoEditorSDK == nil {
             flutterResult(FlutterError(code: VeSdkFlutterPlugin.errSdkNotInitialized, message: VeSdkFlutterPlugin.errMessageSdkNotInitialized, details: nil))
@@ -371,8 +386,8 @@ extension VideoEditorConfig {
             
             
         if let aiClipping = featuresConfig.aiClipping, let audioTracksUrl = URL(string: aiClipping.audioTracksUrl) {
-            self.autoCutConfiguration.embeddingsDownloadUrl = aiClipping.audioDataUrl
-            self.autoCutConfiguration.musicProvider = 
+            self.aiClippingConfiguration.embeddingsDownloadUrl = aiClipping.audioDataUrl
+            self.aiClippingConfiguration.musicProvider =
                 switch featuresConfig.audioBrowser.value() {
                     case .banubaMusic:
                         .banubaMusic(tracksURL: audioTracksUrl)

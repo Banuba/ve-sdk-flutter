@@ -155,6 +155,15 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
                             )
                         }
 
+                        SCREEN_AICLIPPING -> {
+                            Log.d(TAG, "Start video editor from AI Clipping screen")
+                            VideoCreationActivity.startFromAiClipping(
+                                context = activity,
+                                additionalExportData = null,
+                                extras = prepareExtras(featuresConfig)
+                            )
+                        }
+
                         else -> null
                     }
 

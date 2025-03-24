@@ -20,20 +20,44 @@ Here is how users can interact with it:
 
 ## Usage
 
+### Setup configuration
+
 Specify instance of ```AiClipping``` in ```FeaturesConfig``` builder:
 
 > [!IMPORTANT]
-> A trial option for AI Clipping with ```Soundstripe``` music provider.
-> Please contact Banuba representatives before use in production.
+> Contact Banuba representatives to get trial keys for ```audioDataUrl``` and ```audioTracksUrl``` use in production.
 
 ```dart
 final config = FeaturesConfigBuilder()
     .setAiClipping(
         AiClipping(
-            audioDataUrl: "https://ve-autocut-v2-ap-south-1.s3.ap-south-1.amazonaws.com/index.zip",
-            audioTracksUrl: "https://soundstripe-proxy.banuba.net/v1/songs"
+            audioDataUrl: "...",
+            audioTracksUrl: "..."
         )
     )
     ...
     .build();
+```
+
+### Launch AI Clipping
+
+> [!NOTE]
+> Video creation with AI Clipping is available on Gallery screen by default.
+
+For better experience we added new entry point to `VeSdkFlutter` for opening AI Clipping as a separate mode. In this scenario the user starts from the gallery screen and is taken to AI Clipping screen after selecting media.
+
+```dart
+Future<void> _startVideoEditorInAiClippingMode() async {
+  final config = FeaturesConfigBuilder()
+      .setAudioBrowser(...)
+      .setAiClipping(...)
+      .build();
+
+  try {
+    dynamic exportResult = await _veSdkFlutterPlugin
+        .openAiClippingScreen(_licenseToken, config);
+    _handleExportResult(exportResult);
+  } on PlatformException catch (e) {
+    _handlePlatformException(e);
+  }
 ```

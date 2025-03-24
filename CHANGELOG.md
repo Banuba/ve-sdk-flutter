@@ -63,3 +63,6 @@ Initial version of Banuba Video Editor SDK Flutter plugin
 
 ## 0.15.0
 - Add exported audio meta data 
+
+## 0.16.0
+- Supports Video Editor SDK 1.41.0

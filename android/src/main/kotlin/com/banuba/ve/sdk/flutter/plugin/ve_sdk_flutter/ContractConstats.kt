@@ -102,6 +102,7 @@ internal const val EXPORT_DATA_WATERMARK_ALIGNMENT_BOTTOM_RIGHT = "bottomRight"
 internal const val SCREEN_CAMERA = "camera"
 internal const val SCREEN_PIP = "pip"
 internal const val SCREEN_TRIMMER = "trimmer"
+internal const val SCREEN_AICLIPPING = "aiClipping"
 
 // Errors
 internal const val ERR_CODE_SDK_NOT_INITIALIZED = "ERR_SDK_NOT_INITIALIZED"

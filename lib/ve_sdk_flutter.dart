@@ -37,4 +37,14 @@ class VeSdkFlutter {
       sourceVideoPathList,
       exportData: exportData
   );
+
+  Future<ExportResult?> openAiClippingScreen(
+      String token,
+      FeaturesConfig featuresConfig,
+      {ExportData? exportData}
+      ) => VeSdkFlutterPlatform.instance.openAiClippingScreen(
+      token,
+      featuresConfig,
+      exportData: exportData
+  );
 }
