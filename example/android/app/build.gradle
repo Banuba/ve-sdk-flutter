@@ -46,9 +46,9 @@ android {
         //applicationId "com.banuba.ve.sdk.flutter.plugin.ve_sdk_flutter_example"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion 23
-        targetSdkVersion 34
-        compileSdk 34
+        minSdkVersion 26
+        targetSdkVersion 35
+        compileSdk 35
         buildToolsVersion "34.0.0"
 
         versionCode 1

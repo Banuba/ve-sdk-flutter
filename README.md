@@ -20,7 +20,7 @@ $ flutter pub add ve_sdk_flutter
 or specify the package in your ```pubspec.yaml``` file
 ```
 dependencies:
-    ve_sdk_flutter: ^0.15.0
+    ve_sdk_flutter: ^0.17.0
 ```
 
 ## Integration guide
@@ -42,5 +42,5 @@ Run ```flutter run``` in terminal to launch the app on a device or use IDE i.e. 
 | --------- |:-------:| 
 | Dart      |  3.3.0  | 
 | Flutter   | 3.19.2  |
-| Android      |  6.0+   |
-| iOS          |  13.0+  |
+| Android      |  8.0+   |
+| iOS          |  15.0+  |
