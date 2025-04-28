@@ -4,6 +4,7 @@ class FeaturesConfig {
   final AiClipping? aiClipping;
   final AiCaptions? aiCaptions;
   final AudioBrowser audioBrowser;
+  final CameraConfig cameraConfig;
   final EditorConfig editorConfig;
   final DraftsConfig draftsConfig;
   final GifPickerConfig? gifPickerConfig;
@@ -15,6 +16,7 @@ class FeaturesConfig {
       : aiClipping = builder._aiClipping,
         aiCaptions = builder._aiCaptions,
         audioBrowser = builder._audioBrowser,
+        cameraConfig = builder._cameraConfig,
         editorConfig = builder._editorConfig,
         draftsConfig = builder._draftsConfig,
         gifPickerConfig = builder._gifPickerConfig,
@@ -28,8 +30,16 @@ class FeaturesConfigBuilder {
   AiCaptions? _aiCaptions;
   AudioBrowser _audioBrowser =
       AudioBrowser.fromSource(AudioBrowserSource.local);
-  EditorConfig _editorConfig =
-      EditorConfig(enableVideoAspectFill: true);
+  CameraConfig _cameraConfig = CameraConfig(
+    supportsBeauty: true,
+    supportsColorEffects: true,
+    supportsMasks: true
+  );
+  EditorConfig _editorConfig = EditorConfig(
+    enableVideoAspectFill: true,
+    supportsVisualEffects: true,
+    supportsColorEffects: true
+  );
   DraftsConfig _draftsConfig =
       DraftsConfig.fromOption(DraftsOption.askToSave);
   GifPickerConfig? _gifPickerConfig;
@@ -49,6 +59,11 @@ class FeaturesConfigBuilder {
 
   FeaturesConfigBuilder setAudioBrowser(audioBrowser) {
     _audioBrowser = audioBrowser;
+    return this;
+  }
+
+  FeaturesConfigBuilder setCameraConfig(cameraConfig) {
+    _cameraConfig = cameraConfig;
     return this;
   }
 
@@ -127,11 +142,28 @@ class AiCaptions {
 }
 
 @immutable
+class CameraConfig {
+  final bool supportsBeauty;
+  final bool supportsColorEffects;
+  final bool supportsMasks;
+
+  const CameraConfig({
+    this.supportsBeauty = true,
+    this.supportsColorEffects = true,
+    this.supportsMasks = true
+  });
+}
+
+@immutable
 class EditorConfig {
-  final bool? enableVideoAspectFill;
+  final bool enableVideoAspectFill;
+  final bool supportsVisualEffects;
+  final bool supportsColorEffects;
 
   const EditorConfig({
-        this.enableVideoAspectFill
+    this.enableVideoAspectFill = true,
+    this.supportsVisualEffects = true,
+    this.supportsColorEffects = true
   });
 }
 

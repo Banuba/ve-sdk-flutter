@@ -395,9 +395,39 @@ extension VideoEditorConfig {
                         .soundstripe(tracksURL: audioTracksUrl)
                 }
         }
-        
+
+        if !featuresConfig.cameraConfig.supportsColorEffects {
+            self.recorderConfiguration.additionalEffectsButtons = self.recorderConfiguration.additionalEffectsButtons.filter({
+                $0.identifier != .colorEffects
+            })
+        }
+
+        if !featuresConfig.cameraConfig.supportsBeauty {
+            self.recorderConfiguration.additionalEffectsButtons = self.recorderConfiguration.additionalEffectsButtons.filter({
+                $0.identifier != .beauty
+            })
+        }
+
+        if !featuresConfig.cameraConfig.supportsMasks {
+            self.recorderConfiguration.additionalEffectsButtons = self.recorderConfiguration.additionalEffectsButtons.filter({
+                $0.identifier != .masks
+            })
+        }
+
         self.editorConfiguration.isVideoAspectFillEnabled = featuresConfig.editorConfig.enableVideoAspectFill
-        
+
+        if !featuresConfig.editorConfig.supportsColorEffects {
+            self.videoEditorViewConfiguration.toolsPanelConfiguration.buttons = self.videoEditorViewConfiguration.toolsPanelConfiguration.buttons.filter({
+                $0.identifier != .filters
+            })
+        }
+
+        if !featuresConfig.editorConfig.supportsVisualEffects {
+            self.videoEditorViewConfiguration.toolsPanelConfiguration.buttons = self.videoEditorViewConfiguration.toolsPanelConfiguration.buttons.filter({
+                $0.identifier != .effects
+            })
+        }
+
         self.featureConfiguration.draftsConfig = featuresConfig.draftsConfig.value()
         
         if let gifPickerConfig = featuresConfig.gifPickerConfig {
