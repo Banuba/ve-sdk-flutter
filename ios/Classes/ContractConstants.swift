@@ -71,8 +71,15 @@ extension VeSdkFlutterPlugin {
                 source: "local",
                 params: nil
             ),
+            cameraConfig: CameraConfig(
+                supportsBeauty: true,
+                supportsColorEffects: true,
+                supportsMasks: true
+            ),
             editorConfig: EditorConfig(
-                enableVideoAspectFill: true
+                enableVideoAspectFill: true,
+                supportsVisualEffects: true,
+                supportsColorEffects: true
             ),
             draftsConfig: DraftsConfig(
                 option: "enable"
