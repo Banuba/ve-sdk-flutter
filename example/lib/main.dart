@@ -44,8 +44,12 @@ class _HomePageState extends State<HomePage> {
     // Specify your Config params in the builder below
 
     final config = FeaturesConfigBuilder()
-        // .setAiCaptions(...)
-        // ...
+
+        // Example of enabling Editor V2 and Video Duration config
+
+        .enableEditorV2(true)
+        .setVideoDurationConfig(VideoDurationConfig(maxTotalVideoDuration: 180.0, videoDurations: [180.0, 120.0, 60.0, 30.0]))
+        .setAudioBrowser(AudioBrowser.fromSource(AudioBrowserSource.disabled))
         .build();
 
     // Export data example
