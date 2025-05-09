@@ -130,14 +130,16 @@ class AiClipping {
 
 @immutable
 class AiCaptions {
-  final String uploadUrl;
-  final String transcribeUrl;
-  final String apiKey;
+  final String? uploadUrl;
+  final String? transcribeUrl;
+  final String? apiKey;
+  final String? apiV2Key;
 
   const AiCaptions({
-      required this.uploadUrl,
-      required this.transcribeUrl,
-      required this.apiKey
+      this.uploadUrl,
+      this.transcribeUrl,
+      this.apiKey,
+      this.apiV2Key,
   });
 }
 
