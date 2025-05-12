@@ -34,6 +34,7 @@ extension AiCaptionsSerializer on AiCaptions {
       'uploadUrl': uploadUrl,
       'transcribeUrl': transcribeUrl,
       'apiKey': apiKey,
+      'apiV2Key': apiV2Key
     };
   }
 }
