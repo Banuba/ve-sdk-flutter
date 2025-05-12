@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class FeaturesConfig {
   final AiClipping? aiClipping;
-  final AiCaptions? aiCaptions;
+  final Captions? captions;
   final AudioBrowser audioBrowser;
   final CameraConfig cameraConfig;
   final EditorConfig editorConfig;
@@ -14,7 +14,7 @@ class FeaturesConfig {
 
   FeaturesConfig._builder(FeaturesConfigBuilder builder)
       : aiClipping = builder._aiClipping,
-        aiCaptions = builder._aiCaptions,
+        captions = builder._captions,
         audioBrowser = builder._audioBrowser,
         cameraConfig = builder._cameraConfig,
         editorConfig = builder._editorConfig,
@@ -27,7 +27,7 @@ class FeaturesConfig {
 
 class FeaturesConfigBuilder {
   AiClipping? _aiClipping;
-  AiCaptions? _aiCaptions;
+  Captions? _captions;
   AudioBrowser _audioBrowser =
       AudioBrowser.fromSource(AudioBrowserSource.local);
   CameraConfig _cameraConfig = CameraConfig(
@@ -52,8 +52,8 @@ class FeaturesConfigBuilder {
     return this;
   }
 
-  FeaturesConfigBuilder setAiCaptions(aiCaptions) {
-    _aiCaptions = aiCaptions;
+  FeaturesConfigBuilder setCaptions(captions) {
+    _captions = captions;
     return this;
   }
 
@@ -129,13 +129,13 @@ class AiClipping {
 }
 
 @immutable
-class AiCaptions {
+class Captions {
   final String? uploadUrl;
   final String? transcribeUrl;
   final String? apiKey;
   final String? apiV2Key;
 
-  const AiCaptions({
+  const Captions({
       this.uploadUrl,
       this.transcribeUrl,
       this.apiKey,

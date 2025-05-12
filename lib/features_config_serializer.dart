@@ -5,7 +5,7 @@ extension FeatureConfigSerializer on FeaturesConfig {
   String serialize() {
     final Map<String, dynamic> configMap = {
       'aiClipping': aiClipping?._serialize(),
-      'aiCaptions': aiCaptions?._serialize(),
+      'captions': captions?._serialize(),
       'audioBrowser': audioBrowser._serialize(),
       'cameraConfig': cameraConfig._serialize(),
       'editorConfig': editorConfig._serialize(),
@@ -28,7 +28,7 @@ extension AiClippingSerializer on AiClipping {
   }
 }
 
-extension AiCaptionsSerializer on AiCaptions {
+extension CaptionsSerializer on Captions {
   Map<String, dynamic> _serialize() {
     return {
       'uploadUrl': uploadUrl,
