@@ -44,7 +44,7 @@ class _HomePageState extends State<HomePage> {
     // Specify your Config params in the builder below
 
     final config = FeaturesConfigBuilder()
-        // .setAiCaptions(...)
+        // .setCaptions(...)
         // ...
         .build();
 
