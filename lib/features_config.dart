@@ -143,16 +143,20 @@ class Captions {
   });
 }
 
+enum RecordMode { video, photo }
+
 @immutable
 class CameraConfig {
   final bool supportsBeauty;
   final bool supportsColorEffects;
   final bool supportsMasks;
+  final List<RecordMode> recordModes;
 
   const CameraConfig({
     this.supportsBeauty = true,
     this.supportsColorEffects = true,
-    this.supportsMasks = true
+    this.supportsMasks = true,
+    this.recordModes = const [RecordMode.video, RecordMode.photo]
   });
 }
 

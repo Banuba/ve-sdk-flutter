@@ -23,6 +23,8 @@ import com.banuba.sdk.audiobrowser.soundstripe.AiClippingSoundstripeTrackLoader
 import com.banuba.sdk.ve.data.aiclipping.AiClippingConfig
 import com.banuba.sdk.core.domain.DraftConfig
 import com.banuba.sdk.cameraui.data.CameraConfig
+import com.banuba.sdk.cameraui.ui.RecordMode
+import com.banuba.sdk.cameraui.data.CameraRecordingModesProvider
 import com.banuba.sdk.veui.data.EditorConfig
 import com.banuba.sdk.veui.data.stickers.GifPickerConfigurations
 import com.banuba.sdk.audiobrowser.data.MubertApiConfig
@@ -208,6 +210,12 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
                 banubaMasksAssetsPath = if (featuresConfig.cameraConfig.supportsMasks) "effects" else null,
                 banubaColorEffectsAssetsPath = if (featuresConfig.cameraConfig.supportsColorEffects) "luts" else null,
             )
+        }
+
+        single<CameraRecordingModesProvider> {
+            object : CameraRecordingModesProvider {
+                override var availableModes = featuresConfig.cameraConfig.recordModes
+            }
         }
 
         single <EditorConfig>{
