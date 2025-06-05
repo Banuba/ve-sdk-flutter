@@ -53,7 +53,10 @@ extension CameraConfigSerializer on CameraConfig {
     return {
       'supportsBeauty': supportsBeauty,
       'supportsColorEffects': supportsColorEffects,
-      'supportsMasks': supportsMasks
+      'supportsMasks': supportsMasks,
+      'recordModes': recordModes
+        .map((e) => e.name)
+        .toList()
     };
   }
 }
