@@ -66,8 +66,13 @@ public class VeSdkFlutterPlugin: NSObject, FlutterPlugin {
                 let videoURLs = videoSources!.compactMap { URL(string: $0) }
             
                 videoEditor.openVideoEditorTrimmer(fromViewController: controller, videoSources: videoURLs, flutterResult: result)
+
             case VeSdkFlutterPlugin.screenAiClipping:
                 videoEditor.openVideoEditorAiClipping(fromViewController: controller, flutterResult: result)
+
+            case VeSdkFlutterPlugin.screenTemplates:
+                videoEditor.openVideoEditorTemplates(fromViewController: controller, flutterResult: result)
+
             default:
                 debugPrint("Unknown screen value = \(screen)")
                 result(FlutterError(code: VeSdkFlutterPlugin.errInvalidParams, message: VeSdkFlutterPlugin.errMessageUnknownScreen, details: nil))

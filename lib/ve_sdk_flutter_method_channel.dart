@@ -19,6 +19,7 @@ class MethodChannelVeSdkFlutter extends VeSdkFlutterPlatform {
   static const String _screenPip = 'pip';
   static const String _screenTrimmer = 'trimmer';
   static const String _screenAiClipping = 'aiClipping';
+  static const String _screenTemplates = 'templates';
 
   // Input params
   static const String _inputParamToken = 'token';
@@ -87,6 +88,19 @@ class MethodChannelVeSdkFlutter extends VeSdkFlutterPlatform {
       token,
       featuresConfig,
       _screenAiClipping,
+      [],
+      exportData: exportData
+  );
+
+  @override
+  Future<ExportResult?> openTemplatesScreen(
+      String token,
+      FeaturesConfig featuresConfig,
+      {ExportData? exportData}
+      ) => _open(
+      token,
+      featuresConfig,
+      _screenTemplates,
       [],
       exportData: exportData
   );

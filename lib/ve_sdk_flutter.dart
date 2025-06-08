@@ -47,4 +47,14 @@ class VeSdkFlutter {
       featuresConfig,
       exportData: exportData
   );
+
+  Future<ExportResult?> openTemplatesScreen(
+      String token,
+      FeaturesConfig featuresConfig,
+      {ExportData? exportData}
+      ) => VeSdkFlutterPlatform.instance.openTemplatesScreen(
+      token,
+      featuresConfig,
+      exportData: exportData
+  );
 }
