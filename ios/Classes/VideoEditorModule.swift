@@ -19,6 +19,10 @@ protocol VideoEditor {
     func openVideoEditorPIP(fromViewController controller: FlutterViewController, videoURL: URL, flutterResult: @escaping FlutterResult)
     
     func openVideoEditorTrimmer(fromViewController controller: FlutterViewController, videoSources: Array<URL>, flutterResult: @escaping FlutterResult)
+
+    func openVideoEditorAiClipping(fromViewController controller: FlutterViewController, flutterResult: @escaping FlutterResult)
+
+    func openVideoEditorTemplates(fromViewController controller: FlutterViewController, flutterResult: @escaping FlutterResult)
 }
 
 class VideoEditorModule: VideoEditor {
@@ -138,6 +142,21 @@ class VideoEditorModule: VideoEditor {
 
         let config = VideoEditorLaunchConfig(
             entryPoint: .aiClipping,
+            hostController: controller,
+            animated: true
+        )
+        checkLicenseAndStartVideoEditor(with: config, flutterResult: flutterResult)
+    }
+
+    func openVideoEditorTemplates(
+        fromViewController controller: FlutterViewController,
+        flutterResult: @escaping FlutterResult
+    ) {
+        self.currentController = controller
+        self.flutterResult = flutterResult
+
+        let config = VideoEditorLaunchConfig(
+            entryPoint: .videoTemplates,
             hostController: controller,
             animated: true
         )
