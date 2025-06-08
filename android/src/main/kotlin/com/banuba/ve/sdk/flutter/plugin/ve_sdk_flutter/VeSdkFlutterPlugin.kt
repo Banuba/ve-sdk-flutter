@@ -165,7 +165,7 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
                         }
 
                         SCREEN_TEMPLATES -> {
-                            Log.d(TAG, "Start video editor from AI Clipping screen")
+                            Log.d(TAG, "Start video editor from Video Templates screen")
                             VideoCreationActivity.startFromTemplates(
                                 context = activity,
                                 additionalExportData = null,
