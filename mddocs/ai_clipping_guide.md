@@ -1,4 +1,4 @@
-## AI Clipping
+# AI Clipping
 
 The ```AI Clipping``` feature automates the video creation process by leveraging the power of artificial intelligence. The neural network transforms raw input into ready-to-post videos with various transitions, effects, and a precise music match.
 
