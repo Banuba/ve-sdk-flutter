@@ -19,7 +19,7 @@ A new Flutter project.
   s.dependency 'Flutter'
   s.platform = :ios, '15.0'
 
-  sdk_version = '1.44.2'
+  sdk_version = '1.45.0'
 
   ENABLE_FACE_AR = ENV['ENABLE_FACE_AR'] == 'true' || ENV['ENABLE_FACE_AR'].nil?
 
