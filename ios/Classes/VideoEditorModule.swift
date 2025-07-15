@@ -434,7 +434,7 @@ extension VideoEditorConfig {
             })
         }
 
-        var recordModes: [BanubaVideoEditorSDK.CaptureButtonViewMode] = []
+        var recordModes: [BanubaVideoEditorSDK.RecordButtonViewMode] = []
         featuresConfig.cameraConfig.recordModes.forEach { mode in
             switch mode {
                 case VideoEditorConfig.featuresConfigCameraConfigRecordModeVideo:
