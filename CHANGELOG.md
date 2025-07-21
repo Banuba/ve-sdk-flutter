@@ -81,3 +81,7 @@ Initial version of Banuba Video Editor SDK Flutter plugin
 ## 0.20.0
 - Supports Video Editor SDK 1.44.0
 - Introduce Multiple Closed Captions
+
+## 0.21.0
+- Supports Video Editor SDK 1.45.1
+- Introduce Weatherman
