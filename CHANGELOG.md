@@ -85,3 +85,7 @@ Initial version of Banuba Video Editor SDK Flutter plugin
 ## 0.21.0
 - Supports Video Editor SDK 1.45.1
 - Introduce Weatherman
+
+## 0.22.0
+- Supports Video Editor SDK 1.46.0
+- Introduce Finger Drawing
