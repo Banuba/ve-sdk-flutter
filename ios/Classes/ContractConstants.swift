@@ -79,7 +79,8 @@ extension VeSdkFlutterPlugin {
                 recordModes: [
                     VideoEditorConfig.featuresConfigCameraConfigRecordModeVideo,
                     VideoEditorConfig.featuresConfigCameraConfigRecordModePhoto
-                ]
+                ],
+                autoStartLocalMask: nil
             ),
             editorConfig: EditorConfig(
                 enableVideoAspectFill: true,

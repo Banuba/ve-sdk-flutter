@@ -33,7 +33,8 @@ class FeaturesConfigBuilder {
   CameraConfig _cameraConfig = CameraConfig(
     supportsBeauty: true,
     supportsColorEffects: true,
-    supportsMasks: true
+    supportsMasks: true,
+    autoStartLocalMask: null
   );
   EditorConfig _editorConfig = EditorConfig(
     enableVideoAspectFill: true,
@@ -151,12 +152,14 @@ class CameraConfig {
   final bool supportsColorEffects;
   final bool supportsMasks;
   final List<RecordMode> recordModes;
+  final String? autoStartLocalMask;
 
   const CameraConfig({
     this.supportsBeauty = true,
     this.supportsColorEffects = true,
     this.supportsMasks = true,
-    this.recordModes = const [RecordMode.video, RecordMode.photo]
+    this.recordModes = const [RecordMode.video, RecordMode.photo],
+    this.autoStartLocalMask = null,
   });
 }
 
