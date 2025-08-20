@@ -56,7 +56,8 @@ extension CameraConfigSerializer on CameraConfig {
       'supportsMasks': supportsMasks,
       'recordModes': recordModes
         .map((e) => e.name)
-        .toList()
+        .toList(),
+      'autoStartLocalMask': autoStartLocalMask
     };
   }
 }

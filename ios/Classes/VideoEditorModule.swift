@@ -448,6 +448,8 @@ extension VideoEditorConfig {
 
         self.recorderConfiguration.captureButtonModes = recordModes
 
+        self.recorderConfiguration.autoStartLocalMask = featuresConfig.cameraConfig.autoStartLocalMask
+
         self.editorConfiguration.isVideoAspectFillEnabled = featuresConfig.editorConfig.enableVideoAspectFill
 
         if !featuresConfig.editorConfig.supportsColorEffects {
