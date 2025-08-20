@@ -89,3 +89,6 @@ Initial version of Banuba Video Editor SDK Flutter plugin
 ## 0.22.0
 - Supports Video Editor SDK 1.46.0
 - Introduce Finger Drawing
+
+## 0.23.0
+- Introduce auto start local mask
