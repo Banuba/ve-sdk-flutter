@@ -57,4 +57,14 @@ class VeSdkFlutter {
       featuresConfig,
       exportData: exportData
   );
+
+  Future<ExportResult?> openDraftsScreen(
+      String token,
+      FeaturesConfig featuresConfig,
+      {ExportData? exportData}
+      ) => VeSdkFlutterPlatform.instance.openDraftsScreen(
+      token,
+      featuresConfig,
+      exportData: exportData
+  );
 }

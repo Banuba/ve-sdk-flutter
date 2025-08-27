@@ -173,6 +173,14 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
                             )
                         }
 
+                        SCREEN_DRAFTS -> {
+                            Log.d(TAG, "Start video editor from Drafts screen")
+                            VideoCreationActivity.startFromDrafts(
+                                context = activity,
+                                extras = prepareExtras(featuresConfig)
+                            )
+                        }
+
                         else -> null
                     }
 
