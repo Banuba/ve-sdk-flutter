@@ -44,7 +44,7 @@ class FeaturesConfigBuilder {
   DraftsConfig _draftsConfig =
       DraftsConfig.fromOption(DraftsOption.askToSave);
   GifPickerConfig? _gifPickerConfig;
-  bool _enableEditorV2 = false;
+  bool _enableEditorV2 = true;
   VideoDurationConfig _videoDurationConfig = VideoDurationConfig();
   bool _processPictureExternally = false;
 

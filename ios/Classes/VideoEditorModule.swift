@@ -163,6 +163,21 @@ class VideoEditorModule: VideoEditor {
         checkLicenseAndStartVideoEditor(with: config, flutterResult: flutterResult)
     }
 
+    func openVideoEditorDrafts(
+        fromViewController controller: FlutterViewController,
+        flutterResult: @escaping FlutterResult
+    ) {
+        self.currentController = controller
+        self.flutterResult = flutterResult
+
+        let config = VideoEditorLaunchConfig(
+            entryPoint: .drafts,
+            hostController: controller,
+            animated: true
+        )
+        checkLicenseAndStartVideoEditor(with: config, flutterResult: flutterResult)
+    }
+
     func checkLicenseAndStartVideoEditor(with config: VideoEditorLaunchConfig, flutterResult: @escaping FlutterResult) {
         if videoEditorSDK == nil {
             flutterResult(FlutterError(code: VeSdkFlutterPlugin.errSdkNotInitialized, message: VeSdkFlutterPlugin.errMessageSdkNotInitialized, details: nil))

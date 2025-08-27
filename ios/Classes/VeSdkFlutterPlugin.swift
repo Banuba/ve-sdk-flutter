@@ -72,6 +72,9 @@ public class VeSdkFlutterPlugin: NSObject, FlutterPlugin {
 
             case VeSdkFlutterPlugin.screenTemplates:
                 videoEditor.openVideoEditorTemplates(fromViewController: controller, flutterResult: result)
+                
+            case VeSdkFlutterPlugin.screenDrafts:
+                videoEditor.openVideoEditorDrafts(fromViewController: controller, flutterResult: result)
 
             default:
                 debugPrint("Unknown screen value = \(screen)")

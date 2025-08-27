@@ -116,6 +116,7 @@ internal const val SCREEN_PIP = "pip"
 internal const val SCREEN_TRIMMER = "trimmer"
 internal const val SCREEN_AICLIPPING = "aiClipping"
 internal const val SCREEN_TEMPLATES = "templates"
+internal const val SCREEN_DRAFTS = "drafts"
 
 // Errors
 internal const val ERR_CODE_SDK_NOT_INITIALIZED = "ERR_SDK_NOT_INITIALIZED"
