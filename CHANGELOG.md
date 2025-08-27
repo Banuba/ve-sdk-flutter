@@ -92,3 +92,7 @@ Initial version of Banuba Video Editor SDK Flutter plugin
 
 ## 0.23.0
 - Introduce auto start local mask
+
+## 0.24.0
+- Introduce drafts entry point
+- Introduce Cover Config
