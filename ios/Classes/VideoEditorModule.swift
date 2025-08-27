@@ -106,6 +106,7 @@ class VideoEditorModule: VideoEditor {
         let pipLaunchConfig = VideoEditorLaunchConfig(
             entryPoint: .pip,
             hostController: controller,
+            shouldCopyVideo: true,
             pipVideoItem: videoURL,
             musicTrack: nil,
             animated: true
@@ -126,6 +127,7 @@ class VideoEditorModule: VideoEditor {
             entryPoint: .trimmer,
             hostController: controller,
             videoItems: videoSources,
+            shouldCopyVideo: true,
             musicTrack: nil,
             animated: true
         )
