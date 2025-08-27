@@ -88,6 +88,9 @@ extension VeSdkFlutterPlugin {
                 supportsVisualEffects: true,
                 supportsColorEffects: true
             ),
+            coverConfig: CoverConfig(
+                supportsCoverScreen: true
+            ),
             draftsConfig: DraftsConfig(
                 option: "enable"
             ),
