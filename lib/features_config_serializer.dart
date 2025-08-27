@@ -9,6 +9,7 @@ extension FeatureConfigSerializer on FeaturesConfig {
       'audioBrowser': audioBrowser._serialize(),
       'cameraConfig': cameraConfig._serialize(),
       'editorConfig': editorConfig._serialize(),
+      'coverConfig': coverConfig._serialize(),
       'draftsConfig': draftsConfig._serialize(),
       'gifPickerConfig': gifPickerConfig?._serialize(),
       'videoDurationConfig': videoDurationConfig._serialize(),
@@ -68,6 +69,14 @@ extension EditorConfigSerializer on EditorConfig {
       'enableVideoAspectFill': enableVideoAspectFill,
       'supportsVisualEffects': supportsVisualEffects,
       'supportsColorEffects': supportsColorEffects
+    };
+  }
+}
+
+extension CoverConfigSerializer on CoverConfig {
+  Map<String, dynamic> _serialize() {
+    return {
+      'supportsCoverScreen': supportsCoverScreen
     };
   }
 }

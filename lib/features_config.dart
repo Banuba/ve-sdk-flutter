@@ -6,6 +6,7 @@ class FeaturesConfig {
   final AudioBrowser audioBrowser;
   final CameraConfig cameraConfig;
   final EditorConfig editorConfig;
+  final CoverConfig coverConfig;
   final DraftsConfig draftsConfig;
   final GifPickerConfig? gifPickerConfig;
   final VideoDurationConfig videoDurationConfig;
@@ -18,6 +19,7 @@ class FeaturesConfig {
         audioBrowser = builder._audioBrowser,
         cameraConfig = builder._cameraConfig,
         editorConfig = builder._editorConfig,
+        coverConfig = builder._coverConfig,
         draftsConfig = builder._draftsConfig,
         gifPickerConfig = builder._gifPickerConfig,
         videoDurationConfig = builder._videoDurationConfig,
@@ -40,6 +42,9 @@ class FeaturesConfigBuilder {
     enableVideoAspectFill: true,
     supportsVisualEffects: true,
     supportsColorEffects: true
+  );
+  CoverConfig _coverConfig = CoverConfig(
+      supportsCoverScreen: true
   );
   DraftsConfig _draftsConfig =
       DraftsConfig.fromOption(DraftsOption.askToSave);
@@ -70,6 +75,11 @@ class FeaturesConfigBuilder {
 
   FeaturesConfigBuilder setEditorConfig(editorConfig) {
     _editorConfig = editorConfig;
+    return this;
+  }
+
+  FeaturesConfigBuilder setCoverConfig(coverConfig) {
+    _coverConfig = coverConfig;
     return this;
   }
 
@@ -173,6 +183,15 @@ class EditorConfig {
     this.enableVideoAspectFill = true,
     this.supportsVisualEffects = true,
     this.supportsColorEffects = true
+  });
+}
+
+@immutable
+class CoverConfig {
+  final bool supportsCoverScreen;
+
+  const CoverConfig({
+    this.supportsCoverScreen = true
   });
 }
 
