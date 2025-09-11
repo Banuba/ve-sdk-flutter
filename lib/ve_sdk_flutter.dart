@@ -38,6 +38,18 @@ class VeSdkFlutter {
       exportData: exportData
   );
 
+  Future<ExportResult?> openEditorScreen(
+      String token,
+      FeaturesConfig featuresConfig,
+      List<String> sourceVideoPathList,
+      {ExportData? exportData}
+      ) => VeSdkFlutterPlatform.instance.openEditorScreen(
+      token,
+      featuresConfig,
+      sourceVideoPathList,
+      exportData: exportData,
+  );
+
   Future<ExportResult?> openAiClippingScreen(
       String token,
       FeaturesConfig featuresConfig,

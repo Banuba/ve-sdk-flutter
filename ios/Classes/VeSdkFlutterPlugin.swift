@@ -67,6 +67,16 @@ public class VeSdkFlutterPlugin: NSObject, FlutterPlugin {
             
                 videoEditor.openVideoEditorTrimmer(fromViewController: controller, videoSources: videoURLs, flutterResult: result)
 
+            case VeSdkFlutterPlugin.screenEditor:
+                let videoSources = args[VeSdkFlutterPlugin.inputParamVideoSources] as? Array<String>
+                if (videoSources == nil || videoSources!.isEmpty) {
+                    result(FlutterError(code: VeSdkFlutterPlugin.errInvalidParams, message: VeSdkFlutterPlugin.errMessageInvalidTrimmerVideo, details: nil))
+                    return
+                }
+                let videoURLs = videoSources!.compactMap { URL(string: $0) }
+
+                videoEditor.openVideoEditorEditor(fromViewController: controller, videoSources: videoURLs, flutterResult: result)
+
             case VeSdkFlutterPlugin.screenAiClipping:
                 videoEditor.openVideoEditorAiClipping(fromViewController: controller, flutterResult: result)
 

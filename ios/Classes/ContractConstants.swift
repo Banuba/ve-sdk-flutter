@@ -27,6 +27,7 @@ extension VeSdkFlutterPlugin {
     static let screenCamera = "camera"
     static let screenPip = "pip"
     static let screenTrimmer = "trimmer"
+    static let screenEditor = "editor"
     static let screenAiClipping = "aiClipping"
     static let screenTemplates = "templates"
     static let screenDrafts = "drafts"
