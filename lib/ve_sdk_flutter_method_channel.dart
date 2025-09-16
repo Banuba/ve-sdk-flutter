@@ -18,6 +18,7 @@ class MethodChannelVeSdkFlutter extends VeSdkFlutterPlatform {
   static const String _screenCamera = 'camera';
   static const String _screenPip = 'pip';
   static const String _screenTrimmer = 'trimmer';
+  static const String _screenEditor = 'editor';
   static const String _screenAiClipping = 'aiClipping';
   static const String _screenTemplates = 'templates';
   static const String _screenDrafts = 'drafts';
@@ -79,6 +80,21 @@ class MethodChannelVeSdkFlutter extends VeSdkFlutterPlatform {
       sourceVideoPathList,
       exportData: exportData
   );
+
+  @override
+  Future<ExportResult?> openEditorScreen(
+      String token,
+      FeaturesConfig featuresConfig,
+      List<String> sourceVideoPathList,
+      {ExportData? exportData}
+      ) => _open(
+      token,
+      featuresConfig,
+      _screenEditor,
+      sourceVideoPathList,
+      exportData: exportData
+  );
+
 
   @override
   Future<ExportResult?> openAiClippingScreen(

@@ -155,6 +155,31 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
                             )
                         }
 
+                        SCREEN_EDITOR -> {
+                            val videoSources =
+                                call.argument<List<String>>(INPUT_PARAM_VIDEO_SOURCES)
+                            Log.d(TAG, "Received editor video sources = $videoSources")
+
+                            if (videoSources.isNullOrEmpty()) {
+                                channelResult?.error(
+                                    ERR_INVALID_PARAMS,
+                                    ERR_MESSAGE_MISSING_EDITOR_VIDEO_SOURCES,
+                                    null
+                                )
+                                return@initialize
+                            }
+
+                            VideoCreationActivity.startFromEditor(
+                                context = activity,
+                                // setup data that will be acceptable during export flow
+                                additionalExportData = null,
+                                // set editor video configuration
+                                predefinedVideos = videoSources.map { Uri.fromFile(File(it)) }
+                                    .toTypedArray(),
+                                extras = prepareExtras(featuresConfig)
+                            )
+                        }
+
                         SCREEN_AICLIPPING -> {
                             Log.d(TAG, "Start video editor from AI Clipping screen")
                             VideoCreationActivity.startFromAiClipping(

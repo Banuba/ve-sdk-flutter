@@ -135,6 +135,26 @@ class VideoEditorModule: VideoEditor {
         checkLicenseAndStartVideoEditor(with: trimmerLaunchConfig, flutterResult: flutterResult)
     }
 
+    func openVideoEditorEditor(
+        fromViewController controller: FlutterViewController,
+        videoSources: Array<URL>,
+        flutterResult: @escaping FlutterResult
+    ) {
+        self.currentController = controller
+        self.flutterResult = flutterResult
+
+        let editorLaunchConfig = VideoEditorLaunchConfig(
+            entryPoint: .editor,
+            hostController: controller,
+            videoItems: videoSources,
+            shouldCopyVideo: true,
+            musicTrack: nil,
+            animated: true
+        )
+
+        checkLicenseAndStartVideoEditor(with: editorLaunchConfig, flutterResult: flutterResult)
+    }
+
     func openVideoEditorAiClipping(
         fromViewController controller: FlutterViewController,
         flutterResult: @escaping FlutterResult
