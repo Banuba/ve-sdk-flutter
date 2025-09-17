@@ -7,9 +7,12 @@ import android.net.Uri
 import android.util.Log
 import com.banuba.sdk.cameraui.data.PipConfig
 import com.banuba.sdk.core.license.BanubaVideoEditor
+import com.banuba.sdk.core.data.TrackData
 import com.banuba.sdk.export.data.ExportResult
 import com.banuba.sdk.export.utils.EXTRA_EXPORTED_SUCCESS
 import com.banuba.sdk.ve.flow.VideoCreationActivity
+import com.banuba.sdk.ve.flow.export.ExportBundleHelper
+import com.banuba.sdk.veui.data.captions.CaptionsApiService
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
@@ -24,8 +27,7 @@ import org.json.JSONObject
 import org.json.JSONArray
 import org.json.JSONException
 import androidx.core.os.bundleOf
-import com.banuba.sdk.veui.data.captions.CaptionsApiService
-import com.banuba.sdk.ve.flow.export.ExportBundleHelper
+import java.util.UUID
 
 class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, ActivityResultListener {
     companion object {
@@ -68,6 +70,8 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
         val featuresConfig = parseFeaturesConfig(call.argument<String>(INPUT_PARAM_FEATURES_CONFIG))
 
         val exportData = parseExportData(call.argument<String>(INPUT_PARAM_EXPORT_DATA))
+
+        val trackData = obtainTrackData(call.argument<String>(INPUT_PARAM_TRACK_DATA))
 
         val screen = call.argument<String>(INPUT_PARAM_SCREEN)
         if (screen.isNullOrEmpty()) {
@@ -174,6 +178,7 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
                                 // setup data that will be acceptable during export flow
                                 additionalExportData = null,
                                 // set editor video configuration
+                                audioTrackData = trackData,
                                 predefinedVideos = videoSources.map { Uri.fromFile(File(it)) }
                                     .toTypedArray(),
                                 extras = prepareExtras(featuresConfig)
@@ -297,6 +302,24 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
         }
         return jsonArray.toString()
     }
+
+    private fun obtainTrackData(trackDataJSON: String?): TrackData? =
+        if (trackDataJSON.isNullOrEmpty()) {
+            null
+        } else {
+            try {
+                val trackDataObject = JSONObject(trackDataJSON)
+                TrackData(
+                    id = UUID.fromString(trackDataObject.optString(TRACK_DATA_ID)),
+                    title = trackDataObject.optString(TRACK_DATA_TITLE),
+                    subtitle = trackDataObject.optString(TRACK_DATA_SUBTITLE),
+                    localUri = Uri.parse(trackDataObject.optString(TRACK_DATA_LOCAL_URL))
+                )
+            } catch (e: JSONException) {
+                Log.w(TAG, "Missing Track Data Param", e)
+                null
+            }
+        }
 
     private fun initialize(
         token: String,

@@ -25,6 +25,8 @@ public class VeSdkFlutterPlugin: NSObject, FlutterPlugin {
         let featuresConfig = parseFeatureConfig(args[VeSdkFlutterPlugin.inputParamFeaturesConfig] as? String)
 
         let exportData = parseExportData(args[VeSdkFlutterPlugin.inputParamExportData] as? String)
+
+        let trackData = obtainTrackData(args[VeSdkFlutterPlugin.inputParamTrackData] as? String)
         
         guard let screen = args[VeSdkFlutterPlugin.inputParamScreen] as? String else {
             result(FlutterError(code: VeSdkFlutterPlugin.errInvalidParams, message: VeSdkFlutterPlugin.errMessageMissingScreen, details: nil))
@@ -75,7 +77,7 @@ public class VeSdkFlutterPlugin: NSObject, FlutterPlugin {
                 }
                 let videoURLs = videoSources!.compactMap { URL(string: $0) }
 
-                videoEditor.openVideoEditorEditor(fromViewController: controller, videoSources: videoURLs, flutterResult: result)
+                videoEditor.openVideoEditorEditor(fromViewController: controller, videoSources: videoURLs, mediaTrack: trackData, flutterResult: result)
 
             case VeSdkFlutterPlugin.screenAiClipping:
                 videoEditor.openVideoEditorAiClipping(fromViewController: controller, flutterResult: result)

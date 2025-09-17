@@ -23,6 +23,7 @@ extension VeSdkFlutterPlugin {
     static let inputParamExportData = "exportData"
     static let inputParamScreen = "screen"
     static let inputParamVideoSources = "videoSources"
+    static let inputParamTrackData = "trackData"
     
     static let screenCamera = "camera"
     static let screenPip = "pip"
@@ -62,6 +63,9 @@ extension VeSdkFlutterPlugin {
     "❌ Missing or invalid config: \(inputParamFeaturesConfig)"
     static let errMessageMissingExportData =
     "❌ Missing or invalid config: \(inputParamExportData)"
+
+    static let errMessageMissingTrackData =
+    "❌ Missing or invalid config: \(inputParamTrackData)"
     
     static let errMessageMissingHost = "Missing host ViewController to start video editor"
     
@@ -87,7 +91,9 @@ extension VeSdkFlutterPlugin {
             editorConfig: EditorConfig(
                 enableVideoAspectFill: true,
                 supportsVisualEffects: true,
-                supportsColorEffects: true
+                supportsColorEffects: true,
+                supportsVoiceOver: true,
+                supportsAudioEditing: true
             ),
             coverConfig: CoverConfig(
                 supportsCoverScreen: true
