@@ -18,7 +18,7 @@ import com.banuba.sdk.playback.PlayerScaleType
 import com.banuba.sdk.ve.effects.watermark.WatermarkProvider
 import com.banuba.sdk.core.data.autocut.AutoCutTrackLoader
 import com.banuba.sdk.audiobrowser.domain.AiClippingRecommendedSoundProvider
-import com.banuba.sdk.audiobrowser.feedfm.AiClippingBanubaMusicTrackLoader
+import com.banuba.sdk.audiobrowser.api.AiClippingBanubaMusicTrackLoader
 import com.banuba.sdk.audiobrowser.soundstripe.AiClippingSoundstripeTrackLoader
 import com.banuba.sdk.ve.data.aiclipping.AiClippingConfig
 import com.banuba.sdk.core.domain.DraftConfig
