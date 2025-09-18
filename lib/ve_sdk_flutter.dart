@@ -1,6 +1,7 @@
 import 'package:ve_sdk_flutter/export_data.dart';
 import 'package:ve_sdk_flutter/export_result.dart';
 import 'package:ve_sdk_flutter/features_config.dart';
+import 'package:ve_sdk_flutter/track_data.dart';
 import 've_sdk_flutter_platform_interface.dart';
 
 class VeSdkFlutter {
@@ -42,7 +43,10 @@ class VeSdkFlutter {
       String token,
       FeaturesConfig featuresConfig,
       List<String> sourceVideoPathList,
-      {ExportData? exportData}
+      {
+        ExportData? exportData,
+        TrackData? trackData
+      }
       ) => VeSdkFlutterPlatform.instance.openEditorScreen(
       token,
       featuresConfig,

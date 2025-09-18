@@ -20,6 +20,8 @@ protocol VideoEditor {
     
     func openVideoEditorTrimmer(fromViewController controller: FlutterViewController, videoSources: Array<URL>, flutterResult: @escaping FlutterResult)
 
+    func openVideoEditorEditor(fromViewController controller: FlutterViewController, videoSources: Array<URL>, mediaTrack: MediaTrack?, flutterResult: @escaping FlutterResult)
+
     func openVideoEditorAiClipping(fromViewController controller: FlutterViewController, flutterResult: @escaping FlutterResult)
 
     func openVideoEditorTemplates(fromViewController controller: FlutterViewController, flutterResult: @escaping FlutterResult)
@@ -138,6 +140,7 @@ class VideoEditorModule: VideoEditor {
     func openVideoEditorEditor(
         fromViewController controller: FlutterViewController,
         videoSources: Array<URL>,
+        mediaTrack: MediaTrack?,
         flutterResult: @escaping FlutterResult
     ) {
         self.currentController = controller
@@ -148,7 +151,7 @@ class VideoEditorModule: VideoEditor {
             hostController: controller,
             videoItems: videoSources,
             shouldCopyVideo: true,
-            musicTrack: nil,
+            musicTrack: mediaTrack,
             animated: true
         )
 

@@ -6,6 +6,7 @@ import 'package:ve_sdk_flutter/export_data_serializer.dart';
 import 'package:ve_sdk_flutter/features_config.dart';
 import 'package:ve_sdk_flutter/features_config_serializer.dart';
 import 'package:ve_sdk_flutter/export_result.dart';
+import 'package:ve_sdk_flutter/track_data.dart';
 import 've_sdk_flutter_platform_interface.dart';
 
 /// An implementation of [VeSdkFlutterPlatform] that uses method channels.
@@ -29,6 +30,7 @@ class MethodChannelVeSdkFlutter extends VeSdkFlutterPlatform {
   static const String _inputParamExportData = 'exportData';
   static const String _inputParamScreen = 'screen';
   static const String _inputParamVideoSources = 'videoSources';
+  static const String _inputParamTrackData = 'trackData';
 
   // Exported params
   static const String _exportedVideoSources = 'exportedVideoSources';
@@ -86,7 +88,10 @@ class MethodChannelVeSdkFlutter extends VeSdkFlutterPlatform {
       String token,
       FeaturesConfig featuresConfig,
       List<String> sourceVideoPathList,
-      {ExportData? exportData}
+      {
+        ExportData? exportData,
+        TrackData? trackData
+      }
       ) => _open(
       token,
       featuresConfig,
@@ -140,7 +145,10 @@ class MethodChannelVeSdkFlutter extends VeSdkFlutterPlatform {
       FeaturesConfig featuresConfig,
       String screen,
       List<String> sourceVideoPathList,
-      {ExportData? exportData}
+      {
+        ExportData? exportData,
+        TrackData? trackData
+      }
   ) async {
     if (featuresConfig.enableEditorV2 && screen == _screenTrimmer){
       debugPrint("New UI is not available from Trimmer screen");
@@ -151,7 +159,8 @@ class MethodChannelVeSdkFlutter extends VeSdkFlutterPlatform {
       _inputParamFeaturesConfig: featuresConfig.serialize(),
       _inputParamScreen: screen,
       _inputParamVideoSources: sourceVideoPathList,
-      _inputParamExportData: exportData?.serialize()
+      _inputParamExportData: exportData?.serialize(),
+      _inputParamTrackData: trackData?.serialize(),
     };
 
     debugPrint('Start video editor with params = $inputParams');

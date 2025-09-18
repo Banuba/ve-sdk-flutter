@@ -17,6 +17,7 @@ internal const val INPUT_PARAM_FEATURES_CONFIG = "featuresConfig"
 internal const val INPUT_PARAM_EXPORT_DATA = "exportData"
 internal const val INPUT_PARAM_SCREEN = "screen"
 internal const val INPUT_PARAM_VIDEO_SOURCES = "videoSources"
+internal const val INPUT_PARAM_TRACK_DATA = "trackData"
 
 // Exported params
 internal const val EXPORTED_VIDEO_SOURCES = "exportedVideoSources"
@@ -61,6 +62,8 @@ internal const val FEATURES_CONFIG_EDITOR_CONFIG = "editorConfig"
 internal const val FEATURES_CONFIG_EDITOR_CONFIG_ENABLE_VIDEO_ASPECT_FILL = "enableVideoAspectFill"
 internal const val FEATURES_CONFIG_EDITOR_CONFIG_SUPPORTS_COLOR_EFFECTS = "supportsColorEffects"
 internal const val FEATURES_CONFIG_EDITOR_CONFIG_SUPPORTS_VISUAL_EFFECTS = "supportsVisualEffects"
+internal const val FEATURES_CONFIG_EDITOR_CONFIG_SUPPORTS_VOICE_OVER = "supportsVoiceOver"
+internal const val FEATURES_CONFIG_EDITOR_CONFIG_SUPPORTS_AUDIO_EDITING = "supportsAudioEditing"
 
 internal const val FEATURES_CONFIG_COVER_CONFIG = "coverConfig"
 internal const val FEATURES_CONFIG_COVER_CONFIG_SUPPORTS_COVER_SCREEN = "supportsCoverScreen"
@@ -112,6 +115,11 @@ internal const val EXPORT_DATA_WATERMARK_ALIGNMENT_TOP_LEFT = "topLeft"
 internal const val EXPORT_DATA_WATERMARK_ALIGNMENT_TOP_RIGHT = "topRight"
 internal const val EXPORT_DATA_WATERMARK_ALIGNMENT_BOTTOM_LEFT = "bottomLeft"
 internal const val EXPORT_DATA_WATERMARK_ALIGNMENT_BOTTOM_RIGHT = "bottomRight"
+
+internal const val TRACK_DATA_ID = "id"
+internal const val TRACK_DATA_TITLE = "title"
+internal const val TRACK_DATA_SUBTITLE = "subtitle"
+internal const val TRACK_DATA_LOCAL_URL = "localUrl"
 
 // Screens
 internal const val SCREEN_CAMERA = "camera"

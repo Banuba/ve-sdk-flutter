@@ -1,6 +1,7 @@
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'package:ve_sdk_flutter/export_data.dart';
 import 'package:ve_sdk_flutter/export_result.dart';
+import 'package:ve_sdk_flutter/track_data.dart';
 import 've_sdk_flutter_method_channel.dart';
 import 'package:ve_sdk_flutter/features_config.dart';
 
@@ -55,7 +56,10 @@ abstract class VeSdkFlutterPlatform extends PlatformInterface {
       String token,
       FeaturesConfig featuresConfig,
       List<String> sourceVideoPathList,
-      {ExportData? exportData}
+      {
+        ExportData? exportData,
+        TrackData? trackData
+      }
       ) {
     throw UnimplementedError('openEditorScreen() has not been implemented.');
   }
