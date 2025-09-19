@@ -99,3 +99,6 @@ Initial version of Banuba Video Editor SDK Flutter plugin
 
 ## 0.25.0
 - Supports Video Editor SDK 1.47.0 Android & 1.47.1 IOS
+
+## 0.26.0
+- Supports Video Editor SDK 1.47.2
