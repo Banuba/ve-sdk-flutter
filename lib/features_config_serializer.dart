@@ -68,7 +68,9 @@ extension EditorConfigSerializer on EditorConfig {
     return {
       'enableVideoAspectFill': enableVideoAspectFill,
       'supportsVisualEffects': supportsVisualEffects,
-      'supportsColorEffects': supportsColorEffects
+      'supportsColorEffects': supportsColorEffects,
+      'supportsVoiceOver' : supportsVoiceOver,
+      'supportsAudioEditing' : supportsAudioEditing
     };
   }
 }
