@@ -178,11 +178,15 @@ class EditorConfig {
   final bool enableVideoAspectFill;
   final bool supportsVisualEffects;
   final bool supportsColorEffects;
+  final bool supportsVoiceOver;
+  final bool supportsAudioEditing;
 
   const EditorConfig({
     this.enableVideoAspectFill = true,
     this.supportsVisualEffects = true,
-    this.supportsColorEffects = true
+    this.supportsColorEffects = true,
+    this.supportsVoiceOver = true,
+    this.supportsAudioEditing = true
   });
 }
 
