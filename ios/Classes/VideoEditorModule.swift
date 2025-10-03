@@ -508,6 +508,7 @@ extension VideoEditorConfig {
         
         if let gifPickerConfig = featuresConfig.gifPickerConfig {
             self.gifPickerConfiguration.giphyAPIKey = gifPickerConfig.giphyApiKey
+            self.gifPickerConfiguration.mode = gifPickerConfig.modeValue()
         }
 
         self.videoDurationConfiguration = featuresConfig.videoDurationConfig.value()
