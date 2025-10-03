@@ -197,7 +197,8 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
         featuresConfig.gifPickerConfig?.let { params ->
             factory<GifPickerConfigurations> {
                 GifPickerConfigurations(
-                    giphyApiKey = params.giphyApiKey
+                    giphyApiKey = params.giphyApiKey,
+                    mode = params.modeValue()
                 )
             }
         }

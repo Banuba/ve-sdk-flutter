@@ -78,6 +78,10 @@ internal const val FEATURES_CONFIG_DRAFTS_CONFIG_DISABLED = "disabled"
 
 internal const val FEATURES_CONFIG_GIF_PICKER_CONFIG = "gifPickerConfig"
 internal const val FEATURES_CONFIG_GIF_PICKER_CONFIG_API_KEY = "giphyApiKey"
+internal const val FEATURES_CONFIG_GIF_PICKER_CONFIG_MODE = "mode"
+internal const val FEATURES_CONFIG_GIF_PICKER_CONFIG_MODE_SEARCH = "search"
+internal const val FEATURES_CONFIG_GIF_PICKER_CONFIG_MODE_LIST = "list"
+internal const val FEATURES_CONFIG_GIF_PICKER_CONFIG_IDS = "ids"
 
 internal const val FEATURES_CONFIG_VIDEO_DURATION_CONFIG = "videoDurationConfig"
 internal const val FEATURES_CONFIG_VIDEO_DURATION_CONFIG_MAX_TOTAL_VIDEO_DURATION = "maxTotalVideoDuration"

@@ -94,7 +94,9 @@ extension DraftConfigSerializer on DraftsConfig {
 extension GifPickerConfigSerializer on GifPickerConfig {
   Map<String, dynamic> _serialize() {
     return {
-      'giphyApiKey': giphyApiKey
+      'giphyApiKey': giphyApiKey,
+      'mode': mode.name,
+      'ids': ids?.toList()
     };
   }
 }

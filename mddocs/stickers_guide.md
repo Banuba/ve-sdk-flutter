@@ -16,7 +16,13 @@ Specify instance of ```GifPickerConfig``` in ```FeaturesConfig```:
 
 ```dart
 final config = FeaturesConfigBuilder()
-      .setGifPickerConfig(GifPickerConfig(giphyApiKey: ...))
+      .setGifPickerConfig(
+          GifPickerConfig(
+              giphyApiKey: "...",
+              mode: GiphyMode.search,
+              ids: ["...", "..."]
+          )
+      )
       ...
       .build();
 ```

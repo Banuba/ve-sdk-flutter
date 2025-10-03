@@ -41,7 +41,9 @@ class FeaturesConfigBuilder {
   EditorConfig _editorConfig = EditorConfig(
     enableVideoAspectFill: true,
     supportsVisualEffects: true,
-    supportsColorEffects: true
+    supportsColorEffects: true,
+    supportsVoiceOver: true,
+    supportsAudioEditing: true
   );
   CoverConfig _coverConfig = CoverConfig(
       supportsCoverScreen: true
@@ -212,11 +214,19 @@ class DraftsConfig {
   }
 }
 
+enum GiphyMode { list, search }
+
 @immutable
 class GifPickerConfig {
   final String giphyApiKey;
+  final GiphyMode mode;
+  final List<String>? ids;
 
-  const GifPickerConfig({required this.giphyApiKey});
+  const GifPickerConfig({
+    required this.giphyApiKey,
+    this.mode = GiphyMode.search,
+    this.ids = null
+  });
 }
 
 @immutable
