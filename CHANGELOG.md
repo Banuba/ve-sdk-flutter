@@ -102,3 +102,7 @@ Initial version of Banuba Video Editor SDK Flutter plugin
 
 ## 0.26.0
 - Supports Video Editor SDK 1.47.2
+
+## 0.27.0
+- Supports Video Editor SDK 1.48.0
+- Introduce GIPHY list feature
