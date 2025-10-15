@@ -109,6 +109,17 @@ project 'Runner', {
 ...
 ```
 
+## Enable Android Photo Picker
+
+Set the ```ENABLE_GALLERY``` flag to the [gradle.properties](../example/android/gradle.properties#L4):
+
+```diff
+org.gradle.jvmargs=-Xmx4096M
+android.useAndroidX=true
+android.enableJetifier=true
++ ENABLE_GALLERY=false
+```
+
 ## Limit processor architectures on Android
 Banuba Video Editor on Android supports the following processor architectures - ```arm64-v8a```, ```armeabi-v7a```, ```x86-64```.
 Please keep in mind that each architecture adds extra MBs to your app.

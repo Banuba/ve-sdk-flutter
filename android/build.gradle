@@ -8,40 +8,38 @@ apply plugin: 'kotlin-parcelize'
 def ENABLE_FACE_AR = project.hasProperty("ENABLE_FACE_AR") ? project.ENABLE_FACE_AR.toBoolean() : true
 def ENABLE_GALLERY = project.hasProperty("ENABLE_GALLERY") ? project.ENABLE_GALLERY.toBoolean() : true
 
-
 // Below code modifies styles.xml file when Gallery is disabled
-task removeGalleryStyles {
+task updateGalleryStyles {
     doLast {
-        if (!ENABLE_GALLERY) {
-            println "!!! REMOVING GALLERY STYLES !!!"
-            def stylesFile = file('src/main/res/values/styles.xml')
+            println "!!! UPDATE GALLERY STYLES: ENABLED = $ENABLE_GALLERY !!!"
+            def stylesFile = file('src/main/res/values/ve_styles.xml')
             if (stylesFile.exists()) {
 
                 def galleryStyles = [
-                        'galleryAlbumBlurViewStyle',
-                        'galleryItemRadioButtonStyle',
-                        'galleryItemTextStyle',
-                        'selectedGalleryItemTextStyle',
-                        'galleryTitleTextStyle',
-                        'galleryAlbumTitleTextStyle',
-                        'galleryAlbumDescTextStyle',
-                        'galleryEmptyTextStyle',
-                        'galleryBackButtonStyle',
-                        'galleryNextButtonStyle',
-                        'galleryAutoCutNextButtonStyle',
-                        'galleryAutoCutButtonStyle',
-                        'gallerySelectionDescriptionStyle',
-                        'galleryNextParentStyle',
-                        'galleryImageViewStyle',
-                        'galleryColumnsNumber',
-                        'galleryTabLayoutStyle',
-                        'galleryTabTextColors',
-                        'gallery_bg_color',
-                        'gallery_item_corner_radius',
-                        'gallery_item_margin',
-                        'gallery_album_divider_color',
-                        'previewActionButtonStyle',
-                        'previewContainerStyle',
+                        'galleryAlbumBlurViewStyle' : '@style/GalleryAlbumBlurViewStyle',
+                        'galleryItemRadioButtonStyle' : '@style/GalleryItemRadioButtonStyle',
+                        'galleryItemTextStyle' : '@style/GalleryItemTextStyle',
+                        'selectedGalleryItemTextStyle' : '@style/SelectedGalleryItemTextStyle',
+                        'galleryTitleTextStyle' : '@style/GalleryTitleTextStyle',
+                        'galleryAlbumTitleTextStyle' : '@style/GalleryAlbumTitleTextStyle',
+                        'galleryAlbumDescTextStyle' : '@style/GalleryAlbumDescTextStyle',
+                        'galleryEmptyTextStyle' : '@style/GalleryEmptyTextStyle',
+                        'galleryBackButtonStyle' : '@style/GalleryBackButtonStyle',
+                        'galleryNextButtonStyle' : '@style/GalleryNextButtonStyle',
+                        'galleryAutoCutNextButtonStyle' : '@style/GalleryAutoCutNextButtonStyle',
+                        'galleryAutoCutButtonStyle' : '@style/GalleryAutoCutButtonStyle',
+                        'gallerySelectionDescriptionStyle' : '@style/GallerySelectionDescriptionStyle',
+                        'galleryNextParentStyle' : '@style/GalleryNextParentStyle',
+                        'galleryImageViewStyle' : '@style/GalleryImageViewStyle',
+                        'galleryColumnsNumber' : 'wrap_content',
+                        'galleryTabLayoutStyle' : '@style/GalleryTabLayoutStyle',
+                        'galleryTabTextColors' : '@color/gallery_tab_color_state_list',
+                        'gallery_bg_color' : '@color/black',
+                        'gallery_item_corner_radius' : '0dp',
+                        'gallery_item_margin' : '0.5dp',
+                        'gallery_album_divider_color' : '@color/transparent',
+                        'previewActionButtonStyle' : '@style/PreviewActionButtonStyle',
+                        'previewContainerStyle' : '@style/PreviewContainerStyle',
                 ]
 
                 println "# Styles file is found!"
@@ -50,20 +48,41 @@ task removeGalleryStyles {
                 def pattern = /<style name="CustomIntegrationAppTheme"[^>]*>([\s\S]*?)<\/style>/
                 content = content.replaceAll(pattern) { fullMatch, styleContent ->
                     def modifiedContent = styleContent
-                    int totalRemoved = 0
+                    int totalProcessed = 0
 
-                    galleryStyles.each { itemName ->
-                        // More specific pattern to match item tags
-                        def itemPattern = /(\s*)<item name="${itemName}"[^>]*>[\s\S]*?<\/item>(\s*)/
-                        def before = modifiedContent
-                        modifiedContent = modifiedContent.replaceAll(itemPattern, '')
-                        if (before != modifiedContent) {
-                            println "# Successfully removed item: $itemName"
-                            totalRemoved++
+                    galleryStyles.each { itemName, defaultValue ->
+                        def itemPattern = /(\s*)<item name="${itemName}"[^>]*>([\s\S]*?)<\/item>(\s*)/
+
+                        def itemExists = (modifiedContent =~ itemPattern).find()
+
+                        if (ENABLE_GALLERY) {
+                            if (itemExists) {
+                                // Item exists - just skip (do nothing)
+                                println "# Item exists, skipping: $itemName"
+                            } else {
+                                // Item doesn't exist - add with value
+                                def newItem = "\n    <item name=\"$itemName\">$defaultValue</item>"
+                                modifiedContent += newItem
+                                println "# Added missing item: $itemName = $defaultValue"
+                                totalProcessed++
+                            }
+                        } else {
+                            if (itemExists) {
+                                // Item exists - remove it
+                                def before = modifiedContent
+                                modifiedContent = modifiedContent.replaceAll(itemPattern, '')
+                                if (before != modifiedContent) {
+                                    println "# Removed item: $itemName"
+                                    totalProcessed++
+                                }
+                            } else {
+                                // Item doesn't exist - just skip (do nothing)
+                                println "# Item doesn't exist, skipping: $itemName"
+                            }
                         }
                     }
 
-                    println "# Total items removed: $totalRemoved"
+                    println "# Total items processed: $totalProcessed"
                     // Return the modified style block
                     return "<style name=\"CustomIntegrationAppTheme\" parent=\"VideoCreationTheme\">" + modifiedContent + "</style>"
                 }
@@ -76,11 +95,10 @@ task removeGalleryStyles {
                 stylesFile.write(content, 'UTF-8')
                 println "# styles.xml has been updated successfully!"
             }
-        }
     }
 }
 
-preBuild.dependsOn removeGalleryStyles
+preBuild.dependsOn updateGalleryStyles
 
 android {
     namespace = "com.banuba.ve.sdk.flutter.plugin.ve_sdk_flutter"
