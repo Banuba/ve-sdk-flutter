@@ -6,6 +6,81 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-parcelize'
 
 def ENABLE_FACE_AR = project.hasProperty("ENABLE_FACE_AR") ? project.ENABLE_FACE_AR.toBoolean() : true
+def ENABLE_GALLERY = project.hasProperty("ENABLE_GALLERY") ? project.ENABLE_GALLERY.toBoolean() : true
+
+
+// Below code modifies styles.xml file when Gallery is disabled
+task removeGalleryStyles {
+    doLast {
+        if (!ENABLE_GALLERY) {
+            println "!!! REMOVING GALLERY STYLES !!!"
+            def stylesFile = file('src/main/res/values/styles.xml')
+            if (stylesFile.exists()) {
+
+                def galleryStyles = [
+                        'galleryAlbumBlurViewStyle',
+                        'galleryItemRadioButtonStyle',
+                        'galleryItemTextStyle',
+                        'selectedGalleryItemTextStyle',
+                        'galleryTitleTextStyle',
+                        'galleryAlbumTitleTextStyle',
+                        'galleryAlbumDescTextStyle',
+                        'galleryEmptyTextStyle',
+                        'galleryBackButtonStyle',
+                        'galleryNextButtonStyle',
+                        'galleryAutoCutNextButtonStyle',
+                        'galleryAutoCutButtonStyle',
+                        'gallerySelectionDescriptionStyle',
+                        'galleryNextParentStyle',
+                        'galleryImageViewStyle',
+                        'galleryColumnsNumber',
+                        'galleryTabLayoutStyle',
+                        'galleryTabTextColors',
+                        'gallery_bg_color',
+                        'gallery_item_corner_radius',
+                        'gallery_item_margin',
+                        'gallery_album_divider_color',
+                        'previewActionButtonStyle',
+                        'previewContainerStyle',
+                ]
+
+                println "# Styles file is found!"
+                def content = stylesFile.getText('UTF-8')
+
+                def pattern = /<style name="CustomIntegrationAppTheme"[^>]*>([\s\S]*?)<\/style>/
+                content = content.replaceAll(pattern) { fullMatch, styleContent ->
+                    def modifiedContent = styleContent
+                    int totalRemoved = 0
+
+                    galleryStyles.each { itemName ->
+                        // More specific pattern to match item tags
+                        def itemPattern = /(\s*)<item name="${itemName}"[^>]*>[\s\S]*?<\/item>(\s*)/
+                        def before = modifiedContent
+                        modifiedContent = modifiedContent.replaceAll(itemPattern, '')
+                        if (before != modifiedContent) {
+                            println "# Successfully removed item: $itemName"
+                            totalRemoved++
+                        }
+                    }
+
+                    println "# Total items removed: $totalRemoved"
+                    // Return the modified style block
+                    return "<style name=\"CustomIntegrationAppTheme\" parent=\"VideoCreationTheme\">" + modifiedContent + "</style>"
+                }
+
+                // Remove multiple empty lines and clean up
+                content = content.replaceAll(/(\r\n|\n){3,}/, '\n\n')
+                content = content.replaceAll(/>\s+</, '>\n    <')
+
+                // Write back to file
+                stylesFile.write(content, 'UTF-8')
+                println "# styles.xml has been updated successfully!"
+            }
+        }
+    }
+}
+
+preBuild.dependsOn removeGalleryStyles
 
 android {
     namespace = "com.banuba.ve.sdk.flutter.plugin.ve_sdk_flutter"
@@ -39,6 +114,7 @@ android {
         versionName "1.0"
 
         buildConfigField "boolean", "ENABLE_FACE_AR", "${ENABLE_FACE_AR}"
+        buildConfigField "boolean", "ENABLE_GALLERY", "${ENABLE_GALLERY}"
     }
 
     packagingOptions {
@@ -135,7 +211,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     
-    def banubaSdkVersion = '1.48.0.1'
+    def banubaSdkVersion = '1.48.1'
     implementation "com.banuba.sdk:ffmpeg:5.3.0"
     implementation "com.banuba.sdk:camera-sdk:${banubaSdkVersion}"
     implementation "com.banuba.sdk:camera-ui-sdk:${banubaSdkVersion}"
@@ -144,7 +220,14 @@ dependencies {
     implementation "com.banuba.sdk:ve-flow-sdk:${banubaSdkVersion}"
     implementation "com.banuba.sdk:ve-sdk:${banubaSdkVersion}"
     implementation "com.banuba.sdk:ve-ui-sdk:${banubaSdkVersion}"
-    implementation "com.banuba.sdk:ve-gallery-sdk:${banubaSdkVersion}"
+
+    if (ENABLE_GALLERY){
+        println("!!! BANUBA GALLERY IS ENABLED !!!")
+        implementation "com.banuba.sdk:ve-gallery-sdk:${banubaSdkVersion}"
+    } else {
+        println("!!! BANUBA GALLERY IS DISABLED !!!")
+    }
+
     implementation "com.banuba.sdk:ve-effects-sdk:${banubaSdkVersion}"
     implementation "com.banuba.sdk:ar-cloud:${banubaSdkVersion}"
     implementation "com.banuba.sdk:ve-audio-browser-sdk:${banubaSdkVersion}"
