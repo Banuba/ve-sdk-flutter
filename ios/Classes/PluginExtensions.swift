@@ -46,6 +46,7 @@ extension VeSdkFlutterPlugin {
                 uuid: UUID(uuidString: decodedTrackData.id) ?? UUID(),
                 id: nil,
                 url: decodedTrackData.localUrl,
+                remoteURL: nil,
                 coverURL: nil,
                 timeRange: mediaTrackTimeRange,
                 isEditable: true,

@@ -79,6 +79,7 @@ private class FlutterTrackSelectionViewController: FlutterViewController, TrackS
         trackSelectionDelegate?.trackSelectionViewController(
             viewController: self,
             didSelectFile: track.url,
+            remoteURL: nil,
             isEditable: true,
             title: track.title,
             additionalTitle: nil,
