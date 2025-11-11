@@ -23,6 +23,7 @@ import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry.ActivityResultListener
 import java.io.File
 import android.os.Bundle
+import org.koin.core.context.stopKoin
 import org.json.JSONObject
 import org.json.JSONArray
 import org.json.JSONException
@@ -42,7 +43,6 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
 
     private var currentActivity: Activity? = null
 
-    private var editorSDK: BanubaVideoEditor? = null
     private var videoEditorModule: VideoEditorModule? = null
 
     private var channelResult: Result? = null
@@ -267,8 +267,7 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
             }
         } finally {
             Log.d(TAG, "Video Editor released")
-            videoEditorModule?.releaseVideoEditor()
-            videoEditorModule = null
+            releaseSdk(hard = false)
         }
     }
 
@@ -354,8 +353,6 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
             }
         }
 
-        editorSDK = sdk
-
         sdk.getLicenseState { isValid ->
             if (isValid) {
                 Log.d(TAG, "The license token is valid!")
@@ -371,7 +368,21 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
         }
     }
 
+    private fun releaseSdk(hard: Boolean) {
+        videoEditorModule?.releaseUtilityManager()
+
+        if (hard) {
+            Log.d(TAG, "STOP KOIN")
+            stopKoin()
+        }
+
+        videoEditorModule = null
+    }
+
     override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
+        // Clean up Koin context
+        releaseSdk(hard = true)
+
         channel.setMethodCallHandler(null)
     }
 

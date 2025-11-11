@@ -34,11 +34,11 @@ import org.koin.core.context.startKoin
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import org.koin.core.module.Module
+import org.koin.core.context.GlobalContext
 import android.util.Log
 import com.banuba.sdk.core.EditorUtilityManager
 import com.banuba.sdk.ve.ext.VideoEditorUtils.getKoin
 import org.json.JSONException
-import org.koin.core.context.stopKoin
 import org.koin.core.error.InstanceCreationException
 import com.banuba.sdk.core.domain.MediaNavigationProcessor
 import com.banuba.sdk.export.data.ExportResult
@@ -57,70 +57,72 @@ import java.util.Date
 
 class VideoEditorModule {
     internal fun initialize(application: Application, featuresConfig: FeaturesConfig, exportData: ExportData?) {
-        startKoin {
-            androidContext(application)
-            allowOverride(true)
+        if (GlobalContext.getOrNull() == null) {
+            Log.d(TAG, "START A NEW KOIN")
+            startKoin {
+                androidContext(application)
+                allowOverride(true)
 
-            // IMPORTANT! order of modules is required
-            val modulesList = mutableListOf (
-                VeSdkKoinModule().module,
-                VeExportKoinModule().module,
-                VePlaybackSdkKoinModule().module,
-                AudioBrowserKoinModule().module,
-                ArCloudKoinModule().module,
-                VeUiSdkKoinModule().module,
-                VeFlowKoinModule().module,
-                SampleIntegrationVeKoinModule(featuresConfig, exportData).module,
-            )
+                // IMPORTANT! order of modules is required
+                val modulesList = mutableListOf(
+                    VeSdkKoinModule().module,
+                    VeExportKoinModule().module,
+                    VePlaybackSdkKoinModule().module,
+                    AudioBrowserKoinModule().module,
+                    ArCloudKoinModule().module,
+                    VeUiSdkKoinModule().module,
+                    VeFlowKoinModule().module,
+                    SampleIntegrationVeKoinModule(featuresConfig, exportData).module,
+                )
 
-            if (BuildConfig.ENABLE_GALLERY) {
-                Log.d(TAG, "Banuba Gallery is added")
-                try {
-                    val galleryInstance = Class.forName("com.banuba.sdk.gallery.di.GalleryKoinModule")
-                        .getDeclaredConstructor()
-                        .newInstance()
-                    val module = galleryInstance.javaClass.getDeclaredField("module")
-                        .apply {
-                            isAccessible = true
+                if (BuildConfig.ENABLE_GALLERY) {
+                    Log.d(TAG, "Banuba Gallery is added")
+                    try {
+                        val galleryInstance =
+                            Class.forName("com.banuba.sdk.gallery.di.GalleryKoinModule")
+                                .getDeclaredConstructor()
+                                .newInstance()
+                        val module = galleryInstance.javaClass.getDeclaredField("module")
+                            .apply {
+                                isAccessible = true
+                            }
+                            .get(galleryInstance) as? Module
+                        module?.let {
+                            modulesList.add(it)
                         }
-                        .get(galleryInstance) as? Module
-                    module?.let {
-                        modulesList.add(it)
+                    } catch (e: Exception) {
+                        Log.w(TAG, "Error while adding the Gallery Module: ${e.message}")
                     }
-                } catch (e: Exception) {
-                    Log.w(TAG, "Error while adding the Gallery Module: ${e.message}")
                 }
-            }
 
-            if (BuildConfig.ENABLE_FACE_AR) {
-                Log.d(TAG, "Effect Player is added")
-                try {
-                    val effectPlayerInstance = Class.forName("com.banuba.sdk.effectplayer.adapter.BanubaEffectPlayerKoinModule")
-                        .getDeclaredConstructor()
-                        .newInstance()
-                    val module = effectPlayerInstance.javaClass.getDeclaredField("module")
-                        .apply {
-                            isAccessible = true
+                if (BuildConfig.ENABLE_FACE_AR) {
+                    Log.d(TAG, "Effect Player is added")
+                    try {
+                        val effectPlayerInstance =
+                            Class.forName("com.banuba.sdk.effectplayer.adapter.BanubaEffectPlayerKoinModule")
+                                .getDeclaredConstructor()
+                                .newInstance()
+                        val module = effectPlayerInstance.javaClass.getDeclaredField("module")
+                            .apply {
+                                isAccessible = true
+                            }
+                            .get(effectPlayerInstance) as? Module
+                        module?.let {
+                            modulesList.add(it)
                         }
-                        .get(effectPlayerInstance) as? Module
-                    module?.let {
-                        modulesList.add(it)
+                    } catch (e: Exception) {
+                        Log.w(TAG, "Error while adding the Effect Player Module: ${e.message}")
                     }
-                } catch (e: Exception) {
-                    Log.w(TAG, "Error while adding the Effect Player Module: ${e.message}")
                 }
-            }
 
-            modules(modulesList)
+                modules(modulesList)
+            }
+        } else {
+            Log.d(TAG, "KOIN ALREADY STARTED. Skip creating a new one")
         }
     }
 
-    fun releaseVideoEditor() {
-        releaseUtilityManager()
-        stopKoin()
-    }
-
-    private fun releaseUtilityManager() {
+    fun releaseUtilityManager() {
         val utilityManager = try {
             getKoin().getOrNull<EditorUtilityManager>()
         } catch (e: InstanceCreationException) {
