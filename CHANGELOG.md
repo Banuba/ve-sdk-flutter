@@ -126,3 +126,7 @@ Initial version of Banuba Video Editor SDK Flutter plugin
 
 ## 0.33.0
 - Remove duplicate maven dependencies
+
+## 0.34.0
+- Fix maven dependencies
+- Minor updates
