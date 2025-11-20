@@ -5,7 +5,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 've_sdk_flutter'
-  s.version          = '0.34.0'
+  s.version          = '0.35.0'
   s.summary          = 'A new Flutter project.'
   s.description      = <<-DESC
 A new Flutter project.
