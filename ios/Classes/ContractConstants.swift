@@ -32,6 +32,7 @@ extension VeSdkFlutterPlugin {
     static let screenAiClipping = "aiClipping"
     static let screenTemplates = "templates"
     static let screenDrafts = "drafts"
+    static let screenGallery = "gallery"
 
     static let argExportedVideoSources = "exportedVideoSources"
     static let argExportedPreview = "exportedPreview"
