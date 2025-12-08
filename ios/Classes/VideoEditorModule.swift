@@ -25,6 +25,8 @@ protocol VideoEditor {
     func openVideoEditorAiClipping(fromViewController controller: FlutterViewController, flutterResult: @escaping FlutterResult)
 
     func openVideoEditorTemplates(fromViewController controller: FlutterViewController, flutterResult: @escaping FlutterResult)
+    
+    func openVideoEditorGallery(fromViewController controller: FlutterViewController, flutterResult: @escaping FlutterResult)
 }
 
 class VideoEditorModule: VideoEditor {
@@ -204,19 +206,19 @@ class VideoEditorModule: VideoEditor {
     }
 
     func openVideoEditorGallery(
-            fromViewController controller: FlutterViewController,
-            flutterResult: @escaping FlutterResult
-        ) {
-            self.currentController = controller
-            self.flutterResult = flutterResult
-
-            let config = VideoEditorLaunchConfig(
-                entryPoint: .gallery,
-                hostController: controller,
-                animated: true
-            )
-            checkLicenseAndStartVideoEditor(with: config, flutterResult: flutterResult)
-        }
+        fromViewController controller: FlutterViewController,
+        flutterResult: @escaping FlutterResult
+    ) {
+        self.currentController = controller
+        self.flutterResult = flutterResult
+        
+        let config = VideoEditorLaunchConfig(
+            entryPoint: .gallery,
+            hostController: controller,
+            animated: true
+        )
+        checkLicenseAndStartVideoEditor(with: config, flutterResult: flutterResult)
+    }
 
     func checkLicenseAndStartVideoEditor(with config: VideoEditorLaunchConfig, flutterResult: @escaping FlutterResult) {
         if videoEditorSDK == nil {
