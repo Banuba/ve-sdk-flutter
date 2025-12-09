@@ -88,6 +88,9 @@ public class VeSdkFlutterPlugin: NSObject, FlutterPlugin {
             case VeSdkFlutterPlugin.screenDrafts:
                 videoEditor.openVideoEditorDrafts(fromViewController: controller, flutterResult: result)
 
+            case VeSdkFlutterPlugin.screenGallery:
+                videoEditor.openVideoEditorGallery(fromViewController: controller, flutterResult: result)
+
             default:
                 debugPrint("Unknown screen value = \(screen)")
                 result(FlutterError(code: VeSdkFlutterPlugin.errInvalidParams, message: VeSdkFlutterPlugin.errMessageUnknownScreen, details: nil))

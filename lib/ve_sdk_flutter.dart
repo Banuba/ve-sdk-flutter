@@ -83,4 +83,14 @@ class VeSdkFlutter {
       featuresConfig,
       exportData: exportData
   );
+
+  Future<ExportResult?> openGalleryScreen(
+      String token,
+      FeaturesConfig featuresConfig,
+      {ExportData? exportData}
+      ) => VeSdkFlutterPlatform.instance.openGalleryScreen(
+      token,
+      featuresConfig,
+      exportData: exportData
+  );
 }

@@ -211,6 +211,15 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
                             )
                         }
 
+                        SCREEN_GALLERY -> {
+                            Log.d(TAG, "Start video editor from Gallery screen")
+                            VideoCreationActivity.startFromGallery(
+                                context = activity,
+                                additionalExportData = null,
+                                extras = prepareExtras(featuresConfig)
+                            )
+                        }
+
                         else -> null
                     }
 
