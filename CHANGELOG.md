@@ -140,3 +140,4 @@ Initial version of Banuba Video Editor SDK Flutter plugin
 
 ## 0.37.0
 - Introduce gallery entry point
+- Supports Video Editor SDK 1.49.1
