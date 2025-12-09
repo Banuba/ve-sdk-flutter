@@ -77,7 +77,7 @@ abstract class VeSdkFlutterPlatform extends PlatformInterface {
       FeaturesConfig featuresConfig,
       {ExportData? exportData}
       ) {
-    throw UnimplementedError('openAiClippingScreen() has not been implemented.');
+    throw UnimplementedError('openTemplatesScreen() has not been implemented.');
   }
 
   Future<ExportResult?> openDraftsScreen(
@@ -85,7 +85,7 @@ abstract class VeSdkFlutterPlatform extends PlatformInterface {
       FeaturesConfig featuresConfig,
       {ExportData? exportData}
       ) {
-    throw UnimplementedError('openAiClippingScreen() has not been implemented.');
+    throw UnimplementedError('openDraftsScreen() has not been implemented.');
   }
 
   Future<ExportResult?> openGalleryScreen(
