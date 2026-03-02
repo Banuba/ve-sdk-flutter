@@ -51,14 +51,6 @@ public class VeSdkFlutterPlugin: NSObject, FlutterPlugin {
             case VeSdkFlutterPlugin.screenCamera:
                 videoEditor.openVideoEditorDefault(fromViewController: controller, flutterResult: result)
             
-            case VeSdkFlutterPlugin.screenPip:
-                let videoSources = args[VeSdkFlutterPlugin.inputParamVideoSources] as? Array<String>
-                if (videoSources == nil || videoSources!.isEmpty) {
-                    result(FlutterError(code: VeSdkFlutterPlugin.errInvalidParams, message: VeSdkFlutterPlugin.errMessageInvalidPiPVideo, details: nil))
-                    return
-                }
-                videoEditor.openVideoEditorPIP(fromViewController: controller, videoURL: URL(fileURLWithPath: videoSources!.first!), flutterResult: result)
-            
             case VeSdkFlutterPlugin.screenTrimmer:
                 let videoSources = args[VeSdkFlutterPlugin.inputParamVideoSources] as? Array<String>
                 if (videoSources == nil || videoSources!.isEmpty) {

@@ -15,9 +15,7 @@ protocol VideoEditor {
     func initVideoEditor(token: String, featuresConfig: FeaturesConfig, exportData: ExportData) -> Bool
     
     func openVideoEditorDefault(fromViewController controller: FlutterViewController, flutterResult: @escaping FlutterResult)
-    
-    func openVideoEditorPIP(fromViewController controller: FlutterViewController, videoURL: URL, flutterResult: @escaping FlutterResult)
-    
+        
     func openVideoEditorTrimmer(fromViewController controller: FlutterViewController, videoSources: Array<URL>, flutterResult: @escaping FlutterResult)
 
     func openVideoEditorEditor(fromViewController controller: FlutterViewController, videoSources: Array<URL>, mediaTrack: MediaTrack?, flutterResult: @escaping FlutterResult)
@@ -51,9 +49,6 @@ class VideoEditorModule: VideoEditor {
         self.featuresConfig = featuresConfig
 
         config.applyFeatureConfig(featuresConfig)
-
-        let lutsPath = Bundle(for: VideoEditorModule.self).bundleURL.appendingPathComponent("luts", isDirectory: true)
-        config.filterConfiguration.colorEffectsURL = lutsPath
 
         videoEditorSDK = BanubaVideoEditor(
             token: token,
@@ -97,26 +92,6 @@ class VideoEditorModule: VideoEditor {
             animated: true
         )
         checkLicenseAndStartVideoEditor(with: config, flutterResult: flutterResult)
-    }
-    
-    func openVideoEditorPIP(
-        fromViewController controller: FlutterViewController,
-        videoURL: URL,
-        flutterResult: @escaping FlutterResult
-    ) {
-        self.currentController = controller
-        self.flutterResult = flutterResult
-        
-        let pipLaunchConfig = VideoEditorLaunchConfig(
-            entryPoint: .pip,
-            hostController: controller,
-            shouldCopyVideo: true,
-            pipVideoItem: videoURL,
-            musicTrack: nil,
-            animated: true
-        )
-        
-        checkLicenseAndStartVideoEditor(with: pipLaunchConfig, flutterResult: flutterResult)
     }
     
     func openVideoEditorTrimmer(
@@ -474,21 +449,15 @@ extension VideoEditorConfig {
         }
 
         if !featuresConfig.cameraConfig.supportsColorEffects {
-            self.recorderConfiguration.additionalEffectsButtons = self.recorderConfiguration.additionalEffectsButtons.filter({
-                $0.identifier != .colorEffects
-            })
+            self.recorderConfiguration.hideFeatures(.colorEffects)
         }
 
         if !featuresConfig.cameraConfig.supportsBeauty {
-            self.recorderConfiguration.additionalEffectsButtons = self.recorderConfiguration.additionalEffectsButtons.filter({
-                $0.identifier != .beauty
-            })
+            self.recorderConfiguration.hideFeatures(.beauty)
         }
 
         if !featuresConfig.cameraConfig.supportsMasks {
-            self.recorderConfiguration.additionalEffectsButtons = self.recorderConfiguration.additionalEffectsButtons.filter({
-                $0.identifier != .masks
-            })
+            self.recorderConfiguration.hideFeatures(.masks)
         }
 
         var recordModes: [BanubaVideoEditorSDK.RecordButtonViewMode] = []
@@ -536,7 +505,6 @@ extension VideoEditorConfig {
         
         var featureConfiguration = self.featureConfiguration
         featureConfiguration.supportsTrimRecordedVideo = true
-        featureConfiguration.isMuteCameraAudioEnabled = true
         featureConfiguration.isVideoCoverSelectionEnabled = featuresConfig.coverConfig.supportsCoverScreen
         self.updateFeatureConfiguration(featureConfiguration: featureConfiguration)
     }
@@ -552,7 +520,7 @@ extension VideoEditorConfig {
     }
     
     private mutating func applyDisabledMusicConfig(){
-        self.recorderConfiguration.additionalEffectsButtons = self.recorderConfiguration.additionalEffectsButtons.filter{$0.identifier != .sound}
+        self.recorderConfiguration.hideFeatures(.sound)
         self.musicEditorConfiguration.mainMusicViewControllerConfig.editButtons = self.musicEditorConfiguration.mainMusicViewControllerConfig.editButtons
             .filter({$0.type != .track})
         self.videoEditorViewConfiguration.timelineConfiguration.isAddAudioEnabled = false
