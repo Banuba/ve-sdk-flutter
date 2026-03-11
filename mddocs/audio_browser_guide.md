@@ -4,18 +4,16 @@
 
 > [!NOTE]
 > Banuba does not deliver audio content for the Video Editor SDK.
-The Video Editor can apply audio files stored on the device. The SDK is not responsible for downloading audio content except for [Soundstripe](https://www.soundstripe.com/) and [Mubert](https://mubert.com/).
+The Video Editor can apply audio files stored on the device. The SDK is not responsible for downloading audio content except for [Soundstripe](https://www.soundstripe.com/).
 
 Audio Browser is a specific module that allows to browse, play and apply audio content within video editor.
 It supports 3 sources for audio content:
 
 1. Soundstripe - includes built in integration with Soundstripe API.
 
-2. Mubert - includes built in integration with Mubert API.
+2. Banuba Music - includes built in integration with Banuba Music.
 
-3. Banuba Music - includes built in integration with Banuba Music.
-
-4. My Library - includes audio content available on the user's device
+3. My Library - includes audio content available on the user's device
 
 ## Usage
 
@@ -32,29 +30,6 @@ Specify the instance of ```AudioBrowser``` in ```FeaturesConfig``` builder with 
 ```dart
 final config = FeaturesConfigBuilder()
     .setAudioBrowser(AudioBrowser.fromSource(AudioBrowserSource.soundstripe))
-    ...
-    .build();
-```
-
-### Mubert
-
-[Mubert](https://mubert.com/) is a service that delivers Generative AI Music. Your users will be able to add audio tracks while recording or editing video content.
-
-> [!NOTE]
-> Please contact Mubert representatives to request keys.
-
-Specify the instance of ```AudioBrowser``` in ```FeaturesConfig``` builder with Mubert source and params:
-
-```dart
-final config = FeaturesConfigBuilder()
-    .setAudioBrowser(AudioBrowser.fromSource(
-        AudioBrowserSource.mubert, 
-        params: {
-            'mubertLicence': ..., 
-            'mubertToken': ...
-            }
-        )
-    )
     ...
     .build();
 ```
