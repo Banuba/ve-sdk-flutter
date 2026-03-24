@@ -240,11 +240,9 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
             }
         }
 
-        if (featuresConfig.templatesConfig.url != null) {
+        if (featuresConfig.templatesConfig?.url != null) {
             single<TemplatesConfig> {
-                TemplatesConfig(
-                    url = featuresConfig.templatesConfig.url
-                )
+                featuresConfig.templatesConfig
             }
         }
 
