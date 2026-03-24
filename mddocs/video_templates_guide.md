@@ -25,3 +25,12 @@ Future<void> _startVideoEditorInCameraMode() async {
     }
   }
 ```
+
+## Setup Custom Templates
+
+```dart
+    final config = FeaturesConfigBuilder()
+      .setTemplatesConfig(TemplatesConfig(url: "YOUR_URL"))
+      ...
+      .build();
+```
