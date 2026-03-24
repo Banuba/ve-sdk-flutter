@@ -68,6 +68,9 @@ internal const val FEATURES_CONFIG_EDITOR_CONFIG_SUPPORTS_AUDIO_EDITING = "suppo
 internal const val FEATURES_CONFIG_COVER_CONFIG = "coverConfig"
 internal const val FEATURES_CONFIG_COVER_CONFIG_SUPPORTS_COVER_SCREEN = "supportsCoverScreen"
 
+internal const val FEATURES_CONFIG_TEMPLATES_CONFIG = "templatesConfig"
+internal const val FEATURES_CONFIG_TEMPLATES_CONFIG_URL = "url"
+
 internal const val FEATURES_CONFIG_DRAFTS_CONFIG = "draftsConfig"
 internal const val FEATURES_CONFIG_DRAFTS_CONFIG_OPTION = "option"
 
