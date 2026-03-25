@@ -146,3 +146,8 @@ Initial version of Banuba Video Editor SDK Flutter plugin
 
 - Introduce Camera Layout V2
 - Supports Video Editor 1.50.0
+
+## 0.39.0
+
+- Introduce Templates Config
+- Supports Video Editor 1.50.1
