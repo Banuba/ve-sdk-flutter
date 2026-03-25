@@ -7,6 +7,7 @@ class FeaturesConfig {
   final CameraConfig cameraConfig;
   final EditorConfig editorConfig;
   final CoverConfig coverConfig;
+  final TemplatesConfig? templatesConfig;
   final DraftsConfig draftsConfig;
   final GifPickerConfig? gifPickerConfig;
   final VideoDurationConfig videoDurationConfig;
@@ -20,6 +21,7 @@ class FeaturesConfig {
         cameraConfig = builder._cameraConfig,
         editorConfig = builder._editorConfig,
         coverConfig = builder._coverConfig,
+        templatesConfig = builder._templatesConfig,
         draftsConfig = builder._draftsConfig,
         gifPickerConfig = builder._gifPickerConfig,
         videoDurationConfig = builder._videoDurationConfig,
@@ -48,6 +50,7 @@ class FeaturesConfigBuilder {
   CoverConfig _coverConfig = CoverConfig(
       supportsCoverScreen: true
   );
+  TemplatesConfig? _templatesConfig;
   DraftsConfig _draftsConfig =
       DraftsConfig.fromOption(DraftsOption.askToSave);
   GifPickerConfig? _gifPickerConfig;
@@ -82,6 +85,11 @@ class FeaturesConfigBuilder {
 
   FeaturesConfigBuilder setCoverConfig(coverConfig) {
     _coverConfig = coverConfig;
+    return this;
+  }
+
+  FeaturesConfigBuilder setTemplatesConfig(templatesConfig) {
+    _templatesConfig = templatesConfig;
     return this;
   }
 
@@ -198,6 +206,15 @@ class CoverConfig {
 
   const CoverConfig({
     this.supportsCoverScreen = true
+  });
+}
+
+@immutable
+class TemplatesConfig {
+  final String? url;
+
+  const TemplatesConfig({
+    this.url = null
   });
 }
 

@@ -10,6 +10,7 @@ extension FeatureConfigSerializer on FeaturesConfig {
       'cameraConfig': cameraConfig._serialize(),
       'editorConfig': editorConfig._serialize(),
       'coverConfig': coverConfig._serialize(),
+      'templatesConfig': templatesConfig?._serialize(),
       'draftsConfig': draftsConfig._serialize(),
       'gifPickerConfig': gifPickerConfig?._serialize(),
       'videoDurationConfig': videoDurationConfig._serialize(),
@@ -79,6 +80,14 @@ extension CoverConfigSerializer on CoverConfig {
   Map<String, dynamic> _serialize() {
     return {
       'supportsCoverScreen': supportsCoverScreen
+    };
+  }
+}
+
+extension TemplatesConfigSerializer on TemplatesConfig {
+  Map<String, dynamic> _serialize() {
+    return {
+      'url': url
     };
   }
 }

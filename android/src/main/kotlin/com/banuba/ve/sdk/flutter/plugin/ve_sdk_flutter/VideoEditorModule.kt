@@ -27,6 +27,7 @@ import com.banuba.sdk.cameraui.data.CameraRecordingModesProvider
 import com.banuba.sdk.veui.data.EditorConfig
 import com.banuba.sdk.veui.domain.CoverProvider
 import com.banuba.sdk.veui.data.stickers.GifPickerConfigurations
+import com.banuba.sdk.veui.data.templates.TemplatesConfig
 import com.banuba.sdk.audiobrowser.data.MubertApiConfig
 import com.banuba.sdk.veui.data.music.MusicEditorConfig
 import org.koin.android.ext.koin.androidContext
@@ -236,6 +237,12 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
         single<CameraRecordingModesProvider> {
             object : CameraRecordingModesProvider {
                 override var availableModes = featuresConfig.cameraConfig.recordModes
+            }
+        }
+
+        if (featuresConfig.templatesConfig?.url != null) {
+            single<TemplatesConfig> {
+                featuresConfig.templatesConfig
             }
         }
 
