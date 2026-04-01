@@ -164,7 +164,7 @@ class Captions {
   });
 }
 
-enum RecordMode { video, photo }
+enum RecordMode { video, story }
 
 @immutable
 class CameraConfig {
@@ -178,7 +178,7 @@ class CameraConfig {
     this.supportsBeauty = true,
     this.supportsColorEffects = true,
     this.supportsMasks = true,
-    this.recordModes = const [RecordMode.video, RecordMode.photo],
+    this.recordModes = const [RecordMode.video, RecordMode.story],
     this.autoStartLocalMask = null,
   });
 }
