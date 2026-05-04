@@ -266,7 +266,12 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
                     prepareVideoExportData(exportResult)
                 } else {
                     Log.d(TAG, "No export result: the user closed video editor")
-                    null
+                    this.channelResult?.error(
+                        ERR_VIDEO_EXPORT_CANCEL,
+                        ERR_MESSAGE_VIDEO_EXPORT_CANCEL,
+                        null
+                    )
+                    return false
                 }
                 this.channelResult?.success(data)
                 true
