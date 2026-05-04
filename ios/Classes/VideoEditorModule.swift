@@ -364,6 +364,7 @@ extension VideoEditorModule: BanubaVideoEditorDelegate {
                 self.videoEditorSDK?.clearSessionData()
             }
             self.videoEditorSDK = nil
+            self.flutterResult?(FlutterError(code: VeSdkFlutterPlugin.errVideoExportCancel, message: VeSdkFlutterPlugin.errMessageVideoExportCancel, details: nil))
         }
     }
     
