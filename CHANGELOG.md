@@ -156,3 +156,7 @@ Initial version of Banuba Video Editor SDK Flutter plugin
 
 - Introduce Alignment Guidelines for Text and Sticker Effects
 - Supports Video Editor 1.51.0
+
+## 0.41.0
+
+- Handle Video Editor Cancel Event
