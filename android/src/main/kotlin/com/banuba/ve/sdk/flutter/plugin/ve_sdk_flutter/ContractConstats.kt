@@ -144,6 +144,7 @@ internal const val ERR_CODE_SDK_LICENSE_REVOKED = "ERR_SDK_LICENSE_REVOKED"
 internal const val ERR_MISSING_HOST = "ERR_MISSING_HOST"
 internal const val ERR_INVALID_PARAMS = "ERR_INVALID_PARAMS"
 internal const val ERR_MISSING_EXPORT_RESULT = "ERR_MISSING_EXPORT_RESULT"
+internal const val ERR_VIDEO_EXPORT_CANCEL = "ERR_VIDEO_EXPORT_CANCEL"
 
 internal const val ERR_MESSAGE_SDK_NOT_INITIALIZED = """
     Failed to initialize SDK!!! 
@@ -178,6 +179,8 @@ internal const val ERR_MESSAGE_MISSING_EXPORT_RESULT =
     "Missing export result: video export has not been completed successfully. Please try again"
 
 internal const val ERR_MESSAGE_MISSING_HOST = "Missing host Activity to start video editor"
+
+internal const val ERR_MESSAGE_VIDEO_EXPORT_CANCEL = "The user has canceled video editing flow!"
 
 internal const val ERR_MESSAGE_INVALID_CONFIG =
     "Missing or invalid config params, will use default config. Input params: $INPUT_PARAM_FEATURES_CONFIG"
