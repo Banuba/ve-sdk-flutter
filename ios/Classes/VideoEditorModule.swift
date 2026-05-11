@@ -156,6 +156,8 @@ class VideoEditorModule: VideoEditor {
     ) {
         self.currentController = controller
         self.flutterResult = flutterResult
+        
+        videoEditorSDK?.updateVideoEditorArgs(["CREATE_VIDEO_TEMPLATES_FLOW": featuresConfig?.templatesConfig?.enableTemplatesBuilder ?? false])
 
         let config = VideoEditorLaunchConfig(
             entryPoint: .videoTemplates,
@@ -463,6 +465,10 @@ extension VideoEditorConfig {
         
         if let stringUrl = featuresConfig.templatesConfig?.url, let url = URL(string: stringUrl + "/response.json") {
             self.videoTemplatesConfiguration.url = url
+        }
+        
+        if let termsOfUse = featuresConfig.templatesConfig?.termsOfUse, let url = URL(string: termsOfUse)  {
+            self.videoTemplatesConfiguration.templateBuilderConfiguration.termsOfUseURL = url
         }
 
         var recordModes: [BanubaVideoEditorSDK.RecordButtonViewMode] = []
