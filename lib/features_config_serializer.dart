@@ -88,8 +88,8 @@ extension TemplatesConfigSerializer on TemplatesConfig {
   Map<String, dynamic> _serialize() {
     return {
       'url': url,
-      'enableTemplatesBuilder': enableTemplatesBuilder,
-      'termsOfUse': termsOfUse
+      'enableBuilder': enableBuilder,
+      'termsOfUseURL': termsOfUseURL
     };
   }
 }

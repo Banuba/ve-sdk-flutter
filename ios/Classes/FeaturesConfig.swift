@@ -73,9 +73,9 @@ struct CoverConfig: Codable {
 }
 
 struct TemplatesConfig: Codable {
-    let enableTemplatesBuilder: Bool
+    let enableBuilder: Bool
     let url: String?
-    let termsOfUse: String?
+    let termsOfUseURL: String?
 }
 
 struct DraftsConfig: Codable {
