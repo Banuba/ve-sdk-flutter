@@ -34,3 +34,17 @@ Future<void> _startVideoEditorInCameraMode() async {
       ...
       .build();
 ```
+
+## Templates Builder 
+
+To launch Templates Builder, set `enableTemplatesBuilder` to `true` and provide a `termsOfUse` link in `TemplatesConfig`, then pass this configuration to `_veSdkFlutterPlugin.openTemplatesScreen`:
+
+```dart
+
+  final config = FeaturesConfigBuilder()
+    .setTemplatesConfig(TemplatesConfig(
+        enableTemplatesBuilder: true,
+        termsOfUse: "LINK TO YOUR TERMS OF USE"
+    ))
+    .build();
+```
