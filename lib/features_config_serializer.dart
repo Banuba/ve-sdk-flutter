@@ -87,7 +87,9 @@ extension CoverConfigSerializer on CoverConfig {
 extension TemplatesConfigSerializer on TemplatesConfig {
   Map<String, dynamic> _serialize() {
     return {
-      'url': url
+      'url': url,
+      'enableBuilder': enableBuilder,
+      'termsOfUseURL': termsOfUseURL
     };
   }
 }

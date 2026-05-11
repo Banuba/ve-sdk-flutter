@@ -211,10 +211,14 @@ class CoverConfig {
 
 @immutable
 class TemplatesConfig {
+  final bool enableBuilder;
   final String? url;
+  final String? termsOfUseURL;
 
   const TemplatesConfig({
-    this.url = null
+    this.enableBuilder = false,
+    this.url = null,
+    this.termsOfUseURL = null
   });
 }
 
