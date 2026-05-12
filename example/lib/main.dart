@@ -18,13 +18,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: HomePage(),
+    return const MaterialApp(
+        home: HomePage()
     );
   }
 }
@@ -40,7 +35,7 @@ class _HomePageState extends State<HomePage> {
   final _veSdkFlutterPlugin = VeSdkFlutter();
   String _errorMessage = '';
 
-  Future<void> _startVideoEditorInCameraMode() async {
+  Future<void> _startFromCamera() async {
     // Specify your Config params in the builder below
 
     final config = FeaturesConfigBuilder()
@@ -70,7 +65,40 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Future<void> _startVideoEditorInPipMode() async {
+  Future<void> _startFromTemplates() async {
+
+    final config = FeaturesConfigBuilder()
+    // .setTemplatesConfig
+    // ...
+       .build();
+
+    try {
+      dynamic exportResult = await _veSdkFlutterPlugin.openTemplatesScreen(_licenseToken, config);
+      _handleExportResult(exportResult);
+    } on PlatformException catch (e) {
+      _handlePlatformException(e);
+    }
+  }
+
+  Future<void> _startFromTemplatesBuilder() async {
+
+    final config = FeaturesConfigBuilder()
+        .setTemplatesConfig(TemplatesConfig(
+          enableBuilder: true,
+          termsOfUseURL: "https://www.banuba.com/terms"
+        ))
+    // ...
+        .build();
+
+    try {
+      dynamic exportResult = await _veSdkFlutterPlugin.openTemplatesScreen(_licenseToken, config);
+      _handleExportResult(exportResult);
+    } on PlatformException catch (e) {
+      _handlePlatformException(e);
+    }
+  }
+
+  Future<void> _startFromPip() async {
 
     // Specify your Config params in the builder below
 
@@ -96,7 +124,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Future<void> _startVideoEditorInTrimmerMode() async {
+  Future<void> _startFromTrimmer() async {
 
     // Specify your Config params in the builder below
 
@@ -151,105 +179,86 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black38,
+        backgroundColor: Colors.black,
         centerTitle: true,
-        title: const Text("Video Editor Flutter plugin"),
+        title: const Text(
+            "Video Editor Flutter plugin",
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w600
+            ),
+        ),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Expanded(
-              flex: 1,
-              child: Center(
-                child: Padding(
-                  padding: EdgeInsets.all(15.0),
-                  child: Text(
-                    'The plugin demonstrates how to use Banuba Video Editor',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 17.0,
-                    ),
-                  ),
+      body: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: Visibility(
+              visible: _errorMessage.isNotEmpty,
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: Text(
+                  _errorMessage,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontSize: 17.0, color: Colors.red),
                 ),
               ),
             ),
-            Expanded(
-              flex: 2,
-              child: Column(
-                children: [
-                  Visibility(
-                    visible: _errorMessage.isNotEmpty,
-                    child: Text(
-                      _errorMessage,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 17.0, color: Colors.red),
-                    ),
+          ),
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    spacing: 20,
+                    children: [
+                      CustomButton(title: 'Open Video Editor - Default', onPressed: _startFromCamera),
+                      CustomButton(title: 'Open Video Editor - Templates', onPressed: _startFromTemplates),
+                      CustomButton(title: 'Open Video Editor - Templates Builder', onPressed: _startFromTemplatesBuilder),
+                      CustomButton(title: 'Open Video Editor - PIP', onPressed: _startFromPip),
+                      CustomButton(title: 'Open Video Editor - Trimmer', onPressed: _startFromTrimmer),
+                    ],
                   ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor: Colors.blueAccent,
-                      shadowColor: Colors.blueGrey,
-                      elevation: 10,
-                      fixedSize: const Size(300, 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                    ),
-                    onPressed: () => _startVideoEditorInCameraMode(),
-                    child: const Text(
-                      'Open Video Editor - Camera screen',
-                      style: TextStyle(
-                        fontSize: 14.0,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor: Colors.blueAccent,
-                      shadowColor: Colors.blueGrey,
-                      elevation: 10,
-                      fixedSize: const Size(300, 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                    ),
-                    onPressed: () => _startVideoEditorInPipMode(),
-                    child: const Text(
-                      'Open Video Editor - PIP screen ',
-                      style: TextStyle(
-                        fontSize: 14.0,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor: Colors.blueAccent,
-                      shadowColor: Colors.blueGrey,
-                      elevation: 10,
-                      fixedSize: const Size(300, 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                    ),
-                    onPressed: () => _startVideoEditorInTrimmerMode(),
-                    child: const Text(
-                      'Open Video Editor - Trimmer screen',
-                      style: TextStyle(
-                        fontSize: 14.0,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            )
-          ],
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class CustomButton extends StatelessWidget {
+  final String title;
+  final VoidCallback onPressed;
+
+  const CustomButton({
+    super.key,
+    required this.title,
+    required this.onPressed
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        foregroundColor: Colors.white,
+        backgroundColor: Colors.black,
+        shadowColor: Colors.blueGrey,
+        elevation: 10,
+        fixedSize: const Size(300, 50),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
+        ),
+      ),
+      onPressed: onPressed,
+      child: Text(
+        title,
+        style: const TextStyle(
+          fontSize: 13.0,
         ),
       ),
     );
