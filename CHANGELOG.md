@@ -160,3 +160,8 @@ Initial version of Banuba Video Editor SDK Flutter plugin
 ## 0.41.0
 
 - Handle Video Editor Cancel Event
+
+## 0.42.0
+
+- Supports Video Editor 1.51.3
+- Introduce Template Builder iOS
