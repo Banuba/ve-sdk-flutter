@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
   final _veSdkFlutterPlugin = VeSdkFlutter();
   String _errorMessage = '';
 
-  Future<void> _startVideoEditorInCameraMode() async {
+  Future<void> _startFromCamera() async {
     // Specify your Config params in the builder below
 
     final config = FeaturesConfigBuilder()
@@ -65,7 +65,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Future<void> _startVideoEditorInTemplatesMode() async {
+  Future<void> _startFromTemplates() async {
 
     final config = FeaturesConfigBuilder()
     // .setTemplatesConfig
@@ -80,7 +80,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Future<void> _startVideoEditorInTemplatesBuilderMode() async {
+  Future<void> _startFromTemplatesBuilder() async {
 
     final config = FeaturesConfigBuilder()
         .setTemplatesConfig(TemplatesConfig(
@@ -98,7 +98,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Future<void> _startVideoEditorInPipMode() async {
+  Future<void> _startFromPip() async {
 
     // Specify your Config params in the builder below
 
@@ -124,7 +124,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Future<void> _startVideoEditorInTrimmerMode() async {
+  Future<void> _startFromTrimmer() async {
 
     // Specify your Config params in the builder below
 
@@ -214,11 +214,11 @@ class _HomePageState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     spacing: 20,
                     children: [
-                      CustomButton(title: 'Open Video Editor - Default', onPressed: _startVideoEditorInCameraMode),
-                      CustomButton(title: 'Open Video Editor - Templates', onPressed: _startVideoEditorInTemplatesMode),
-                      CustomButton(title: 'Open Video Editor - Templates Builder', onPressed: _startVideoEditorInTemplatesBuilderMode),
-                      CustomButton(title: 'Open Video Editor - PIP', onPressed: _startVideoEditorInPipMode),
-                      CustomButton(title: 'Open Video Editor - Trimmer', onPressed: _startVideoEditorInTrimmerMode),
+                      CustomButton(title: 'Open Video Editor - Default', onPressed: _startFromCamera),
+                      CustomButton(title: 'Open Video Editor - Templates', onPressed: _startFromTemplates),
+                      CustomButton(title: 'Open Video Editor - Templates Builder', onPressed: _startFromTemplatesBuilder),
+                      CustomButton(title: 'Open Video Editor - PIP', onPressed: _startFromPip),
+                      CustomButton(title: 'Open Video Editor - Trimmer', onPressed: _startFromTrimmer),
                     ],
                   ),
                 )
