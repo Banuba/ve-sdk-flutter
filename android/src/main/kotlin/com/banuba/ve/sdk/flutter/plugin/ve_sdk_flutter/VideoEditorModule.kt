@@ -19,7 +19,6 @@ import com.banuba.sdk.core.data.autocut.AutoCutTrackLoader
 import com.banuba.sdk.audiobrowser.domain.AiClippingRecommendedSoundProvider
 import com.banuba.sdk.audiobrowser.api.AiClippingBanubaMusicTrackLoader
 import com.banuba.sdk.audiobrowser.soundstripe.AiClippingSoundstripeTrackLoader
-import com.banuba.sdk.ve.data.aiclipping.AiClippingConfig
 import com.banuba.sdk.core.domain.DraftConfig
 import com.banuba.sdk.cameraui.data.CameraConfig
 import com.banuba.sdk.cameraui.ui.RecordMode
@@ -174,13 +173,6 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
         }
 
         featuresConfig.aiClipping?.let { params ->
-            factory {
-                AiClippingConfig(
-                    audioDataUrl = params.audioDataUrl,
-                    audioTracksUrl = params.audioTracksUrl
-                )
-            }
-
             factory<ContentFeatureProvider<TrackData, Fragment>>(
                 named("recommendedSoundsMusicTrackProvider")
             ) {
@@ -234,7 +226,7 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
             )
         }
 
-        if (featuresConfig.templatesConfig?.url != null) {
+        if (featuresConfig.templatesConfig?.url != null || featuresConfig.templatesConfig?.secret != null) {
             single<TemplatesConfig> {
                 featuresConfig.templatesConfig
             }

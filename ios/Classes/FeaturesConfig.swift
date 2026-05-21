@@ -76,6 +76,7 @@ struct TemplatesConfig: Codable {
     let enableBuilder: Bool
     let url: String?
     let termsOfUseURL: String?
+    let secret: String?
 }
 
 struct DraftsConfig: Codable {

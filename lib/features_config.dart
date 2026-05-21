@@ -214,11 +214,13 @@ class TemplatesConfig {
   final bool enableBuilder;
   final String? url;
   final String? termsOfUseURL;
+  final String? secret;
 
   const TemplatesConfig({
     this.enableBuilder = false,
     this.url = null,
-    this.termsOfUseURL = null
+    this.termsOfUseURL = null,
+    this.secret = null,
   });
 }
 

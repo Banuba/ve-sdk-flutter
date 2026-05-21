@@ -6,7 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import android.util.Log
 import com.banuba.sdk.cameraui.data.PipConfig
-import com.banuba.sdk.core.license.BanubaVideoEditor
+import com.banuba.sdk.core.license.EditorSdk
 import com.banuba.sdk.core.data.TrackData
 import com.banuba.sdk.export.data.ExportResult
 import com.banuba.sdk.export.utils.EXTRA_EXPORTED_SUCCESS
@@ -348,7 +348,7 @@ class VeSdkFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Acti
             return
         }
 
-        val sdk = BanubaVideoEditor.initialize(token)
+        val sdk = EditorSdk.initialize(token)
 
         if (sdk == null) {
             // The SDK token is incorrect - empty or truncated
