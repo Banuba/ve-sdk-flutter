@@ -89,7 +89,8 @@ extension TemplatesConfigSerializer on TemplatesConfig {
     return {
       'url': url,
       'enableBuilder': enableBuilder,
-      'termsOfUseURL': termsOfUseURL
+      'termsOfUseURL': termsOfUseURL,
+      'secret': secret,
     };
   }
 }

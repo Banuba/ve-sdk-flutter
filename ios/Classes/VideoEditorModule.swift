@@ -159,12 +159,33 @@ class VideoEditorModule: VideoEditor {
         
         videoEditorSDK?.updateVideoEditorArgs(["CREATE_VIDEO_TEMPLATES_FLOW": featuresConfig?.templatesConfig?.enableBuilder ?? false])
 
-        let config = VideoEditorLaunchConfig(
-            entryPoint: .videoTemplates,
-            hostController: controller,
-            animated: true
-        )
-        checkLicenseAndStartVideoEditor(with: config, flutterResult: flutterResult)
+        if featuresConfig?.templatesConfig?.enableBuilder == true {
+            videoEditorSDK?.getLicenseState(completion: { [weak self] isValid in
+                guard let self else { return }
+                if isValid {
+                    DispatchQueue.main.async {
+                        self.videoEditorSDK?.presentTemplatesCreator(
+                            from: controller,
+                            animated: true,
+                            completion: nil
+                        )
+                    }
+                } else {
+                    if self.restoreLastVideoEditingSession == false {
+                        self.videoEditorSDK?.clearSessionData()
+                    }
+                    self.videoEditorSDK = nil
+                    flutterResult(FlutterError(code: VeSdkFlutterPlugin.errLicenseRevoked, message: VeSdkFlutterPlugin.errMessageLicenseRevoked, details: nil))
+                }
+            })
+        } else {
+            let config = VideoEditorLaunchConfig(
+                entryPoint: .videoTemplates,
+                hostController: controller,
+                animated: true
+            )
+            checkLicenseAndStartVideoEditor(with: config, flutterResult: flutterResult)
+        }
     }
 
     func openVideoEditorDrafts(
@@ -463,8 +484,12 @@ extension VideoEditorConfig {
             self.recorderConfiguration.hideFeatures(.masks)
         }
         
-        if let stringUrl = featuresConfig.templatesConfig?.url, let url = URL(string: stringUrl + "/response.json") {
-            self.videoTemplatesConfiguration.url = url
+        if let secret = featuresConfig.templatesConfig?.secret, !secret.isEmpty {
+            self.videoTemplatesConfiguration.catalogSource = .templateStore(
+                TemplateStoreConfiguration(clientSecret: secret)
+            )
+        } else if let stringUrl = featuresConfig.templatesConfig?.url, let url = URL(string: stringUrl + "/response.json") {
+            self.videoTemplatesConfiguration.catalogSource = .staticCatalog(url)
         }
         
         if let stringUrl = featuresConfig.templatesConfig?.termsOfUseURL, let termsOfUseURL = URL(string: stringUrl)  {
