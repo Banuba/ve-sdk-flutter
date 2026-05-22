@@ -169,4 +169,3 @@ Initial version of Banuba Video Editor SDK Flutter plugin
 ## 0.43.0
 
 - Supports Video Editor 1.52.0
-- Introduce Templates Store iOS and Android
