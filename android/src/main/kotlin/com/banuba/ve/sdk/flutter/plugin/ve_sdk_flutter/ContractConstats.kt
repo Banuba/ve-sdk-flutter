@@ -57,6 +57,7 @@ internal const val FEATURES_CONFIG_CAMERA_RECORD_AUTOSTART_LOCAL_MASK = "autoSta
 internal const val FEATURES_CONFIG_CAMERA_RECORD_MODES = "recordModes"
 internal const val FEATURES_CONFIG_CAMERA_RECORD_MODES_VIDEO = "video"
 internal const val FEATURES_CONFIG_CAMERA_RECORD_MODES_STORY = "story"
+internal const val FEATURES_CONFIG_CAMERA_RECORD_MODES_PHOTO = "photo"
 
 internal const val FEATURES_CONFIG_EDITOR_CONFIG = "editorConfig"
 internal const val FEATURES_CONFIG_EDITOR_CONFIG_ENABLE_VIDEO_ASPECT_FILL = "enableVideoAspectFill"

@@ -149,6 +149,7 @@ extension VideoEditorConfig {
     //Record Mode
     static let featuresConfigCameraConfigRecordModeVideo = "video"
     static let featuresConfigCameraConfigRecordModeStory = "story"
+    static let featuresConfigCameraConfigRecordModePhoto = "photo"
 
     //Editor Configs
     static let featuresConfigEnableVideoAspectFill = "enableVideoAspectFill"

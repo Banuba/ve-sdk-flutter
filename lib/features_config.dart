@@ -164,7 +164,7 @@ class Captions {
   });
 }
 
-enum RecordMode { video, story }
+enum RecordMode { video, story, photo }
 
 @immutable
 class CameraConfig {
