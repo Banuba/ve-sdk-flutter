@@ -24,5 +24,5 @@ final config = FeaturesConfigBuilder()
 - ```supportsBeauty``` - Determines whether the camera supports beauty effect. Default value is ```true```.
 - ```supportsColorEffects``` - Determines whether the camera supports color effects. Default value is ```true```.
 - ```supportsMasks``` - Determines whether the camera supports visual effects. Default value is ```true```.
-- ```recordModes``` - Determines which recording modes are supported. Default value is ```[RecordMode.video, RecordMode.story]```
+- ```recordModes``` - Determines which recording modes are supported. Default value is ```[RecordMode.video, RecordMode.story, RecordMode.photo]```
 - ```autoStartLocalMask``` - Determines whether the camera starts with preselected mask. Default value is ```null```

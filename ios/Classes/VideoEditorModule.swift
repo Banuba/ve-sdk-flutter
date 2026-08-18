@@ -496,12 +496,14 @@ extension VideoEditorConfig {
             self.videoTemplatesConfiguration.templateBuilderConfiguration.termsOfUseURL = termsOfUseURL
         }
 
-        var recordModes: [BanubaVideoEditorSDK.RecordButtonViewMode] = []
+        var recordModes: [BanubaVideoEditorSDK.RecordingMode] = []
         featuresConfig.cameraConfig.recordModes.forEach { mode in
             switch mode {
                 case VideoEditorConfig.featuresConfigCameraConfigRecordModeVideo:
                     recordModes.append(.video)
                 case VideoEditorConfig.featuresConfigCameraConfigRecordModeStory:
+                    recordModes.append(.story)
+                case VideoEditorConfig.featuresConfigCameraConfigRecordModePhoto:
                     recordModes.append(.photo)
                 default:
                     recordModes = [.video, .photo]
