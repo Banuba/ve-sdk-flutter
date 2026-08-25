@@ -44,6 +44,7 @@ import com.banuba.sdk.export.data.ExportResult
 import com.banuba.sdk.ve.flow.VideoCreationActivity
 import com.banuba.sdk.export.data.ExportSessionHelper
 import com.banuba.sdk.ve.flow.session.FlowExportSessionHelper
+import com.banuba.sdk.core.domain.OnImageEditorCallback
 
 import android.content.Context
 import android.app.Activity
@@ -203,6 +204,14 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
 
         factory<DraftConfig> {
             featuresConfig.draftsConfig.value()
+        }
+
+        runCatching {
+            Class.forName("com.banuba.sdk.pe.domain.PhotoEditorHandler")
+                .getField("INSTANCE")
+                .get(null) as? OnImageEditorCallback
+        }.getOrNull()?.let { handler ->
+            factory<OnImageEditorCallback> { handler }
         }
 
         featuresConfig.gifPickerConfig?.let { params ->
