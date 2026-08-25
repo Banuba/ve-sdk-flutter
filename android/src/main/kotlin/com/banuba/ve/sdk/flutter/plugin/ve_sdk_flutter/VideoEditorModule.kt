@@ -209,7 +209,7 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
         runCatching {
             Class.forName("com.banuba.sdk.pe.domain.PhotoEditorHandler")
                 .getField("INSTANCE")
-                .get(null) as OnImageEditorCallback
+                .get(null) as? OnImageEditorCallback
         }.getOrNull()?.let { handler ->
             factory<OnImageEditorCallback> { handler }
         }

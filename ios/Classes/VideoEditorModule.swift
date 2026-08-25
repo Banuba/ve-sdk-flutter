@@ -314,6 +314,26 @@ extension VideoEditorModule {
         }
     }
     
+    func export(with image: UIImage) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            // Calling clearSessionData() also removes any files stored in urls array
+            self.videoEditorSDK?.clearSessionData()
+
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd'T'HH-mm-ss.SSS"
+
+            self.completeExport(
+                videoUrls: [],
+                metaUrl: nil,
+                audioMetaJSON: nil,
+                previewUrl: FileManager.default.temporaryDirectory.appendingPathComponent("\(dateFormatter.string(from: Date())).png"),
+                error: nil,
+                previewImage: image
+            )
+        }
+    }
+    
     private func completeExport(
         videoUrls: [URL],
         metaUrl: URL?,
@@ -407,24 +427,8 @@ extension VideoEditorModule: BanubaVideoEditorDelegate {
                 return true
             }
 
-            videoEditor.dismissVideoEditor(animated: true) {
-                DispatchQueue.main.async { [weak self] in
-                    guard let self else { return }
-                    // Calling clearSessionData() also removes any files stored in urls array
-                    self.videoEditorSDK?.clearSessionData()
-
-                    let dateFormatter = DateFormatter()
-                    dateFormatter.dateFormat = "yyyy-MM-dd'T'HH-mm-ss.SSS"
-
-                    self.completeExport(
-                        videoUrls: [],
-                        metaUrl: nil,
-                        audioMetaJSON: nil,
-                        previewUrl: FileManager.default.temporaryDirectory.appendingPathComponent("\(dateFormatter.string(from: Date())).png"),
-                        error: nil,
-                        previewImage: resultImage
-                    )
-                }
+            videoEditor.dismissVideoEditor(animated: true) { [weak self] in
+                self?.export(with: resultImage)
             }
             return false
         } else {
@@ -433,24 +437,8 @@ extension VideoEditorModule: BanubaVideoEditorDelegate {
     }
     
     func videoEditor(_ videoEditor: BanubaVideoEditor, didDoneEditingImage image: UIImage) {
-        videoEditor.dismissVideoEditor(animated: true) {
-            DispatchQueue.main.async { [weak self] in
-                guard let self else { return }
-                // Calling clearSessionData() also removes any files stored in urls array
-                self.videoEditorSDK?.clearSessionData()
-
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "yyyy-MM-dd'T'HH-mm-ss.SSS"
-
-                self.completeExport(
-                    videoUrls: [],
-                    metaUrl: nil,
-                    audioMetaJSON: nil,
-                    previewUrl: FileManager.default.temporaryDirectory.appendingPathComponent("\(dateFormatter.string(from: Date())).png"),
-                    error: nil,
-                    previewImage: image
-                )
-            }
+        videoEditor.dismissVideoEditor(animated: true) { [weak self] in
+            self?.export(with: image)
         }
     }
 }
