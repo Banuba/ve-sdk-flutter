@@ -431,6 +431,28 @@ extension VideoEditorModule: BanubaVideoEditorDelegate {
             return true
         }
     }
+    
+    func videoEditor(_ videoEditor: BanubaVideoEditor, didDoneEditingImage image: UIImage) {
+        videoEditor.dismissVideoEditor(animated: true) {
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
+                // Calling clearSessionData() also removes any files stored in urls array
+                self.videoEditorSDK?.clearSessionData()
+
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-dd'T'HH-mm-ss.SSS"
+
+                self.completeExport(
+                    videoUrls: [],
+                    metaUrl: nil,
+                    audioMetaJSON: nil,
+                    previewUrl: FileManager.default.temporaryDirectory.appendingPathComponent("\(dateFormatter.string(from: Date())).png"),
+                    error: nil,
+                    previewImage: image
+                )
+            }
+        }
+    }
 }
 
 // MARK: - Feature Config flow
