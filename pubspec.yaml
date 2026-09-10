@@ -1,6 +1,6 @@
 name: ve_sdk_flutter
 description: White-label video editor SDK for Flutter. Add a full-featured video editing UI to iOS and Android apps: multi-track timeline, AI clipping, AI captions, video templates, drafts, stickers, AR effects and background removal.
-version: 0.46.0
+version: 0.48.0
 homepage: https://github.com/Banuba/ve-sdk-flutter
 repository: https://github.com/Banuba/ve-sdk-flutter
 topics:
