@@ -185,3 +185,7 @@ Initial version of Banuba Video Editor SDK Flutter plugin
 ## 0.47.0
 
 - Supports Photo Mode on Camera screen
+
+## 0.48.0
+
+- Update package description, repository link and topics
