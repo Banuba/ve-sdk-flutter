@@ -11,6 +11,7 @@ import BanubaAudioBrowserSDK
 import BanubaVideoEditorCore
 import Flutter
 
+@MainActor
 protocol VideoEditor {
     func initVideoEditor(token: String, featuresConfig: FeaturesConfig, exportData: ExportData) -> Bool
     
@@ -27,8 +28,11 @@ protocol VideoEditor {
     func openVideoEditorGallery(fromViewController controller: FlutterViewController, flutterResult: @escaping FlutterResult)
 }
 
+@MainActor
 class VideoEditorModule: VideoEditor {
-    
+
+    nonisolated init() {}
+
     private var videoEditorSDK: BanubaVideoEditor?
     private var flutterResult: FlutterResult?
     private var currentController: FlutterViewController?
@@ -274,7 +278,9 @@ extension VideoEditorModule {
                 
         videoEditorSDK?.export(
             using: exportProvider.provideExportConfiguration(),
-            exportProgress: { [weak progressView] progress in progressView?.updateProgressView(with: Float(progress)) }
+            exportProgress: { [weak progressView] progress in
+                Task { @MainActor in progressView?.updateProgressView(with: Float(progress)) }
+            }
         ) { [weak self] (error, coverImage) in
             // Export Callback
             DispatchQueue.main.async {
@@ -548,9 +554,6 @@ extension VideoEditorConfig {
         self.videoDurationConfiguration = featuresConfig.videoDurationConfig.value()
 
         // Make customization here
-        
-        AudioBrowserConfig.shared.setPrimaryColor(#colorLiteral(red: 0.2350233793, green: 0.7372031212, blue: 0.7565478683, alpha: 1))
-        
         var featureConfiguration = self.featureConfiguration
         featureConfiguration.supportsTrimRecordedVideo = true
         featureConfiguration.isVideoCoverSelectionEnabled = featuresConfig.coverConfig.supportsCoverScreen
@@ -558,13 +561,7 @@ extension VideoEditorConfig {
     }
     
     private func addMubertParams(_ featuresConfig: FeaturesConfig){
-        guard let audioBrowserParams = featuresConfig.audioBrowser.params else { return }
-        guard let mubertLicence = audioBrowserParams.mubertLicence, let mubertToken = audioBrowserParams.mubertToken else { return }
-    
-        BanubaAudioBrowser.setMubertKeys(
-            license: mubertLicence,
-            token: mubertToken
-        )
+        print("⚠️ Mubert is not supported by Banuba Video Editor iOS SDK 1.54.1+.")
     }
     
     private mutating func applyDisabledMusicConfig(){
