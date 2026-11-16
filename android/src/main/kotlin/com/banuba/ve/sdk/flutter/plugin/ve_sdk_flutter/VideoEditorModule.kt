@@ -26,7 +26,6 @@ import com.banuba.sdk.veui.data.EditorConfig
 import com.banuba.sdk.veui.domain.CoverProvider
 import com.banuba.sdk.veui.data.stickers.GifPickerConfigurations
 import com.banuba.sdk.veui.data.templates.TemplatesConfig
-import com.banuba.sdk.audiobrowser.data.MubertApiConfig
 import com.banuba.sdk.veui.data.music.MusicEditorConfig
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -297,39 +296,9 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
         }
     }
 
+    @Suppress("UNUSED_PARAMETER")
     private fun Module.addMubertParams(featuresConfig: FeaturesConfig) {
-        val paramsObject = featuresConfig.audioBrowser.params
-
-        if (paramsObject != null) {
-            try {
-                val paramsMap = paramsObject.keys().asSequence().associateWith { key ->
-                    paramsObject.get(key)
-                }
-
-                val mubertLicence =
-                    paramsMap[FEATURES_CONFIG_AUDIO_BROWSER_PARAMS_MUBERT_LICENCE] as? String
-                val mubertToken =
-                    paramsMap[FEATURES_CONFIG_AUDIO_BROWSER_PARAMS_MUBERT_TOKEN] as? String
-
-                if (mubertLicence != null && mubertToken != null) {
-                    this.single {
-                        MubertApiConfig(
-                            mubertLicence = mubertLicence,
-                            mubertToken = mubertToken
-                        )
-                    }
-                } else {
-                    Log.w(TAG, "Missing parameters mubertLicence and mubertToken")
-                    return
-                }
-            } catch (e: JSONException) {
-                Log.w(TAG, "Error parsing Params of AudioBrowser")
-                return
-            }
-        } else {
-            Log.w(TAG, "Missing Params in AudioBrowser")
-            return
-        }
+        Log.w(TAG, "Mubert is not supported by Banuba Video Editor SDK 1.54.1+.")
     }
 
     private fun Module.applyDisabledMusicConfig(featuresConfig: FeaturesConfig) {

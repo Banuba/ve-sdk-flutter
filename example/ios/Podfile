@@ -36,6 +36,11 @@ target 'Runner' do
   use_modular_headers!
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
+
+  # Pin transitive Banuba pods to the SDK version: specs declare '>= <version>' ranges, which can pull a newer ABI-incompatible build
+  pod 'BanubaUtilities', '1.55.0'
+  pod 'BanubaVideoEditorCore', '1.55.0'
+  pod 'BanubaLicenseServicingSDK', '1.55.0'
 end
 
 post_install do |installer|

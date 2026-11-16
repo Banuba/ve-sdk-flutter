@@ -13,6 +13,14 @@ public class VeSdkFlutterPlugin: NSObject, FlutterPlugin {
     let videoEditor = VideoEditorModule()
     
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
+        // Flutter calls plugin methods on the main (platform) thread and SDK 1.55.0 APIs are main actor-isolated.
+        MainActor.assumeIsolated {
+            handleOnMainActor(call, result: result)
+        }
+    }
+
+    @MainActor
+    private func handleOnMainActor(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         guard let args = call.arguments as? Dictionary<String, Any> else {
             result(FlutterError.init(code: VeSdkFlutterPlugin.errInvalidParams, message: VeSdkFlutterPlugin.errMessageInvalidParams, details: nil))
             return
